@@ -1,0 +1,1544 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="m-kraft">
+<script>
+// Wenn die Seite in Safari Quick Look (ohne volles JS) geladen wird,
+// leitet dieser Code sofort zu file:// um — aber nur wenn noetig.
+// In echtem Safari oder Home-Screen funktioniert alles direkt.
+(function(){
+  try {
+    // Test ob localStorage verfuegbar ist (in Quick Look gesperrt)
+    localStorage.setItem('_t','1');
+    localStorage.removeItem('_t');
+  } catch(e) {
+    // Quick Look Modus erkannt — zeige Hinweis
+    document.addEventListener('DOMContentLoaded', function(){
+      var b = document.getElementById('ql-banner');
+      if(b) b.style.display = 'flex';
+    });
+  }
+})();
+</script>
+<title>Gabrijela · m-kraft Training</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#faf7f5;--surface:#fff;--surface2:#f5f0ee;--surface3:#ede6e3;
+  --border:#e8ddd9;--border2:#d4c4be;
+  --text:#1c1412;--text2:#6e5550;--text3:#a8928c;
+  --accent:#8b3a52;--accent-light:#f9edf0;--accent-mid:#a04462;
+  --red:#b0302a;--red-light:#fcecea;--red-mid:#c83c35;
+  --amber:#9a6020;--amber-light:#fef6ec;--amber-mid:#b87428;
+  --blue:#3a5480;--blue-light:#eef2f8;--blue-mid:#4a6a9c;
+  --gold:#8a7040;--gold-light:#fdf8ec;
+  --r:14px;--rsm:9px;--rlg:20px;
+  --fs-base:15px;
+}
+body{
+  background:var(--bg);color:var(--text);min-height:100vh;
+  font-size:var(--fs-base,15px);line-height:1.65;
+  font-family:'DM Sans',-apple-system,'Helvetica Neue',Arial,sans-serif;
+}
+.app{max-width:1440px;margin:0 auto;padding-bottom:80px}
+
+/* NAV */
+.nav{background:rgba(250,247,245,.96);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+.nav-inner{max-width:1440px;margin:0 auto;padding:10px 20px 8px;
+  display:flex;flex-direction:column;gap:8px}
+.nav-row-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.nav-row-bottom{display:flex;align-items:center;justify-content:center;border-top:1px solid var(--border);padding-top:8px}
+.nav-logo{display:flex;align-items:baseline;gap:0;line-height:1;flex-shrink:0}
+.logo-m{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;
+  font-size:30px;color:var(--text);letter-spacing:-.02em;font-weight:400;line-height:1;vertical-align:baseline}
+.logo-kraft{font-size:21px;font-weight:600;color:var(--text);letter-spacing:-.03em;line-height:1;vertical-align:baseline}
+.logo-tag{font-size:11px;font-weight:600;color:var(--text);letter-spacing:.09em;
+  text-transform:uppercase;margin-left:11px;border-left:2px solid var(--border2);
+  padding-left:11px;line-height:1.4;align-self:center}
+.logo-gabi{display:block;font-family:'Cormorant Garamond',Georgia,serif;
+  font-style:italic;font-size:12.5px;font-weight:400;opacity:.8;letter-spacing:.01em;
+  text-transform:none}
+.nav-tabs{display:flex;gap:2px;background:var(--surface2);border-radius:40px;
+  padding:3px;border:1px solid var(--border)}
+.nt{padding:7px 18px;border-radius:30px;border:none;background:transparent;
+  color:var(--text2);font-size:13.5px;cursor:pointer;transition:all .18s;
+  min-height:38px;-webkit-tap-highlight-color:transparent;font-family:inherit}
+.nt.on{background:var(--accent);color:#fff;font-weight:500;box-shadow:0 2px 10px rgba(139,58,82,.25)}
+.nt-settings{padding:7px 11px;border-radius:30px;border:none;background:transparent;
+  color:var(--text2);cursor:pointer;transition:all .18s;min-height:38px;
+  display:flex;align-items:center;justify-content:center;
+  -webkit-tap-highlight-color:transparent;flex-shrink:0;margin-left:4px}
+.nt-settings.on{background:var(--accent);color:#fff;box-shadow:0 2px 10px rgba(139,58,82,.25)}
+.nav-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.nav-date{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;
+  font-size:15px;color:var(--text2)}
+.nav-week-badge{font-size:11px;padding:3px 10px;border-radius:20px;
+  background:var(--accent-light);color:var(--accent);font-weight:600;
+  border:1px solid #e8c0cc;letter-spacing:.04em;text-transform:uppercase;
+  white-space:nowrap}
+
+/* PAGES */
+.pg{display:none;max-width:1440px;margin:0 auto;padding:20px 20px 80px}
+.pg.on{display:block;animation:pgfade .2s ease}
+@keyframes pgfade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+
+/* CARDS */
+.card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--rlg);padding:24px;margin-bottom:16px}
+.card-sm{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:12px}
+
+/* HERO (Desktop-Sidebar) */
+.hero{background:linear-gradient(135deg,var(--surface) 60%,var(--accent-light));
+  border:1.5px solid var(--border);border-radius:var(--rlg);padding:24px;margin-bottom:16px;overflow:hidden}
+.hero-eyebrow{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.14em;margin-bottom:8px}
+.hero-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:24px;
+  line-height:1.2;color:var(--text);margin-bottom:20px;font-weight:400}
+.hero-title em{color:var(--accent);font-style:italic}
+
+/* STATUS BUTTONS (Desktop) */
+.status-row{display:flex;gap:8px}
+.sb{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;
+  padding:11px 8px;border-radius:var(--rsm);border:1.5px solid var(--border);
+  background:var(--surface2);color:var(--text2);font-size:13px;cursor:pointer;
+  transition:all .2s;font-weight:500;-webkit-tap-highlight-color:transparent;font-family:inherit}
+.dot{width:9px;height:9px;border-radius:50%}
+.dot-r{background:var(--red-mid)}.dot-a{background:var(--amber-mid)}.dot-b{background:var(--blue-mid)}
+.sb.sr{background:#fef3f2;border-color:#f0b8b2;color:#c04040}
+.sb.sa{background:#fefaf2;border-color:#e8cc88;color:#9a6820}
+.sb.sb2{background:#f2f6fd;border-color:#a8c0e0;color:#4a6a9c}
+
+/* PROG BADGE */
+.prog-badge{display:flex;align-items:center;gap:10px;background:var(--accent-light);
+  border:1.5px solid #e8c0cc;border-radius:var(--r);padding:12px 14px;margin-bottom:16px}
+.prog-badge-num{width:36px;height:36px;border-radius:8px;background:var(--accent);
+  color:#fff;display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant Garamond',Georgia,serif;font-size:20px;flex-shrink:0;font-style:italic}
+.prog-badge-title{font-size:13px;font-weight:600;color:var(--accent)}
+.prog-badge-desc{font-size:12px;color:var(--text2);margin-top:1px}
+
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
+.sc{background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--r);padding:14px 10px;text-align:center}
+.sv{font-size:26px;font-weight:400;color:var(--text);line-height:1;font-family:'Cormorant Garamond',Georgia,serif}
+.sv.a{color:var(--accent)}
+.sl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-top:4px}
+
+/* SECTION LABELS */
+.sl2{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.14em;
+  margin:24px 0 12px;display:flex;align-items:center;gap:10px;font-weight:600}
+.sl2::after{content:'';flex:1;height:1px;background:linear-gradient(to right,var(--border),transparent)}
+.sl2:first-child{margin-top:0}
+
+/* EXERCISE CARDS */
+.ec{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);
+  margin-bottom:10px;overflow:hidden;transition:border-color .18s}
+.ec.done{border-color:#c8a0b0;background:linear-gradient(135deg,#fff 0%,var(--accent-light) 100%)}
+.eh{display:flex;align-items:center;gap:12px;padding:15px 16px;cursor:pointer;
+  user-select:none;-webkit-tap-highlight-color:transparent;min-height:56px}
+.ei{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;
+  justify-content:center;font-size:20px;flex-shrink:0}
+.ei.basis{background:var(--accent-light);border:1px solid #e8c0cc}
+.ei.stab{background:var(--blue-light);border:1px solid #b8cce4}
+.ei.arm{background:var(--gold-light);border:1px solid #d4c090}
+.ei.bonus{background:var(--gold-light);border:1px solid #d4c090}
+.ei.legbonus{background:var(--accent-light);border:1px solid #e8c0cc}
+.ename{font-size:15px;font-weight:500;color:var(--text);letter-spacing:-.01em}
+.emeta{font-size:13px;color:var(--text2);margin-top:2px;font-style:italic;
+  font-family:'Cormorant Garamond',Georgia,serif}
+.ebadge{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:500;
+  flex-shrink:0;border:1px solid transparent;letter-spacing:.02em}
+.bb{background:var(--accent-light);color:var(--accent);border-color:#e8c0cc}
+.bs{background:var(--blue-light);color:var(--blue);border-color:#b8cce4}
+.bbo{background:var(--gold-light);color:var(--gold);border-color:#d4c090}
+.echevron{font-size:11px;color:var(--text3);margin-left:8px;transition:transform .2s;flex-shrink:0}
+.echevron.open{transform:rotate(180deg)}
+.eb{border-top:1.5px solid var(--border);padding:18px;display:none;background:var(--surface2)}
+.eb.open{display:block}
+.enote{background:var(--surface);border:1px solid var(--border);border-radius:var(--rsm);
+  padding:12px 14px;font-size:13px;color:var(--text);opacity:.85;margin-bottom:16px;
+  display:flex;gap:10px;line-height:1.65;border-left:3px solid var(--accent)}
+.opt-tag{display:inline-block;font-size:11px;padding:3px 10px;border-radius:20px;
+  background:var(--gold-light);color:var(--gold);border:1px solid #d4c090;margin-bottom:12px;font-weight:500}
+
+/* PREV WEIGHTS */
+.prev-weights{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.pw-chip{font-size:12px;padding:4px 12px;border-radius:20px;background:var(--accent-light);
+  border:1px solid #e8c0cc;color:var(--text2)}
+.pw-chip span{color:var(--accent);font-weight:600}
+
+/* SETS */
+.sets-wrap{margin-bottom:4px}
+.set-labels{display:grid;grid-template-columns:32px 1fr 1fr 36px;gap:8px;margin-bottom:8px}
+.setlbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;text-align:center}
+.set-row{display:grid;grid-template-columns:32px 1fr 1fr 36px;gap:8px;align-items:center;margin-bottom:8px}
+.sn{font-size:13px;color:var(--text3);text-align:center;font-weight:500}
+.si{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--rsm);
+  padding:10px 8px;color:var(--text);font-size:15px;text-align:center;outline:none;
+  width:100%;transition:border-color .15s;font-family:inherit;-webkit-appearance:none}
+.si:focus{border-color:var(--accent)}
+.si::placeholder{color:var(--text3)}
+.ck{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--border);
+  background:var(--surface);cursor:pointer;display:flex;align-items:center;
+  justify-content:center;font-size:14px;transition:all .18s;flex-shrink:0;
+  color:transparent;-webkit-tap-highlight-color:transparent}
+.ck.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.ea{display:flex;gap:10px;margin-top:16px}
+.ebtn{flex:1;padding:12px 14px;border-radius:var(--rsm);border:1.5px solid var(--border);
+  background:var(--surface);color:var(--text2);font-size:13px;cursor:pointer;
+  transition:all .15s;font-weight:500;font-family:inherit;-webkit-tap-highlight-color:transparent}
+.ebtn.p{background:var(--accent);color:#fff;border-color:transparent}
+.ebtn.d{background:var(--accent-light);border-color:#e8c0cc;color:var(--accent)}
+
+/* BIZEPS/TRIZEPS CHOICE */
+.bizeps-choice-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:10px}
+.bizeps-choice-title{font-size:18px;font-weight:400;color:var(--text);margin-bottom:14px;
+  text-align:center;font-family:'Cormorant Garamond',Georgia,serif;font-style:italic}
+.bizeps-choice-row{display:flex;gap:10px}
+.bizeps-pick-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;
+  padding:16px 10px;border-radius:var(--r);border:1.5px solid var(--border);
+  background:var(--surface2);cursor:pointer;transition:all .2s;font-family:inherit;
+  -webkit-tap-highlight-color:transparent}
+.bizeps-pick-btn:active{border-color:var(--accent);background:var(--accent-light)}
+.bizeps-pick-name{font-size:13px;font-weight:500;color:var(--text);text-align:center}
+.bizeps-pick-muscle{font-size:11px;color:var(--text2);text-align:center}
+.bizeps-switch{text-align:right;margin-top:-4px;margin-bottom:8px}
+.bizeps-switch-btn{font-size:12px;padding:5px 13px;border-radius:20px;border:1px solid var(--border);
+  background:transparent;color:var(--text2);cursor:pointer;font-family:inherit;
+  -webkit-tap-highlight-color:transparent}
+
+/* SCHULTER INFO */
+.shoulder-info{background:var(--blue-light);border:1.5px solid #b8cce4;border-radius:var(--r);
+  padding:11px 14px;margin-bottom:10px;border-left:3px solid var(--blue-mid)}
+.shoulder-info-top{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.shoulder-badge{font-size:10px;padding:2px 9px;border-radius:20px;background:var(--blue-mid);
+  color:#fff;font-weight:600;letter-spacing:.04em}
+.shoulder-title{font-size:13px;font-weight:500;color:var(--text)}
+.shoulder-hint{font-size:12px;color:var(--text2);line-height:1.5}
+.shoulder-hint strong{color:var(--text);font-weight:500}
+
+/* STATUS INFO */
+.status-info{background:var(--gold-light);border:1.5px solid #d4c090;border-radius:var(--r);
+  padding:11px 14px;margin-bottom:12px;font-size:13px;color:var(--text2);
+  line-height:1.6;border-left:3px solid var(--gold)}
+
+/* NOTIZ */
+.notiz-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.notiz-input{width:100%;background:var(--surface2);border:1.5px solid var(--border);
+  border-radius:var(--rsm);padding:12px 14px;color:var(--text);font-size:14px;
+  outline:none;resize:none;line-height:1.6;transition:border-color .15s;
+  font-family:inherit;-webkit-appearance:none}
+.notiz-input:focus{border-color:var(--accent)}
+.notiz-input::placeholder{color:var(--text3)}
+
+/* SAVE BUTTON */
+.save-btn{width:100%;padding:16px;border-radius:var(--r);border:none;
+  background:linear-gradient(135deg,var(--accent),var(--accent-mid));color:#fff;
+  font-size:15px;font-weight:600;cursor:pointer;transition:all .15s;
+  letter-spacing:.02em;box-shadow:0 4px 14px rgba(139,58,82,.3);
+  font-family:inherit;-webkit-tap-highlight-color:transparent;
+  -webkit-appearance:none}
+.save-btn:active{transform:scale(.98)}
+
+/* EX IMG */
+.ex-img-btn{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;
+  border-radius:20px;border:1.5px solid #b8cce4;background:var(--blue-light);
+  color:var(--blue);font-size:12px;cursor:pointer;font-weight:500;margin-bottom:12px;
+  font-family:inherit;-webkit-tap-highlight-color:transparent}
+.ex-img-wrap{display:none;margin-bottom:14px;border-radius:var(--r);overflow:hidden;
+  border:1px solid var(--border);background:#fff}
+.ex-img-wrap.open{display:block}
+.ex-img-wrap img{width:100%;max-height:240px;object-fit:contain;display:block}
+.ex-img-caption{font-size:11px;color:var(--text3);padding:5px 10px;
+  text-align:center;background:var(--surface2)}
+
+/* DURATION BAR */
+.duration-bar{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.dur-chip{display:flex;align-items:center;gap:8px;padding:10px 14px;
+  border-radius:var(--r);border:1.5px solid var(--border);background:var(--surface);flex:1;min-width:0}
+.dur-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.dur-info{flex:1;min-width:0}
+.dur-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;font-weight:600}
+.dur-mode{font-size:13px;font-weight:500;color:var(--text);margin-top:2px}
+.dur-time{font-size:22px;font-weight:400;color:var(--accent);
+  font-family:'Cormorant Garamond',Georgia,serif;margin-left:auto;white-space:nowrap}
+.dur-min{font-size:11px;color:var(--text3);display:block;text-align:right}
+
+/* WOCHE */
+.wh{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.wnb{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--border);
+  background:var(--surface);color:var(--text2);font-size:18px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  -webkit-tap-highlight-color:transparent}
+.wtitle{font-size:18px;font-weight:400;font-family:'Cormorant Garamond',Georgia,serif}
+.wgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-bottom:14px}
+.dc{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--rsm);
+  padding:10px 4px;text-align:center}
+.dc.today{border-color:var(--blue-mid);background:var(--blue-light)}
+.dc.trained{border-color:var(--accent);background:var(--accent-light)}
+.dcn{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.04em}
+.dcnum{font-size:17px;font-weight:400;color:var(--text);margin:3px 0;
+  font-family:'Cormorant Garamond',Georgia,serif}
+.dc.today .dcnum{color:var(--blue)}.dc.trained .dcnum{color:var(--accent)}
+.dcdot{width:5px;height:5px;border-radius:50%;background:var(--accent);margin:3px auto 0;opacity:0}
+.dc.trained .dcdot{opacity:1}
+.barchart{display:flex;align-items:flex-end;gap:5px;height:90px;padding:4px 0;position:relative}
+.bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px}
+.bar{width:100%;border-radius:4px 4px 0 0;background:var(--accent);opacity:.65;min-height:6px}
+.bar-label{font-size:10px;color:var(--text3)}
+.prog-week-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:8px}
+.prog-week-card.active{border-color:var(--accent);background:var(--accent-light)}
+.pwc-h{display:flex;align-items:center;gap:10px}
+.pwc-n{width:30px;height:30px;border-radius:7px;background:var(--surface2);border:1.5px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant Garamond',Georgia,serif;font-size:17px;font-style:italic;color:var(--text2)}
+.prog-week-card.active .pwc-n{background:var(--accent);color:#fff;border-color:transparent}
+.pwc-t{font-size:14px;font-weight:600}
+.pwc-d{font-size:12px;color:var(--text2);margin-top:3px}
+
+/* VERLAUF */
+.log-entry{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:8px}
+.le-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+.le-date{font-size:16px;font-weight:400;font-family:'Cormorant Garamond',Georgia,serif}
+.le-status{font-size:11px;padding:3px 9px;border-radius:20px;font-weight:500}
+.le-stats{display:flex;gap:16px;font-size:13px;color:var(--text2)}
+.le-stat-n{font-weight:600;color:var(--text);margin-right:3px}
+.le-notiz{font-size:13px;color:var(--text2);margin-top:7px;font-style:italic;padding-top:7px;border-top:1px solid var(--border)}
+.le-details{margin-top:9px;padding-top:9px;border-top:1px solid var(--border);display:none}
+.le-details.open{display:block}
+.le-det-row{display:flex;align-items:center;gap:10px;padding:4px 0;font-size:13px;border-bottom:1px solid var(--border)}
+.le-det-row:last-child{border-bottom:none}
+.le-toggle{font-size:12px;color:var(--accent);cursor:pointer;margin-top:7px;display:inline-flex;align-items:center;gap:4px}
+.ex-prog-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:8px;overflow:hidden}
+.ex-prog-h{display:flex;align-items:center;gap:10px;padding:13px 16px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.ex-prog-icon{font-size:18px}
+.ex-prog-name{flex:1;font-size:14px;font-weight:500}
+.ex-prog-last{font-size:16px;font-weight:400;color:var(--accent);font-family:'Cormorant Garamond',Georgia,serif}
+.ex-prog-body{display:none;padding:13px 16px;background:var(--surface2);border-top:1px solid var(--border)}
+.ex-prog-body.open{display:block}
+.ex-prog-row{display:flex;align-items:center;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);font-size:13px}
+.ex-prog-row:last-child{border-bottom:none}
+.ex-prog-date{color:var(--text3)}
+.ex-prog-kg{font-weight:600;color:var(--text)}
+.ex-prog-reps{color:var(--text2)}
+
+/* KOERPER */
+.kw-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:9px}
+.kw-eingabe{display:flex;gap:10px;align-items:stretch}
+.kw-field{flex:1}
+.kw-input{width:100%;background:var(--surface2);border:1.5px solid var(--border);
+  border-radius:var(--rsm);padding:12px 14px;color:var(--text);font-size:15px;
+  outline:none;font-family:inherit;-webkit-appearance:none}
+.kw-input:focus{border-color:var(--accent)}
+.kw-btn{padding:12px 22px;border-radius:var(--rsm);border:none;background:var(--accent);
+  color:#fff;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;
+  -webkit-tap-highlight-color:transparent;-webkit-appearance:none}
+.kw-entry{display:flex;align-items:center;justify-content:space-between;background:var(--surface);
+  border:1.5px solid var(--border);border-radius:var(--rsm);padding:13px 16px;margin-bottom:7px}
+.kw-edit-btn{font-size:12px;padding:5px 12px;border-radius:20px;border:1px solid var(--border);
+  background:transparent;color:var(--text2);cursor:pointer;font-family:inherit;
+  -webkit-tap-highlight-color:transparent}
+.kw-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.kw-stat{text-align:center;padding:10px;background:var(--surface2);border-radius:var(--rsm)}
+.kw-stat-val{font-size:20px;font-weight:400;color:var(--text);font-family:'Cormorant Garamond',Georgia,serif}
+.kw-stat-val.pos{color:var(--accent)}.kw-stat-val.neg{color:var(--red)}
+.kw-stat-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.09em;margin-top:2px}
+.range-tabs{display:flex;gap:3px;margin-bottom:12px;background:var(--surface2);
+  border-radius:30px;padding:3px;border:1px solid var(--border)}
+.rt{padding:6px 16px;border-radius:24px;border:none;background:transparent;
+  color:var(--text2);font-size:13px;cursor:pointer;font-family:inherit;
+  -webkit-tap-highlight-color:transparent}
+.rt.on{background:var(--surface);color:var(--accent);font-weight:500}
+.chart-wrap{position:relative;width:100%;overflow:hidden}
+.chart-svg{width:100%;height:100%;display:block}
+.chart-no-data{padding:40px 20px;text-align:center;color:var(--text3);font-size:13px}
+
+/* SYSTEM */
+.goals-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:24px}
+.goal-card{background:#ede4e8;border:1px solid #d8cad0;border-radius:var(--rsm);padding:10px 14px;cursor:default}
+.goal-icon{font-size:17px;margin-bottom:4px}
+.goal-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px}
+.goal-desc{font-size:12px;color:var(--text2);line-height:1.55}
+.pg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px}
+.pc{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);
+  padding:18px;display:flex;align-items:flex-start;gap:12px;cursor:pointer;transition:all .18s;
+  -webkit-tap-highlight-color:transparent}
+.pc.open{border-color:var(--accent);background:var(--accent-light)}
+.pci{font-size:22px;flex-shrink:0;margin-top:2px}
+.pct{font-size:13px;color:var(--text2);line-height:1.55;flex:1}
+.pct strong{display:block;font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px}
+.pc-detail{display:none;font-size:13px;color:var(--text2);margin-top:9px;padding-top:9px;border-top:1px solid var(--border);line-height:1.7}
+.pc.open .pc-detail{display:block}
+.pc-chevron{font-size:10px;color:var(--text3);margin-left:auto;padding-left:8px;flex-shrink:0;align-self:center;transition:transform .2s}
+.pc.open .pc-chevron{transform:rotate(180deg);color:var(--accent)}
+.alt-c{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:8px;overflow:hidden}
+.alt-h{display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.alt-b{padding:14px 18px;background:var(--surface2);border-top:1.5px solid var(--border);display:none;font-size:13px;line-height:1.7}
+.alt-b.open{display:block}
+.alt-skip{color:var(--red);margin-bottom:7px}
+.alt-do{color:var(--accent);margin-bottom:8px}
+.alt-why{color:var(--text2);font-style:italic;background:var(--surface);border-radius:var(--rsm);padding:9px 13px;border-left:3px solid var(--accent);margin-top:3px}
+.gc{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:22px}
+.gchip{font-size:12px;padding:5px 14px;border-radius:22px;background:var(--surface);
+  border:1.5px solid var(--border);color:var(--text2);font-weight:500}
+.reset-prog-btn{display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:var(--rsm);
+  border:1.5px solid var(--border);background:var(--surface);color:var(--text2);
+  font-size:13px;cursor:pointer;margin-bottom:14px;font-family:inherit;
+  -webkit-tap-highlight-color:transparent}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(28,20,18,.45);z-index:200;
+  display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.modal-overlay.hidden{display:none}
+.modal{background:var(--surface);border-radius:var(--rlg);padding:28px;
+  width:90%;max-width:400px;box-shadow:0 20px 60px rgba(28,20,18,.2)}
+.modal-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:20px;font-weight:600;margin-bottom:5px}
+.modal-sub{font-size:13px;color:var(--text2);margin-bottom:16px}
+.modal-input{width:100%;border:1.5px solid var(--border);border-radius:var(--rsm);
+  padding:11px 13px;font-size:15px;color:var(--text);outline:none;margin-bottom:14px;
+  font-family:inherit;-webkit-appearance:none}
+.modal-input:focus{border-color:var(--accent)}
+.modal-actions{display:flex;gap:10px}
+.modal-btn{flex:1;padding:11px;border-radius:var(--rsm);border:1.5px solid var(--border);
+  background:transparent;color:var(--text2);font-size:14px;cursor:pointer;font-weight:500;
+  font-family:inherit;-webkit-tap-highlight-color:transparent}
+.modal-btn.primary{background:var(--accent);color:#fff;border-color:transparent}
+.modal-btn.danger{background:var(--red-light);color:var(--red);border-color:#f0b8b2}
+
+/* VIDEO MODAL */
+.video-modal{position:fixed;inset:0;background:rgba(28,20,18,.88);z-index:300;
+  display:flex;align-items:center;justify-content:center}
+.video-modal.hidden{display:none}
+.video-modal-inner{background:#000;border-radius:var(--rlg);overflow:hidden;width:min(800px,94vw)}
+.video-modal-header{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:rgba(255,255,255,.07)}
+.video-modal-title{color:#fff;font-size:17px;font-weight:400;font-family:'Cormorant Garamond',Georgia,serif}
+.video-close-btn{background:rgba(255,255,255,.12);border:none;color:#fff;font-size:20px;
+  width:34px;height:34px;border-radius:50%;cursor:pointer;display:flex;align-items:center;
+  justify-content:center;-webkit-tap-highlight-color:transparent}
+.video-wrap{width:100%;aspect-ratio:16/9}
+.video-wrap iframe{width:100%;height:100%;border:none;display:block}
+
+/* EMPTY */
+.empty{text-align:center;padding:48px 20px;color:var(--text3)}
+.empty-i{font-size:38px;margin-bottom:12px}
+.empty-t{font-size:14px}
+
+/* ═══════════════════════════════════════════
+   LAYOUT — iPad-First
+   ═══════════════════════════════════════════ */
+
+/* ── TRAINING HEADER PANEL (iPad, immer sichtbar unter 1200px) ── */
+.train-header{display:none}
+.mob-save-area{display:none}
+
+/* ── iPad/Tablet: alle Geraete unter 1200px ── */
+@media screen and (max-width:1199px){
+  .train-header{
+    display:block;
+    background:var(--surface);
+    border:1.5px solid var(--border);
+    border-radius:var(--rlg);
+    padding:18px;
+    margin-bottom:16px;
+  }
+  .mob-save-area{
+    display:block;
+    margin-top:20px;
+    padding-top:18px;
+    border-top:1.5px solid var(--border);
+  }
+  /* Sidebar verstecken */
+  .training-sidebar{display:none !important}
+  /* Layout einspaltig */
+  .training-cols{display:block !important}
+}
+
+/* ── Desktop 1200px+ ── */
+@media screen and (min-width:1200px){
+  .training-cols{
+    display:grid !important;
+    grid-template-columns:1fr 420px;
+    gap:28px;
+    align-items:start;
+  }
+  .training-sidebar{display:block !important}
+}
+
+/* ── Woche/Verlauf: zweispaltig ab 700px ── */
+.half-cols{display:block}
+@media screen and (min-width:700px){
+  .half-cols{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+}
+
+/* ── Chart-Layout ab 700px ── */
+.chart-cols{display:block}
+@media screen and (min-width:700px){
+  .chart-cols{display:grid;grid-template-columns:320px 1fr;gap:24px}
+}
+
+/* ── System-Grid ab 600px ── */
+.pg-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:24px}
+@media screen and (min-width:600px){
+  .pg-grid{grid-template-columns:1fr 1fr}
+}
+@media screen and (min-width:900px){
+  .pg-grid{grid-template-columns:repeat(3,1fr)}
+}
+.goals-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:24px}
+@media screen and (min-width:700px){
+  .goals-grid{grid-template-columns:repeat(3,1fr)}
+}
+
+/* ── Nav Kleingeraete ── */
+@media screen and (max-width:500px){
+  .nav-date{display:none}
+  .nt{padding:6px 9px;font-size:12px}
+}
+
+/* ── HEADER PANEL CSS ── */
+.th-question-row{
+  display:flex;align-items:baseline;justify-content:space-between;
+  gap:10px;margin-bottom:14px;
+}
+.th-question{
+  font-family:'Cormorant Garamond',Georgia,serif;font-size:24px;
+  color:var(--text);font-weight:600;letter-spacing:-.01em;
+}
+.th-question em{color:var(--accent);font-style:italic}
+.th-date{
+  font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;
+  font-size:14px;color:var(--text3);
+}
+.th-status-row{display:flex;gap:8px;margin-bottom:12px}
+.th-sb{
+  flex:1;display:flex;align-items:center;justify-content:center;gap:6px;
+  padding:12px 4px;border-radius:var(--rsm);border:1.5px solid var(--border);
+  background:var(--surface2);color:var(--text2);font-size:14px;font-weight:500;
+  cursor:pointer;min-height:48px;-webkit-tap-highlight-color:transparent;
+  font-family:inherit;transition:all .2s;
+}
+.th-sb.sr{background:#fef3f2;border-color:#f0b8b2;color:#c04040}
+.th-sb.th-sa{background:#fefaf2;border-color:#e8cc88;color:#9a6820}
+.th-sb.sb2{background:#f2f6fd;border-color:#a8c0e0;color:#4a6a9c}
+.th-stats-box{
+  display:flex;background:var(--surface);border:1.5px solid var(--border);
+  border-radius:var(--r);margin-bottom:8px;overflow:hidden;
+}
+.th-prog-box{
+  background:var(--accent-light);border:1.5px solid #e0b8c4;
+  border-radius:var(--r);padding:11px 16px;margin-bottom:0;
+  border-left:3px solid var(--accent);
+}
+.th-prog-title{font-size:13px;font-weight:600;color:var(--accent)}
+.th-prog-desc{font-size:12px;color:var(--text2);margin-top:2px}
+.th-stat{flex:1;text-align:center;padding:10px 4px}
+.th-stat+.th-stat{border-left:1px solid var(--border)}
+.th-sv{font-size:22px;font-weight:400;color:var(--text);line-height:1;
+  font-family:'Cormorant Garamond',Georgia,serif}
+.th-sl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-top:3px}
+
+/* ── EINSTELLUNGEN ── */
+.settings-box{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--rlg);padding:24px;margin-bottom:4px}
+.settings-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:20px;font-weight:400;color:var(--text);margin-bottom:6px}
+.settings-desc{font-size:13px;color:var(--text2);margin-bottom:18px;line-height:1.6}
+.font-size-btns{display:flex;gap:10px;margin-bottom:18px}
+.fsz-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:16px 8px;
+  border-radius:var(--r);border:1.5px solid var(--border);background:var(--surface2);
+  cursor:pointer;transition:all .2s;-webkit-tap-highlight-color:transparent;font-family:inherit}
+.fsz-btn.fsz-active{border-color:var(--accent);background:var(--accent-light)}
+.fsz-icon{font-size:1em;font-weight:600;color:var(--text);line-height:1}
+.fsz-label{font-size:12px;font-weight:500;color:var(--text2)}
+.fsz-size{font-size:11px;color:var(--text3)}
+.fsz-btn.fsz-active .fsz-label{color:var(--accent)}
+.settings-preview{background:var(--surface2);border-radius:var(--r);padding:16px;border:1px solid var(--border)}
+.settings-info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sinfo{background:var(--surface2);border-radius:var(--rsm);padding:12px 14px}
+.sinfo strong{display:block;font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px}
+.sinfo span{font-size:12px;color:var(--text2)}
+
+</style>
+</head>
+<body>
+
+<!-- QUICK LOOK BANNER: nur sichtbar wenn JS eingeschraenkt (Quick Look Modus) -->
+<div id="ql-banner" style="display:none;position:fixed;inset:0;z-index:9999;
+  background:rgba(139,58,82,0.97);flex-direction:column;align-items:center;
+  justify-content:center;padding:40px;text-align:center;font-family:-apple-system,sans-serif">
+  <div style="font-size:52px;margin-bottom:24px">⚠️</div>
+  <div style="color:#fff;font-size:24px;font-weight:700;margin-bottom:16px;line-height:1.3">
+    Bitte in Safari öffnen
+  </div>
+  <div style="color:rgba(255,255,255,0.85);font-size:17px;line-height:1.7;margin-bottom:32px;max-width:380px">
+    Diese App wird gerade in der Vorschau angezeigt.<br>
+    Für die volle Funktion:<br><br>
+    <strong style="color:#fff">1.</strong> Tippe unten auf das Teilen-Symbol<br>
+    <strong style="color:#fff">2.</strong> Wähle <strong style="color:#fff">„Öffnen mit…"</strong><br>
+    <strong style="color:#fff">3.</strong> Wähle <strong style="color:#fff">Safari</strong>
+  </div>
+  <div style="background:rgba(255,255,255,0.15);border-radius:12px;padding:16px 24px;
+    color:#fff;font-size:15px;line-height:1.6;max-width:380px">
+    💡 <strong>Tipp für dauerhaft:</strong><br>
+    In Safari → Teilen → „Zum Home-Bildschirm"<br>
+    = startet immer direkt als App
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-title" id="modal-title"></div>
+    <div class="modal-sub" id="modal-sub"></div>
+    <input class="modal-input" id="modal-input" type="text">
+    <div class="modal-actions">
+      <button class="modal-btn" onclick="closeModal()">Abbrechen</button>
+      <button class="modal-btn primary" id="modal-confirm" onclick="confirmModal()">Speichern</button>
+    </div>
+  </div>
+</div>
+
+<div class="video-modal hidden" id="video-modal">
+  <div class="video-modal-inner">
+    <div class="video-modal-header">
+      <div class="video-modal-title" id="video-modal-title"></div>
+      <button class="video-close-btn" onclick="closeVideoModal()">&#x2715;</button>
+    </div>
+    <div class="video-wrap"><iframe id="video-iframe" allowfullscreen></iframe></div>
+  </div>
+</div>
+
+<div class="app">
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-row-top">
+      <div class="nav-logo">
+        <span class="logo-m">m</span><span class="logo-kraft">&#x2013;kraft</span>
+        <div class="logo-tag">Training<span class="logo-gabi">Personalisiert f&#xFC;r Gabrijela</span></div>
+      </div>
+      <div class="nav-right">
+        <div class="nav-date" id="nav-date"></div>
+        <div class="nav-week-badge" id="nav-week-badge"></div>
+      </div>
+    </div>
+    <div class="nav-row-bottom">
+      <div class="nav-tabs">
+        <button class="nt on" onclick="nav('training',this)">Training</button>
+        <button class="nt" onclick="nav('woche',this)">Woche</button>
+        <button class="nt" onclick="nav('verlauf',this)">Verlauf</button>
+        <button class="nt" onclick="nav('koerper',this)">K&#xF6;rper</button>
+        <button class="nt" onclick="nav('system',this)">System</button>
+        <button class="nt-settings" id="nt-settings" onclick="navSettings(this)" title="Einstellungen">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ══ TRAINING ══ -->
+<div class="pg on" id="pg-training">
+
+  <!-- HEADER PANEL: iPad und Mobile -->
+  <div class="train-header">
+    <div class="th-question-row">
+      <div class="th-question">Wie f&#xFC;hlst du dich <em>heute?</em></div>
+    </div>
+    <div class="th-status-row">
+      <button class="th-sb" id="th-sb-r" onclick="setStatus('r')"><span class="dot dot-r"></span>Eingeschr&#xE4;nkt</button>
+      <button class="th-sb th-sa" id="th-sb-a" onclick="setStatus('a')"><span class="dot dot-a"></span>Normal</button>
+      <button class="th-sb" id="th-sb-b" onclick="setStatus('b')"><span class="dot dot-b"></span>Gut drauf</button>
+    </div>
+    <div class="duration-bar" id="duration-bar"></div>
+    <div class="th-prog-box">
+      <div class="th-prog-title" id="th-pb-title"></div>
+      <div class="th-prog-desc" id="th-pb-desc"></div>
+    </div>
+  </div>
+
+  <!-- Haupt-Layout -->
+  <div class="training-cols">
+    <div>
+      <div id="ex-container"></div>
+      <!-- SPEICHERN am Ende der Uebungen (iPad/Mobile) -->
+      <div class="mob-save-area">
+        <textarea class="notiz-input" id="session-notiz" rows="2" placeholder="Notiz (optional)..."></textarea>
+        <button class="save-btn" onclick="saveSession()" style="margin-top:10px">Training abschlie&#xDF;en &#x2192;</button>
+      </div>
+    </div>
+    <!-- SIDEBAR (Desktop) -->
+    <div class="training-sidebar">
+      <div class="hero">
+        <div class="hero-eyebrow" id="hero-date"></div>
+        <div class="hero-title">Wie f&#xFC;hlst du dich <em>heute?</em></div>
+        <div class="status-row">
+          <button class="sb" id="sb-r" onclick="setStatus('r')"><span class="dot dot-r"></span>Eingeschr&#xE4;nkt</button>
+          <button class="sb" id="sb-a" onclick="setStatus('a')"><span class="dot dot-a"></span>Normal</button>
+          <button class="sb" id="sb-b" onclick="setStatus('b')"><span class="dot dot-b"></span>Gut drauf</button>
+        </div>
+      </div>
+      <div class="prog-badge" id="prog-badge">
+        <div class="prog-badge-num" id="pb-num">1</div>
+        <div class="prog-badge-info">
+          <div class="prog-badge-title" id="pb-title"></div>
+          <div class="prog-badge-desc" id="pb-desc"></div>
+        </div>
+      </div>
+      <div class="stats-row">
+        <div class="sc"><div class="sv a" id="s-done">&#x2013;</div><div class="sl">Erledigt</div></div>
+        <div class="sc"><div class="sv" id="s-sets">&#x2013;</div><div class="sl">S&#xE4;tze</div></div>
+        <div class="sc"><div class="sv" id="s-total">0</div><div class="sl">Einheiten</div></div>
+      </div>
+      <div class="card-sm">
+        <div class="notiz-label">Notiz (optional)</div>
+        <textarea class="notiz-input" id="session-notiz-desk" rows="3" placeholder="z.B. Nacken entspannt..."></textarea>
+        <button class="save-btn" onclick="saveSession()">Training abschlie&#xDF;en &#x2192;</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ WOCHE ══ -->
+<div class="pg" id="pg-woche">
+  <div class="half-cols">
+    <div>
+      <div class="sl2">Wochenuebersicht</div>
+      <div class="card">
+        <div class="wh">
+          <button class="wnb" onclick="changeWeek(-1)">&#x2039;</button>
+          <div class="wtitle" id="wtitle"></div>
+          <button class="wnb" onclick="changeWeek(1)">&#x203A;</button>
+        </div>
+        <div class="wgrid" id="wgrid"></div>
+        <div class="stats-row" style="margin-bottom:0">
+          <div class="sc"><div class="sv a" id="w-tr">0</div><div class="sl">Einheiten</div></div>
+          <div class="sc"><div class="sv" id="w-sets">0</div><div class="sl">S&#xE4;tze</div></div>
+          <div class="sc"><div class="sv" id="w-streak">0</div><div class="sl">Serie &#x1F525;</div></div>
+        </div>
+      </div>
+      <div class="sl2">Aktivit&#xE4;tsverlauf</div>
+      <div class="card-sm">
+        <div style="font-size:13px;color:var(--text2);margin-bottom:8px">S&#xE4;tze pro Einheit (letzte 8)</div>
+        <div class="barchart" id="barchart"></div>
+      </div>
+    </div>
+    <div>
+      <div class="sl2">4-Wochen-Progression</div>
+      <button class="reset-prog-btn" onclick="resetProgression()">&#x21BA; Progression neu starten</button>
+      <div id="prog-con"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ VERLAUF ══ -->
+<div class="pg" id="pg-verlauf">
+  <div class="half-cols">
+    <div>
+      <div class="sl2">Trainingsprotokoll</div>
+      <div id="log-con"></div>
+    </div>
+    <div>
+      <div class="sl2">Gewichtsprogression je Uebung</div>
+      <div id="ex-prog-con"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ KOERPER ══ -->
+<div class="pg" id="pg-koerper">
+  <div class="chart-cols">
+    <div>
+      <div class="sl2">K&#xF6;rpergewicht eintragen</div>
+      <div class="card-sm">
+        <div class="kw-label">Aktuelles Gewicht (kg)</div>
+        <div class="kw-eingabe">
+          <div class="kw-field"><input class="kw-input" type="number" id="kw-input" placeholder="z.B. 62.5" step="0.1" min="30" max="250"></div>
+          <button class="kw-btn" onclick="saveKW()">Speichern</button>
+        </div>
+      </div>
+      <div class="sl2">Eintr&#xE4;ge</div>
+      <div id="kw-list"></div>
+    </div>
+    <div>
+      <div class="sl2">Verlauf</div>
+      <div class="card-sm">
+        <div class="range-tabs">
+          <button class="rt on" onclick="setKWRange(30,this)">Monat</button>
+          <button class="rt" onclick="setKWRange(90,this)">Quartal</button>
+          <button class="rt" onclick="setKWRange(365,this)">Jahr</button>
+          <button class="rt" onclick="setKWRange(9999,this)">Alles</button>
+        </div>
+        <div id="kw-chart-wrap"></div>
+        <div class="kw-stats" id="kw-stats"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SYSTEM ══ -->
+<div class="pg" id="pg-system">
+  <div class="sl2">Meine Ziele</div>
+  <div class="goals-grid" id="goals-con">
+    <div class="goal-card goal-primary"><div class="goal-icon">&#x1F4AA;</div><div class="goal-title">Straffe Oberarme</div><div class="goal-desc">Bizeps + Trizeps als Priorit&#xE4;t jede Einheit</div></div>
+    <div class="goal-card goal-primary"><div class="goal-icon">&#x1F351;</div><div class="goal-title">Festere Oberschenkel</div><div class="goal-desc">Durchblutung und Gewebequalit&#xE4;t im Fokus</div></div>
+    <div class="goal-card"><div class="goal-icon">&#x1F9D8;</div><div class="goal-title">Schmerzreduktion</div><div class="goal-desc">Schulter, Knie, Nacken werden aktiv entlastet</div></div>
+    <div class="goal-card"><div class="goal-icon">&#x1F33F;</div><div class="goal-title">Longevity</div><div class="goal-desc">Langfristige Gesundheit &#x2014; Konstanz vor Intensit&#xE4;t</div></div>
+    <div class="goal-card"><div class="goal-icon">&#x1F525;</div><div class="goal-title">Muskeltonus</div><div class="goal-desc">Moderate Last + hohe Spannung = sichtbares Ergebnis</div></div>
+    <div class="goal-card"><div class="goal-icon">&#x1F9CD;</div><div class="goal-title">Haltung &amp; Alltag</div><div class="goal-desc">Aufrechte Haltung und Energie im Alltag</div></div>
+  </div>
+  <div class="sl2">Grundprinzipien</div>
+  <div class="pg-grid" id="prin-con"></div>
+  <div class="sl2">Alternativen bei Beschwerden</div>
+  <div id="alt-con"></div>
+  <div class="sl2">Daten &amp; Reset</div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+    <button onclick="exportD()" style="flex:1;min-width:120px;padding:12px;border-radius:var(--rsm);border:1.5px solid var(--border);background:var(--surface);color:var(--text2);font-size:14px;cursor:pointer;font-family:inherit">Export JSON</button>
+    <button onclick="resetProgression()" style="flex:1;min-width:120px;padding:12px;border-radius:var(--rsm);border:1.5px solid #d4aa60;background:var(--amber-light);color:var(--amber);font-size:14px;cursor:pointer;font-family:inherit">Progression zur&#xFC;cksetzen</button>
+    <button onclick="resetAll()" style="flex:1;min-width:120px;padding:12px;border-radius:var(--rsm);border:1.5px solid #f0b8b2;background:var(--red-light);color:var(--red);font-size:14px;cursor:pointer;font-family:inherit">Alle Daten l&#xF6;schen</button>
+  </div>
+  <div style="margin-top:20px;font-size:11px;color:var(--text3);letter-spacing:.06em">m&#x2013;kraft Training &#xB7; v1.0-2026 &#xB7; Personalisiert f&#xFC;r Gabrijela</div>
+</div>
+
+
+<!-- ══ EINSTELLUNGEN ══ -->
+<div class="pg" id="pg-einstellungen">
+  <div class="settings-box">
+    <div class="settings-title">Schriftgr&#xF6;&#xDF;e</div>
+    <div class="settings-desc">W&#xE4;hle die f&#xFC;r dich angenehme Lesegr&#xF6;&#xDF;e. Die Einstellung bleibt nach dem Schlie&#xDF;en erhalten.</div>
+    <div class="font-size-btns">
+      <button class="fsz-btn" id="fsz-small" onclick="setFontSize('small')">
+        <span class="fsz-icon">A</span>
+        <span class="fsz-label">Klein</span>
+        <span class="fsz-size">13px</span>
+      </button>
+      <button class="fsz-btn fsz-active" id="fsz-normal" onclick="setFontSize('normal')">
+        <span class="fsz-icon" style="font-size:1.1em">A</span>
+        <span class="fsz-label">Normal</span>
+        <span class="fsz-size">15px</span>
+      </button>
+      <button class="fsz-btn" id="fsz-large" onclick="setFontSize('large')">
+        <span class="fsz-icon" style="font-size:1.3em">A</span>
+        <span class="fsz-label">Gro&#xDF;</span>
+        <span class="fsz-size">17px</span>
+      </button>
+    </div>
+    <div class="settings-preview" id="settings-preview">
+      <div style="font-size:1em;font-weight:600;color:var(--text);margin-bottom:5px">Gabrijelas Trainingsplan</div>
+      <div style="font-size:0.875em;color:var(--text2);line-height:1.6">Einarmiges Rudern &#xB7; Glute Bridge &#xB7; Bizeps Curls. Fokus auf langsames, exzentrisches Tempo &#x2014; 3 Sekunden ablassen.</div>
+    </div>
+  </div>
+  <div class="settings-box" style="margin-top:14px">
+    <div class="settings-title">&#xDC;ber diesen Plan</div>
+    <div class="settings-desc">Individuell entwickelt von m&#x2013;kraft f&#xFC;r Gabrijela &#x2014; basierend auf pers&#xF6;nlichem K&#xF6;rperprofil, Zielen und modernen Longevity-Konzepten.</div>
+    <div class="settings-info-grid">
+      <div class="sinfo"><strong>Version</strong><span>v1.0-2026</span></div>
+      <div class="sinfo"><strong>Frequenz</strong><span>4&#xD7; pro Woche</span></div>
+      <div class="sinfo"><strong>Progression</strong><span>4 Wochen automatisch</span></div>
+      <div class="sinfo"><strong>Datenspeicherung</strong><span>Lokal im Browser</span></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /app -->
+
+<script type="text/javascript">
+var PROG_DATA = [
+  {t:'Woche 1 – Technik',    d:'2 Sätze · leichtes Gewicht · Bewegungsqualität im Fokus', sets:2, bonus:false},
+  {t:'Woche 2 – Stabilität', d:'2–3 Sätze · etwas steigern · Kontrolle festigen',         sets:2, bonus:false},
+  {t:'Woche 3 – Reiz',       d:'3 Sätze · Gewicht oder Wdh. erhöhen · Arme priorisieren', sets:3, bonus:true},
+  {t:'Woche 4 – Deload',     d:'2 Sätze · Gewicht reduzieren · Erholung & Reflexion',      sets:2, bonus:false},
+];
+
+var EXERCISES = [
+
+  // ── 🔴 MUSS-BLOCK: Haltung & Rücken ──────────────────
+  {id:'rowing',    name:'Einarmiges Rudern',       type:'basis', emoji:'🔙',
+   muscle:'Lat · oberer Rücken · Schulterblattretraktoren',
+   reps:'12–15 / Seite',
+   note:'Stütze dich mit der freien Hand auf der Bank ab. Ellbogen eng am Körper führen — nicht ausstellen. Am Ende der Bewegung das Schulterblatt bewusst einziehen und 1 Sek. halten. Rücken immer gerade, Blick zur Bank. 3 Sek. ablassen.',
+   showFor:['r','a','b']},
+
+  {id:'reflyes',   name:'Reverse Flyes',           type:'basis', emoji:'🦋',
+   muscle:'Hintere Schulter · mittlerer Trapez · Nackenentlastung',
+   reps:'12–15',
+   note:'Oberkörper ca. 45° nach vorne beugen, Rücken neutral. Arme leicht gebeugt seitlich öffnen bis Schulterblatt-Höhe — nicht höher. Nacken bleibt lang, kein Kopfheben. Sehr leichtes Gewicht! Qualität vor Intensität. Ziel: Nacken & HWS entlasten.',
+   showFor:['r','a','b']},
+
+  // ── 🟡 STABILITÄT & CORE ─────────────────────────────
+  {id:'deadbug',   name:'Dead Bug',                type:'basis', emoji:'🪲',
+   muscle:'Tiefer Core · Beckenbodenaktivierung · Wirbelsäulenstabilisierung',
+   reps:'8–10 / Seite',
+   note:'Flach auf dem Rücken, Arme senkrecht nach oben, Beine 90°. Lendenwirbelsäure FEST am Boden halten — das ist der kritische Punkt! Gegenüberliegendes Arm-Bein-Paar langsam strecken (3 Sek.), zurück. Ausatmen beim Strecken. Sehr langsames, bewusstes Tempo.',
+   showFor:['r','a','b']},
+
+  // ── 🟡 PUSH (ab Normal) ──────────────────────────────
+  {id:'push',      name:'KH-Bankdrücken (neutral)',type:'basis', emoji:'💪',
+   muscle:'Brust · vordere Schulter · Trizeps',
+   reps:'12–15',
+   note:'Neutral-Griff (Handflächen zeigen zueinander) — schont das rechte Schultergelenk deutlich mehr als klassischer Griff. 3 Sek. ablassen, 1–2 Sek. drücken. Nacken entspannt auf der Bank, kein Hohlkreuz. Bei Nacken-Zug sofort stoppen und Floor Press als Alternative nutzen.',
+   showFor:['a','b']},
+
+  // ── 🟢 UNTERKÖRPER (reguliert) ───────────────────────
+  {id:'glute',     name:'Glute Bridge',            type:'basis', emoji:'🍑',
+   muscle:'Gesäß · Hüftstabilisatoren · Core-Integration',
+   reps:'15–20',
+   note:'Rücken flach, Füße hüftbreit, Knie zeigen nach außen. Becken bis zur vollständigen Hüftstreckung anheben — 1–2 Sek. oben halten und Gesäß maximal anspannen. Langsam (3 Sek.) ablassen. Hervorragend für Gewebequalität und Rückengesundheit. Kein Schmerz im Knie → wenn ja, Fußstellung anpassen.',
+   showFor:['r','a','b']},
+
+  {id:'hipthrust', name:'Hip Thrust (Bank)',       type:'basis', emoji:'🧱',
+   muscle:'Gesäß · hintere Oberschenkel · Hüftstreckung',
+   reps:'12–15',
+   note:'Schulterblätter auf der Bankkante, Gewicht (KH oder Körpergewicht) auf den Hüften. Knie zeigen nach außen — nicht einwärts fallen lassen. Hüfte voll strecken und Gesäß maximal kontrahieren. Intensiver als Glute Bridge, mehr Hüftstreckung. Nur wenn kein Knieschmerz vorhanden.',
+   showFor:['a','b']},
+
+  // ── 💪 SCHULTER-ROTATION ─────────────────────────────
+  // Beide Übungen wechseln sich ab (Einheit A / B)
+  {id:'seitheben', name:'Seitheben (leicht)',      type:'stab',  emoji:'🧩',
+   muscle:'Seitliche Schulter (Deltoideus medius) · Gelenkschutz',
+   reps:'12–15',
+   note:'⚠️ Pflicht-Modul zur Schulter- & Nackenprävention! Sehr leichtes Gewicht wählen (lieber zu wenig als zu viel). Arme leicht gebeugt seitlich bis Schulterhöhe heben — nicht höher. Schultern unten lassen, Nacken entspannt. Langsam und kontrolliert.',
+   showFor:['a','b']},
+
+  // ── 💪 ARME — BIZEPS (immer ab Normal) ──────────────
+  // Tageswahl zwischen 2 gleichwertigen Varianten (Equipment-Präferenz)
+  {id:'hammer',    name:'Hammer Curls',            type:'arm',   emoji:'🔨',
+   muscle:'Bizeps · Brachialis (Armdicke) · Unterarme',
+   reps:'12–15',
+   note:'Neutraler Griff (Daumen zeigt oben) — schont Handgelenke und Ellbogen. Ellbogen bleibt fixiert am Körper, nur der Unterarm bewegt sich. 3 Sek. ablassen für maximale Spannung. Trainiert auch den Brachialis (tieferer Muskel unter Bizeps) → wirkt armformend.',
+   showFor:['a','b'], altGroup:'bizeps'},
+
+  {id:'szcurls',   name:'SZ-Curls',               type:'arm',   emoji:'💫',
+   muscle:'Bizeps (Länge & Peak) · Brachioradialis',
+   reps:'12–15',
+   note:'Die SZ-Stange erlaubt einen halbsupinierten Griff — weniger Handgelenksstress als gerade Stange. Volle Bewegungsamplitude: Arme unten fast gestreckt, oben vollständig gecurlt. Ellbogen fixiert. 3 Sek. ablassen. Alternative zu Hammer Curls — nicht beides am selben Tag.',
+   showFor:['a','b'], altGroup:'bizeps'},
+
+  // ── 💪 TRIZEPS — nur bei "Gut drauf" ─────────────────
+  {id:'tricep',    name:'Liegende Trizeps-Extension', type:'bonus', emoji:'🏋️',
+   muscle:'Trizeps · Rückseite Oberarm (2/3 des Armumfangs!)',
+   reps:'12–15',
+   note:'Ellbogen senkrecht nach oben, fixiert — das ist der kritische Punkt! SZ-Stange langsam zur Stirn senken (3 Sek.). Leichtes Gewicht wählen. Nacken aktiv entspannen. Trizeps macht 2/3 des Oberarms aus — extrem wichtig für straffe, definierte Arme. Bei Ellbogenschmerzen sofort stoppen.',
+   showFor:['b'], altGroup:'trizeps'},
+
+  {id:'kickback',  name:'KH Trizeps-Kickback',           type:'bonus', emoji:'💥',
+   muscle:'Trizeps · Rückseite Oberarm · präzise Isolation',
+   reps:'12–15 / Seite',
+   note:'Oberkörper ca. 45° vorgebeugt, freie Hand auf Knie oder Bank stützen. Oberarm parallel zum Boden fixieren — Ellbogen bleibt oben, das ist der Schlüssel! Unterarm nach hinten strecken bis Arm ganz gestreckt ist, 1 Sek. halten. 3 Sek. langsam zurück. Sehr leichtes Gewicht (2–5 kg) — die Isolation ist intensiv genug. Ideal als KH-Alternative zur SZ-Stange.',
+   showFor:['b'], altGroup:'trizeps'},
+
+  // ── 🦵 INNER THIGH / CORE — nur bei "Gut drauf" ──────
+  // Empfehlung: Seitliche Beinhebungen (Side-Lying Inner Thigh Lifts)
+  // Warum: liegend → kein Knie-/Fußstress, direkt innerer Oberschenkel,
+  // Durchblutungsfördernd für Gewebequalität, perfekt für Gabrjelas Ziele
+  {id:'innerthigh', name:'Inner Thigh Lift (liegend)', type:'legbonus', emoji:'✨',
+   muscle:'Innerer Oberschenkel (Adduktoren) · Hüftstabilisatoren',
+   reps:'15–20 / Seite',
+   note:'Auf die Seite legen, unteres Bein gestreckt. Oberes Bein angewinkelt vor dem Körper abstützen. Unteres Bein langsam heben (so hoch wie möglich) und kontrolliert ablassen (3 Sek.). Kein Schwingen — pure Kontrolle. Hervorragend für innere Oberschenkel & Gewebequalität ohne Knie-/Fußbelastung.',
+   showFor:['b']},
+];
+
+var PRINZIPIEN = [
+  {icon:'🌊',title:'Flow vor Kraft',
+   text:'Training mit Timer und Musik — klarer Ablauf, kein Nachdenken, einfach mitmachen.',
+   detail:'Dieser Plan ist kein klassisches Gym-Training mit Wiederholungszählen und langen Pausen. Stattdessen: ein fester Ablauf, Musik läuft, der Timer gibt den Rhythmus vor. Das reduziert die mentale Hürde enorm — du musst keine Entscheidungen treffen. Studien zeigen: Je weniger Willenskraft ein Training braucht, desto konsequenter wird es durchgehalten. Deshalb ist Flow hier wichtiger als maximale Intensität.'},
+  {icon:'🐢',title:'3 Sek. langsam ablassen',
+   text:'Beim Ablassen (exzentrische Phase) immer 3 Sekunden zählen — bei jeder Übung.',
+   detail:'Die exzentrische Phase (z.B. Hantel ablassen beim Curl, Becken absenken bei der Glute Bridge) erzeugt mehr Muskelreiz als das Anheben selbst. Langsames Ablassen trainiert Kraft, schützt Gelenke und verlängert die Zeit unter Spannung — der entscheidende Faktor für Muskeltonus und Gewebequalität. 3 Sekunden sind bei Gabrijelas Plan keine Empfehlung, sondern Pflicht.'},
+  {icon:'🎯',title:'Intensität 6–7 von 10',
+   text:'Nie bis zur Erschöpfung trainieren — immer 2–3 Wiederholungen in Reserve behalten.',
+   detail:'Bei Gabrijelas körperlichen Rahmenbedingungen (rechte Schulter, Knie, HWS) führt zu hohe Intensität zu Ausweichbewegungen — das ist gefährlich. 6–7 von 10 bedeutet: du merkst die Anstrengung deutlich, kannst aber noch 2–3 weitere Wiederholungen sauber ausführen. Das erlaubt 4× wöchentliches Training ohne Überbelastung und ist wissenschaftlich optimal für Hypertrophie (Muskelaufbau) bei moderater Frequenz.'},
+  {icon:'🔄',title:'Ganzkörper bei jeder Einheit',
+   text:'Jedes Training umfasst Rücken, Core, Push, Unterkörper und Arme — kein Split.',
+   detail:'Ganzkörpertraining 4× pro Woche ist für Gabrijelas Ziele klarer überlegen als Muskelgruppen-Split: Jeder Muskel wird öfter stimuliert (höhere Anpassungsfrequenz), der Kalorienverbrauch ist pro Einheit höher, und wenn mal eine Einheit ausfällt, ist der Verlust minimal. Das modulare System (Haltung → Unterkörper → Arme → Bonus) stellt sicher, dass die wichtigsten Bereiche immer trainiert werden.'},
+  {icon:'📊',title:'Adaptiv — immer trainieren',
+   text:'Die 3 Modi (Eingeschränkt / Normal / Gut drauf) erlauben Training bei jeder Tagesform.',
+   detail:'Der wichtigste Faktor für Fortschritt ist Konstanz — nicht die einzelne perfekte Einheit. Der Eingeschränkte Modus ist kein Ersatz-Training, sondern ein vollwertiges Programm für Haltung, Rücken und Core. Selbst an schlechten Tagen trainierst du effektiv. Kein einziges Training wegen Unwohlsein oder Schmerz auszulassen (sofern medizinisch vertretbar) ist wertvoller als gelegentliche Hochleistungstage.'},
+  {icon:'💧',title:'Durchblutung schlägt Gewicht',
+   text:'Moderate Last + hohe Spannung + gute Durchblutung = sichtbarer Tonus.',
+   detail:'Gewebequalität, Straffung und sichtbarer Muskeltonus entstehen weniger durch maximales Gewicht als durch gute Durchblutung und konstante Muskelspannung. Deshalb: moderates Gewicht, volle Bewegungsamplitude, langsames Tempo und kurze Pausen (60–90 Sek.). Besonders für Oberschenkel und Oberarme ist dieser Ansatz nachweislich effektiver als schweres Maximalkrafttraining.'},
+];
+
+var ALTERNATIVEN = [
+  {
+    icon:'🦵', label:'Oberschenkel zittert / Schwäche',
+    skip:'Sofort stoppen — kein Weitermachen mit Unterkörper-Übungen!',
+    do:'Glute Bridge (ohne Gewicht) + Dead Bug + alle Oberkörper-Übungen',
+    why:'Das Zittern zeigt Überbelastung des rechten Quadrizeps an. Da dieser Muskel eine Vorgeschichte hat, ist konsequentes Stoppen keine Schwäche — sondern professionelles Körpermanagement. Oberkörper funktioniert weiterhin problemlos.'
+  },
+  {
+    icon:'🦶', label:'Fußschmerz links (Abrollen)',
+    skip:'Alle stehenden Übungen (Rudern im Stand, Seitheben stehend)',
+    do:'Sitzende Variante Rudern + Glute Bridge + Hip Thrust + alle liegenden Übungen + Curls sitzend',
+    why:'Der Abrollen-Schmerz entsteht durch Belastung des Fußgewölbes. Liegende und sitzende Übungen sind komplett schmerzfrei möglich — das Training verliert dadurch kaum Effektivität, da der Schwerpunkt auf Oberkörper & Gesäß liegt.'
+  },
+  {
+    icon:'🦿', label:'Knieschmerz rechts',
+    skip:'Hip Thrust (tief), tiefe Kniebeugen, Bewegungen mit Knierotation',
+    do:'Glute Bridge statt Hip Thrust · reduzierter Bewegungsradius · Körpergewicht statt Zusatzgewicht',
+    why:'Das rechte Knie reagiert auf tiefe Beugung und Rotation. Glute Bridge ist ein perfekter Ersatz — gleiche Muskelgruppen, kein Kniegelenk-Stress. Der Fokus liegt auf Hüftstreckung, nicht auf Kniebeugung.'
+  },
+  {
+    icon:'🔴', label:'Schulter rechts (Schwäche / Schmerz)',
+    skip:'KH-Bankdrücken mit schwerem Gewicht, Überkopf-Bewegungen',
+    do:'Floor Press statt Bankdrücken · Gewicht deutlich reduzieren · Reverse Flyes sehr leicht weiterführen',
+    why:'Die rechte Schulter hat eine Verletzungshistorie. Neutral-Griff + Floor Press reduzieren den Schulterimpingement-Risiko erheblich. Reverse Flyes und Seitheben in leichter Ausführung stärken aktiv die Schulter-Rotatorenmanschette — das ist Rehabilitation und Training gleichzeitig.'
+  },
+  {
+    icon:'🧠', label:'Nacken- & HWS-Spannung',
+    skip:'Bankdrücken bei aktuellem Schmerz · Seitheben bei Nackenzug',
+    do:'Rudern + Reverse Flyes priorisieren · Dead Bug mit bewusstem Nacken-Release · Wärme vorher',
+    why:'Nackenprobleme entstehen oft durch Schwäche der tiefen Halsflexoren und verspannte Schulterblattheber. Rudern und Reverse Flyes stärken genau die Gegenspieler dieser Muskeln — das Training wirkt damit direkt therapeutisch. Nacken aktiv lang halten bei jeder Übung.'
+  },
+];
+
+// STATE
+var state={status:'a',sessions:[],kwData:[],setData:{},doneSets:{},doneEx:{},progWeekStart:null,bizepsChoice:null,trizepsChoice:null};
+var kwRange=30,weekOffset=0,modalCallback=null;
+
+function saveAll(){try{localStorage.setItem('mkraft_gabi_v1',JSON.stringify({sessions:state.sessions,kwData:state.kwData,progWeekStart:state.progWeekStart}));}catch(e){}}
+function loadAll(){try{var d=localStorage.getItem('mkraft_gabi_v1');if(d){var p=JSON.parse(d);state.sessions=p.sessions||[];state.kwData=p.kwData||[];state.progWeekStart=p.progWeekStart||null;}}catch(e){}}
+
+// PROGRESSION
+function getProgWeekIndex(){if(!state.progWeekStart)return 0;var start=new Date(state.progWeekStart),now=new Date();var days=Math.floor((now-start)/(1000*60*60*24));return Math.floor(days/7)%4;}
+function getCurrentProg(){return PROG_DATA[getProgWeekIndex()];}
+function getSetsForStatus(status){var prog=getCurrentProg();if(status==='r')return 2;if(status==='b')return prog.sets;return prog.sets;}
+function getBonusAllowed(status){return status==='b';}
+
+// VISIBILITY
+function getVisible(){
+  var sessionCount=state.sessions.length;
+  var shoulderSlot=sessionCount%2;
+  return EXERCISES.filter(function(e){
+    if(e.showFor.indexOf(state.status)<0)return false;
+    if((e.type==='bonus'||e.type==='legbonus')&&state.status!=='b')return false;
+    if(e.type==='arm')return true;
+    if(e.id==='seitheben'&&shoulderSlot!==0)return false;
+    if(e.id==='reflyes'&&state.status!=='r'&&shoulderSlot!==1)return false;
+    return true;
+  });
+}
+
+// PROG BADGE
+function updateProgBadge(){
+  var wi=getProgWeekIndex(),prog=PROG_DATA[wi];
+  var el;
+  if((el=document.getElementById('pb-num')))el.textContent=wi+1;
+  if((el=document.getElementById('pb-title')))el.textContent=prog.t;
+  if((el=document.getElementById('pb-desc')))el.textContent=prog.d;
+  if((el=document.getElementById('nav-week-badge')))el.textContent='Woche '+(wi+1)+' von 4';
+  if((el=document.getElementById('th-pb-title')))el.textContent=prog.t;
+  if((el=document.getElementById('th-pb-desc')))el.textContent=prog.d;
+}
+function resetProgression(){if(!confirm('Progression zuruecksetzen?'))return;state.progWeekStart=new Date().toISOString();saveAll();updateProgBadge();renderExercises();updateStats();renderProg();alert('Woche 1 beginnt heute.');}
+
+// INIT
+function init(){
+  try{loadAll();}catch(e){}
+  try{loadFontSize();}catch(e){}
+  if(!state.progWeekStart){state.progWeekStart=new Date().toISOString();saveAll();}
+  var now=new Date();
+  var days=['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];
+  var mons=['Januar','Februar','Maerz','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+  var ds=days[now.getDay()]+', '+now.getDate()+'. '+mons[now.getMonth()]+' '+now.getFullYear();
+  var el;
+  if((el=document.getElementById('hero-date')))el.textContent=ds;
+  if((el=document.getElementById('nav-date')))el.textContent=ds;
+  if((el=document.getElementById('s-total')))el.textContent=state.sessions.length;
+  updateProgBadge();
+  setStatus('a',true);
+  renderPrinzipien();
+  renderAlternativen();
+  updateDurationBar();
+}
+
+// NAV
+function nav(id,btn){
+  document.querySelectorAll('.pg').forEach(function(p){p.classList.remove('on');});
+  document.querySelectorAll('.nt, .nt-settings').forEach(function(b){b.classList.remove('on');});
+  document.getElementById('pg-'+id).classList.add('on');
+  btn.classList.add('on');
+  if(id==='woche'){renderWoche();renderProg();renderBarChart();}
+  if(id==='verlauf'){renderVerlauf();renderExProg();}
+  if(id==='koerper'){renderKW();}
+}
+
+// STATUS
+function setStatus(s,silent){
+  state.status=s;
+  if(!silent){state.setData={};state.doneSets={};state.doneEx={};state.bizepsChoice=null;state.trizepsChoice=null;}
+  var map={r:'sr',a:'sa',b:'sb2'};
+  ['r','a','b'].forEach(function(x){
+    var d=document.getElementById('sb-'+x);
+    if(d)d.className='sb'+(x===s?' '+map[x]:'');
+    var h=document.getElementById('th-sb-'+x);
+    if(h)h.className='th-sb'+(x===s?(x==='r'?' sr':x==='a'?' th-sa':' sb2'):'');
+  });
+  renderExercises();
+  updateStats();
+  updateDurationBar();
+}
+
+function getPrevKgsForEx(exId,count){
+  var results=[];
+  for(var i=0;i<state.sessions.length&&results.length<count;i++){
+    var sess=state.sessions[i];if(!sess.details)continue;
+    for(var j=0;j<sess.details.length;j++){
+      var det=sess.details[j];
+      if(det.id===exId&&det.sets){
+        var kgs=det.sets.filter(function(s){return s.kg&&s.kg!=='';}).map(function(s){return parseFloat(s.kg);});
+        if(kgs.length>0){results.push(Math.max.apply(null,kgs)+' kg');break;}
+      }
+    }
+  }
+  return results;
+}
+
+// RENDER EXERCISES
+function renderExercises(){
+  var exs=getVisible();
+  var ns=getSetsForStatus(state.status);
+  var sections={basis:[],stab:[],arm:[],bonus:[],legbonus:[]};
+  exs.forEach(function(e){if(sections[e.type]!==undefined)sections[e.type].push(e);});
+  var html='';
+
+  if(state.status==='r')html+='<div class="status-info">Eingeschraenkter Modus: Nur sichere Basisuebungen. Du trainierst trotzdem effektiv!</div>';
+  if(state.status==='b')html+='<div class="status-info">Volles Training: Alle Module aktiv &mdash; Trizeps + Inner Thigh als Bonus (je 2 Saetze).</div>';
+
+  if(sections.basis.length){
+    html+='<div class="sl2">Haltung &middot; Ruecken &middot; Unterkoerper</div>';
+    sections.basis.forEach(function(e){html+=makeEx(e,ns);});
+  }
+  if(sections.stab.length){
+    var sc=state.sessions.length,slot=sc%2;
+    var curEx=slot===0?'Seitheben':'Reverse Flyes';
+    var nextEx=slot===0?'Reverse Flyes':'Seitheben';
+    html+='<div class="sl2">Schulter-Rotation (Praevention)</div>';
+    html+='<div class="shoulder-info"><div class="shoulder-info-top"><span class="shoulder-badge">Einheit '+(slot===0?'A':'B')+'</span><span class="shoulder-title">'+curEx+' ist heute dran</span></div><div class="shoulder-hint">Naechste Einheit: <strong>'+nextEx+'</strong></div></div>';
+    sections.stab.forEach(function(e){html+=makeEx(e,ns);});
+  }
+  if(sections.arm.length){
+    html+='<div class="sl2">Arme &mdash; Bizeps (Prioritaet)</div>';
+    if(!state.bizepsChoice){
+      html+='<div class="bizeps-choice-card"><div class="bizeps-choice-title">Welche Variante heute?</div><div class="bizeps-choice-row">';
+      sections.arm.forEach(function(e){html+='<button class="bizeps-pick-btn" data-eid="'+e.id+'" onclick="bizepsPick(this)"><span style="font-size:26px;display:block;margin-bottom:4px">'+e.emoji+'</span><span class="bizeps-pick-name">'+e.name+'</span><span class="bizeps-pick-muscle">'+e.muscle+'</span></button>';});
+      html+='</div></div>';
+    } else {
+      var chosen=null,other=null;
+      sections.arm.forEach(function(e){if(e.id===state.bizepsChoice)chosen=e;else other=e;});
+      if(chosen)html+=makeEx(chosen,ns);
+      if(other)html+='<div class="bizeps-switch"><button class="bizeps-switch-btn" data-eid="'+other.id+'" onclick="bizepsPick(this)">Stattdessen: '+other.name+'</button></div>';
+    }
+  }
+  if(sections.bonus.length){
+    html+='<div class="sl2">Arme &mdash; Trizeps (Bonus)</div>';
+    var trizGroup=sections.bonus.filter(function(e){return e.altGroup==='trizeps';});
+    var otherBonus=sections.bonus.filter(function(e){return !e.altGroup;});
+    if(trizGroup.length){
+      if(!state.trizepsChoice){
+        html+='<div class="bizeps-choice-card"><div class="bizeps-choice-title">Welche Variante heute?</div><div class="bizeps-choice-row">';
+        trizGroup.forEach(function(e){html+='<button class="bizeps-pick-btn" data-eid="'+e.id+'" onclick="trizepsPick(this)"><span style="font-size:26px;display:block;margin-bottom:4px">'+e.emoji+'</span><span class="bizeps-pick-name">'+e.name+'</span><span class="bizeps-pick-muscle">'+e.muscle+'</span></button>';});
+        html+='</div></div>';
+      } else {
+        var tc=null,to=null;
+        trizGroup.forEach(function(e){if(e.id===state.trizepsChoice)tc=e;else to=e;});
+        if(tc)html+=makeEx(tc,2);
+        if(to)html+='<div class="bizeps-switch"><button class="bizeps-switch-btn" data-eid="'+to.id+'" onclick="trizepsPick(this)">Stattdessen: '+to.name+'</button></div>';
+      }
+    }
+    otherBonus.forEach(function(e){html+=makeEx(e,2);});
+  }
+  if(sections.legbonus&&sections.legbonus.length){
+    html+='<div class="sl2">Unterkoerper-Bonus</div>';
+    sections.legbonus.forEach(function(e){html+=makeEx(e,2);});
+  }
+
+  document.getElementById('ex-container').innerHTML=html;
+}
+
+function makeEx(e,ns){
+  var done=state.doneEx[e.id];
+  var typeLabel={basis:'Basis',stab:'Schulter',arm:'Bizeps',bonus:'Trizeps',legbonus:'Bonus'};
+  var typeBadge={basis:'bb',stab:'bs',arm:'bbo',bonus:'bbo',legbonus:'bb'};
+  var bc=typeBadge[e.type]||'bb',bl=typeLabel[e.type]||'Basis';
+  var prevKgs=getPrevKgsForEx(e.id,3),prevHtml='';
+  if(prevKgs.length){prevHtml='<div class="prev-weights">';prevKgs.forEach(function(p,i){prevHtml+='<div class="pw-chip">'+(i===0?'Zuletzt':'vor '+(i+1))+': <span>'+p+'</span></div>';});prevHtml+='</div>';}
+  var setsHtml='<div class="sets-wrap"><div class="set-labels"><div class="setlbl">#</div><div class="setlbl">Wdh.</div><div class="setlbl">Kg</div><div></div></div>';
+  for(var i=0;i<ns;i++){
+    var k=e.id+'_'+i;
+    var rv=state.setData[e.id+'_r_'+i]||'';
+    var kv=state.setData[e.id+'_k_'+i]||'';
+    var ck=state.doneSets[k];
+    setsHtml+='<div class="set-row" id="sr-'+k+'"><div class="sn">'+(i+1)+'</div>'
+      +'<input class="si" type="text" inputmode="decimal" placeholder="'+e.reps+'" value="'+rv+'" data-skey="'+e.id+'_r_'+i+'" oninput="sdKey(this)">'
+      +'<input class="si" type="number" inputmode="decimal" placeholder="kg" value="'+kv+'" data-skey="'+e.id+'_k_'+i+'" oninput="sdKey(this)" step="0.5">'
+      +'<button class="ck'+(ck?' on':'')+' exck" id="ck-'+k+'" data-exid="'+e.id+'" data-idx="'+i+'" onclick="ckClick(this)">'+(ck?'&#x2713;':'')+' </button>'+'</div>';
+  }
+  setsHtml+='</div>';
+  return '<div class="ec'+(done?' done':'')+'" id="ec-'+e.id+'">'
+    +'<div class="eh exeh" data-exid="'+e.id+'" onclick="exhClick(this)">'
+    +'<div class="ei '+e.type+'">'+e.emoji+'</div>'
+    +'<div style="flex:1;min-width:0"><div class="ename">'+e.name+'</div><div class="emeta">'+e.muscle+'</div></div>'
+    +'<span class="ebadge '+bc+'">'+bl+'</span>'
+    +'<span class="echevron" id="chv-'+e.id+'">&#x25BE;</span></div>'
+    +'<div class="eb" id="eb-'+e.id+'">'
+    +'<button class="ex-img-btn" id="imgbtn-'+e.id+'" onclick="toggleExImg(this)">Ausfuehrung anzeigen</button>'
+    +'<div class="ex-img-wrap" id="img-'+e.id+'"><img src="" alt="" loading="lazy"><div class="ex-img-caption">Ausfuehrungsbeispiel</div></div>'
+    +prevHtml
+    +'<div class="enote"><span>&#x1F4A1;</span><span>'+e.note+'</span></div>'
+    +'<div style="font-size:12px;color:var(--text3);margin-bottom:12px;">'+ns+' Saetze &middot; '+e.reps+' Wdh. &middot; Pause 60-90 Sek.</div>'
+    +setsHtml
+    +'<div class="ea"><button class="ebtn'+(done?' d':' p')+' exdone" id="donebn-'+e.id+'" data-exid="'+e.id+'" onclick="doneClick(this)">'+(done?'&#x2713; Abgeschlossen':'Uebung abschliessen')+'</button></div>'
+    +'</div></div>';
+}
+
+function sd(key,val){state.setData[key]=val;}
+function toggleEx(id){document.getElementById('eb-'+id).classList.toggle('open');document.getElementById('chv-'+id).classList.toggle('open');}
+function toggleSetInline(exId,idx){
+  var k=exId+'_'+idx;state.doneSets[k]=!state.doneSets[k];
+  var btn=document.getElementById('ck-'+k);
+  if(btn){btn.className='ck'+(state.doneSets[k]?' on':'');btn.textContent=state.doneSets[k]?'✓':'';}
+}
+function markDone(id){
+  state.doneEx[id]=!state.doneEx[id];
+  var card=document.getElementById('ec-'+id),btn=document.getElementById('donebn-'+id);
+  if(card)card.className='ec'+(state.doneEx[id]?' done':'');
+  if(btn){btn.className='ebtn'+(state.doneEx[id]?' d':' p');btn.innerHTML=state.doneEx[id]?'&#x2713; Abgeschlossen':'Uebung abschliessen';}
+  updateStats();
+}
+function updateStats(){
+  var exs=getVisible(),done=0,ts=0,ns=getSetsForStatus(state.status);
+  exs.forEach(function(e){if(state.doneEx[e.id])done++;ts+=ns;});
+  var doneStr=done+'/'+exs.length;
+  var modusLabel=state.status==='r'?'Eingeschr.':state.status==='a'?'Normal':'Gut drauf';
+  var el;
+  if((el=document.getElementById('s-done')))el.textContent=doneStr;
+  if((el=document.getElementById('s-sets')))el.textContent=ts;
+  if((el=document.getElementById('s-total')))el.textContent=state.sessions.length;
+  if((el=document.getElementById('th-modus')))el.textContent=modusLabel;
+  if((el=document.getElementById('th-s-done')))el.textContent=doneStr;
+  if((el=document.getElementById('th-s-sets')))el.textContent=ts;
+}
+function chooseBizeps(id){state.bizepsChoice=id;renderExercises();updateStats();}
+function chooseTrizeps(id){state.trizepsChoice=id;renderExercises();updateStats();}
+
+function saveSession(){
+  var exs=getVisible(),done=0;
+  exs.forEach(function(e){if(state.doneEx[e.id])done++;});
+  if(done===0){alert('Bitte mindestens eine Uebung abschliessen.');return;}
+  var ns=getSetsForStatus(state.status),ts=0,details=[];
+  exs.forEach(function(e){
+    ts+=ns;var sd2=[];
+    for(var i=0;i<ns;i++){sd2.push({reps:state.setData[e.id+'_r_'+i]||'',kg:state.setData[e.id+'_k_'+i]||''});}
+    details.push({id:e.id,name:e.name,emoji:e.emoji,done:!!state.doneEx[e.id],sets:sd2});
+  });
+  var notizA=document.getElementById('session-notiz');
+  var notizB=document.getElementById('session-notiz-desk');
+  var notiz=(notizA&&notizA.value.trim())||(notizB?notizB.value.trim():'');
+  var progIdx=getProgWeekIndex();
+  state.sessions.unshift({id:Date.now(),date:new Date().toISOString(),status:state.status,done:done,total:exs.length,totalSets:ts,notiz:notiz,progWeek:progIdx+1,details:details});
+  saveAll();
+  state.setData={};state.doneSets={};state.doneEx={};state.bizepsChoice=null;state.trizepsChoice=null;
+  if(notizA)notizA.value='';if(notizB)notizB.value='';
+  renderExercises();updateStats();
+  if((el=document.getElementById('s-total')))el.textContent=state.sessions.length;
+  if((el=document.getElementById('th-s-total')))el.textContent=state.sessions.length;
+  alert('Training gespeichert!');
+}
+
+// DURATION BAR
+function updateDurationBar(){
+  var exs=getVisible();
+  var ns=getSetsForStatus(state.status);
+  var mins;
+  if(state.status==='r')mins=25;
+  else if(state.status==='a')mins=45;
+  else mins=60;
+  var modeLabel=state.status==='r'?'Eingeschraenkt':state.status==='a'?'Normal':'Gut drauf';
+  var dotColor=state.status==='r'?'var(--red-mid)':state.status==='a'?'var(--amber-mid)':'var(--blue-mid)';
+  var html='<div class="dur-chip">'
+    +'<div class="dur-dot" style="background:'+dotColor+'"></div>'
+    +'<div class="dur-info"><div class="dur-label">Modus</div><div class="dur-mode">'+modeLabel+'</div></div>'
+    +'<div><div class="dur-time">~'+mins+'</div><div class="dur-min">Minuten</div></div></div>'
+    +'<div class="dur-chip" style="flex:none;padding:10px 14px;text-align:center"><div class="dur-label">Uebungen</div><div class="th-sv">'+exs.length+'</div></div>'
+    +'<div class="dur-chip" style="flex:none;padding:10px 14px;text-align:center"><div class="dur-label">Saetze</div><div class="th-sv">'+(exs.length*ns)+'</div></div>';
+  var el=document.getElementById('duration-bar');
+  if(el)el.innerHTML=html;
+}
+
+// WOCHE
+function changeWeek(d){weekOffset+=d;renderWoche();}
+function renderWoche(){
+  var now=new Date(),ws=new Date(now);
+  ws.setDate(now.getDate()-((now.getDay()||7)-1)+weekOffset*7);
+  var we=new Date(ws);we.setDate(ws.getDate()+6);
+  var mns=['Jan','Feb','Maer','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+  document.getElementById('wtitle').textContent=ws.getDate()+'. '+mns[ws.getMonth()]+' - '+we.getDate()+'. '+mns[we.getMonth()];
+  var dns=['Mo','Di','Mi','Do','Fr','Sa','So'],html='',wt=0,ws2=0;
+  for(var d=0;d<7;d++){
+    var day=new Date(ws);day.setDate(ws.getDate()+d);
+    var ds=day.toDateString(),ts=new Date().toDateString();
+    var sess=null;
+    for(var si=0;si<state.sessions.length;si++){if(new Date(state.sessions[si].date).toDateString()===ds){sess=state.sessions[si];break;}}
+    if(sess){wt++;ws2+=sess.totalSets;}
+    html+='<div class="dc'+(ds===ts?' today':'')+(sess?' trained':'')+'"><div class="dcn">'+dns[d]+'</div><div class="dcnum">'+day.getDate()+'</div><div class="dcdot"></div></div>';
+  }
+  document.getElementById('wgrid').innerHTML=html;
+  document.getElementById('w-tr').textContent=wt;
+  document.getElementById('w-sets').textContent=ws2;
+  var streak=0,cur=new Date();cur.setDate(cur.getDate()-1);
+  for(var si=0;si<state.sessions.length&&streak<30;si++){
+    var sd2=new Date(state.sessions[si].date);
+    if(sd2.toDateString()===cur.toDateString()||sd2.toDateString()===new Date().toDateString()){streak++;cur.setDate(cur.getDate()-1);}
+    else break;
+  }
+  document.getElementById('w-streak').textContent=streak;
+}
+function renderProg(){
+  var wi=getProgWeekIndex();
+  document.getElementById('prog-con').innerHTML=PROG_DATA.map(function(p,i){
+    var a=i===wi;
+    return '<div class="prog-week-card'+(a?' active':'')+'"><div class="pwc-h"><div class="pwc-n">'+(i+1)+'</div><div><div class="pwc-t">'+p.t+'</div><div class="pwc-d">'+p.d+'</div></div></div></div>';
+  }).join('');
+}
+function renderBarChart(){
+  var last8=state.sessions.slice(0,8).reverse();
+  if(!last8.length){document.getElementById('barchart').innerHTML='<div style="font-size:12px;color:var(--text3);padding:20px 0;text-align:center">Nach dem ersten Training erscheint hier der Verlauf.</div>';return;}
+  var maxS=Math.max.apply(null,last8.map(function(s){return s.totalSets;}));if(maxS===0)maxS=1;
+  var mns=['Jan','Feb','Maer','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+  document.getElementById('barchart').innerHTML=last8.map(function(s){
+    var pct=Math.max(8,Math.round((s.totalSets/maxS)*100));
+    var d=new Date(s.date),dns=['So','Mo','Di','Mi','Do','Fr','Sa'];
+    return '<div class="bar-wrap"><div style="font-size:9px;color:var(--text3);text-align:center;margin-bottom:2px">'+s.totalSets+'</div><div class="bar" style="height:'+pct+'%" title="'+s.totalSets+' Saetze"></div><div class="bar-label">'+dns[d.getDay()]+' '+d.getDate()+'.</div></div>';
+  }).join('');
+}
+
+// VERLAUF
+function renderVerlauf(){
+  var el=document.getElementById('log-con');
+  if(!state.sessions.length){el.innerHTML='<div class="empty"><div class="empty-i">&#x1F4CB;</div><div class="empty-t">Nach dem ersten Training erscheint hier dein Protokoll.</div></div>';return;}
+  var mns=['Jan','Feb','Maer','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+  var dns=['So','Mo','Di','Mi','Do','Fr','Sa'];
+  var statusColors={r:'var(--red)',a:'var(--amber)',b:'var(--blue)'};
+  el.innerHTML=state.sessions.slice(0,30).map(function(s,idx){
+    var d=new Date(s.date);
+    var detHtml='';
+    if(s.details){
+      detHtml=s.details.filter(function(det){return det.done;}).map(function(det){
+        var kgs=det.sets?det.sets.filter(function(x){return x.kg;}).map(function(x){return x.kg+' kg';}).join(', '):'';
+        return '<div class="le-det-row"><span style="font-size:16px">'+det.emoji+'</span><span style="flex:1;font-weight:500">'+det.name+'</span><span style="color:var(--accent)">'+kgs+'</span></div>';
+      }).join('');
+    }
+    return '<div class="log-entry">'
+      +'<div class="le-header"><div class="le-date">'+dns[d.getDay()]+', '+d.getDate()+'. '+mns[d.getMonth()]+' '+d.getFullYear()+'</div><span class="le-status" style="background:var(--surface2);color:'+statusColors[s.status]+'">'+(s.status==='r'?'Eingeschraenkt':s.status==='a'?'Normal':'Gut drauf')+'</span></div>'
+      +'<div class="le-stats"><span><span class="le-stat-n">'+s.done+'/'+s.total+'</span> Uebungen</span><span><span class="le-stat-n">'+s.totalSets+'</span> Saetze</span><span>Woche <span class="le-stat-n">'+s.progWeek+'</span></span></div>'
+      +(s.notiz?'<div class="le-notiz">'+s.notiz+'</div>':'')
+      +(detHtml?'<div class="le-toggle" onclick="leToggle(this)">Details</div><div class="le-details">'+detHtml+'</div>':'')
+      +'</div>';
+  }).join('');
+}
+function renderExProg(){
+  var exIds={};
+  state.sessions.forEach(function(sess){
+    if(!sess.details)return;
+    sess.details.forEach(function(det){
+      if(!exIds[det.id])exIds[det.id]={name:det.name,emoji:det.emoji||'&#x1F4AA;',entries:[]};
+      var kgs=det.sets?det.sets.filter(function(s){return s.kg&&s.kg!=='';}).map(function(s){return parseFloat(s.kg);}):[];
+      var reps=det.sets?det.sets.filter(function(s){return s.reps&&s.reps!=='';}).map(function(s){return s.reps;}).join(', '):'';
+      if(kgs.length>0)exIds[det.id].entries.push({date:sess.date,kg:Math.max.apply(null,kgs),reps:reps});
+    });
+  });
+  var html='',keys=Object.keys(exIds);
+  if(!keys.length){html='<div class="empty"><div class="empty-i">&#x1F4CA;</div><div class="empty-t">Nach dem ersten Training erscheinen hier die Gewichtsverlaeufe.</div></div>';}
+  else{
+    var mns=['Jan','Feb','Maer','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+    keys.forEach(function(id){
+      var ex=exIds[id];if(!ex.entries.length)return;
+      var rows=ex.entries.slice(0,8).map(function(e){var d=new Date(e.date);return '<div class="ex-prog-row"><span class="ex-prog-date">'+d.getDate()+'. '+mns[d.getMonth()]+'</span><div style="display:flex;gap:12px"><span class="ex-prog-kg">'+e.kg+' kg</span><span class="ex-prog-reps">'+e.reps+'</span></div></div>';}).join('');
+      html+='<div class="ex-prog-card"><div class="ex-prog-h" onclick="expToggle(this)"><span class="ex-prog-icon">'+ex.emoji+'</span><span class="ex-prog-name">'+ex.name+'</span><span class="ex-prog-last">'+ex.entries[0].kg+' kg</span><span class="echevron" style="margin-left:8px">&#x25BE;</span></div><div class="ex-prog-body">'+rows+'</div></div>';
+    });
+  }
+  document.getElementById('ex-prog-con').innerHTML=html;
+}
+
+// KOERPER
+function saveKW(){
+  var inp=document.getElementById('kw-input'),val=parseFloat(inp.value);
+  if(isNaN(val)||val<30||val>250){alert('Bitte ein gueltiges Gewicht eingeben.');return;}
+  state.kwData.unshift({date:new Date().toISOString(),kg:val});
+  saveAll();inp.value='';renderKW();
+}
+function setKWRange(days,btn){kwRange=days;document.querySelectorAll('.rt').forEach(function(b){b.classList.remove('on');});btn.classList.add('on');renderKW();}
+function renderKW(){
+  var now=new Date(),cutoff=new Date(now.getTime()-kwRange*24*60*60*1000);
+  var filtered=state.kwData.filter(function(d){return kwRange>=9000||new Date(d.date)>=cutoff;});
+  renderKWChart(filtered);renderKWStats(filtered);renderKWList();
+}
+function renderKWChart(data){
+  var wrap=document.getElementById('kw-chart-wrap');
+  if(!data||data.length<2){wrap.innerHTML='<div class="chart-no-data">'+(data&&data.length===1?'Mindestens 2 Eintraege fuer einen Verlauf noetig.':'Noch keine Eintraege vorhanden.')+'</div>';return;}
+  var pts=data.slice().reverse();
+  var kgs=pts.map(function(p){return p.kg;});
+  var minK=Math.min.apply(null,kgs),maxK=Math.max.apply(null,kgs),range=maxK-minK||1;
+  var pad=6,W=600,H=180,n=pts.length;
+  var points=pts.map(function(p,i){return {x:pad+(i/(n-1))*(W-pad*2),y:H-pad-((p.kg-minK)/range)*(H-pad*2),kg:p.kg,date:p.date};});
+  var pathD='M'+points.map(function(p){return p.x.toFixed(1)+','+p.y.toFixed(1);}).join(' L');
+  var areaD=pathD+' L'+points[n-1].x.toFixed(1)+','+(H-pad)+' L'+points[0].x.toFixed(1)+','+(H-pad)+' Z';
+  var dots=points.map(function(p){return '<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="4.5" fill="var(--accent)" stroke="#fff" stroke-width="2"><title>'+p.kg+' kg</title></circle>';}).join('');
+  var mns=['Jan','Feb','Maer','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+  var labels='';var step=Math.ceil(n/7);
+  points.forEach(function(p,i){if(i%step===0||i===n-1){var d=new Date(p.date);labels+='<text x="'+p.x.toFixed(1)+'" y="'+(H+5)+'" text-anchor="middle" font-size="10" fill="var(--text3)">'+d.getDate()+'. '+mns[d.getMonth()]+'</text>';}});
+  var yL='';
+  [0,0.5,1].forEach(function(f){var val=(minK+f*range).toFixed(1),y=(H-pad-f*(H-pad*2)).toFixed(1);yL+='<text x="0" y="'+y+'" font-size="10" fill="var(--text3)" dominant-baseline="middle">'+val+'</text><line x1="'+pad+'" y1="'+y+'" x2="'+W+'" y2="'+y+'" stroke="var(--border)" stroke-width="0.5" stroke-dasharray="3,3"/>';});
+  wrap.innerHTML='<div class="chart-wrap" style="height:210px"><svg class="chart-svg" viewBox="-28 0 '+(W+28)+' '+(H+20)+'" preserveAspectRatio="none"><defs><linearGradient id="kwg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--accent)" stop-opacity="0.18"/><stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/></linearGradient></defs>'+yL+'<path d="'+areaD+'" fill="url(#kwg)"/><path d="'+pathD+'" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>'+dots+labels+'</svg></div>';
+}
+function renderKWStats(data){
+  var el=document.getElementById('kw-stats');
+  if(!data||!data.length){el.innerHTML='';return;}
+  var kgs=data.map(function(d){return d.kg;});
+  var latest=kgs[0],oldest=kgs[kgs.length-1],diff=(latest-oldest).toFixed(1);
+  var dc=parseFloat(diff)<0?'pos':parseFloat(diff)>0?'neg':'';
+  el.innerHTML='<div class="kw-stat"><div class="kw-stat-val">'+latest.toFixed(1)+'</div><div class="kw-stat-label">Aktuell (kg)</div></div>'
+    +'<div class="kw-stat"><div class="kw-stat-val '+dc+'">'+(parseFloat(diff)>0?'+':'')+diff+' kg</div><div class="kw-stat-label">Veraenderung</div></div>'
+    +'<div class="kw-stat"><div class="kw-stat-val">'+Math.min.apply(null,kgs).toFixed(1)+'-'+Math.max.apply(null,kgs).toFixed(1)+'</div><div class="kw-stat-label">Spannweite</div></div>';
+}
+function renderKWList(){
+  var el=document.getElementById('kw-list');
+  if(!state.kwData.length){el.innerHTML='<div class="empty"><div class="empty-i">&#x2696;&#xFE0F;</div><div class="empty-t">Noch keine Eintraege vorhanden.</div></div>';return;}
+  var mns=['Jan','Feb','Maer','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+  var dns=['So','Mo','Di','Mi','Do','Fr','Sa'];
+  el.innerHTML=state.kwData.slice(0,30).map(function(e,i){
+    var d=new Date(e.date),prev=state.kwData[i+1];
+    var diff=prev?(e.kg-prev.kg).toFixed(1):null;
+    var diffHtml=diff!==null?'<span style="font-size:13px;font-weight:500;color:'+(parseFloat(diff)>0?'var(--red)':parseFloat(diff)<0?'var(--accent)':'var(--text3)')+'">'+( parseFloat(diff)>0?'+':'')+diff+'</span>':'';
+    return '<div class="kw-entry"><div><div style="font-size:14px;font-weight:500">'+d.getDate()+'. '+mns[d.getMonth()]+' - '+dns[d.getDay()]+'</div><div style="font-size:12px;color:var(--text2)">'+d.getHours()+':'+String(d.getMinutes()).padStart(2,'0')+' Uhr</div></div>'
+      +'<div style="display:flex;align-items:center;gap:12px">'+diffHtml+'<div style="font-size:20px;font-weight:400;color:var(--accent);min-width:55px;text-align:right">'+e.kg.toFixed(1)+' kg</div><button class="kw-edit-btn" data-idx="'+i+'" onclick="kwEditClick(this)">Bearbeiten</button></div></div>';
+  }).join('');
+}
+function editKW(idx){
+  var e=state.kwData[idx];
+  openModal('Gewicht bearbeiten','Aktueller Wert: '+e.kg+' kg',e.kg,function(val){
+    var v=parseFloat(val);if(isNaN(v)||v<30||v>250){alert('Ungueltiger Wert.');return;}
+    state.kwData[idx].kg=v;saveAll();renderKW();
+  });
+}
+
+// SYSTEM
+function renderPrinzipien(){
+  document.getElementById('prin-con').innerHTML=PRINZIPIEN.map(function(p){
+    return '<div class="pc" onclick="togglePrinzip(this)"><div class="pci">'+p.icon+'</div><div class="pct"><strong>'+p.title+'</strong><br>'+p.text+(p.detail?'<div class="pc-detail">'+p.detail+'</div>':'')+'</div>'+(p.detail?'<span class="pc-chevron">&#x25BE;</span>':'')+'</div>';
+  }).join('');
+}
+function togglePrinzip(el){el.classList.toggle('open');}
+function renderAlternativen(){
+  document.getElementById('alt-con').innerHTML=ALTERNATIVEN.map(function(a){
+    return '<div class="alt-c"><div class="alt-h" onclick="altToggle(this)"><span style="font-size:22px;margin-right:12px">'+a.icon+'</span><div style="flex:1"><div style="font-size:14px;font-weight:600;color:var(--text)">'+a.label+'</div><div style="font-size:12px;color:var(--text3);margin-top:1px">Tippe fuer Details und Begruendung</div></div><span style="font-size:11px;color:var(--text3)">&#x25BE;</span></div><div class="alt-b"><div class="alt-skip">Auslassen: '+a.skip+'</div><div class="alt-do">Stattdessen: '+a.do+'</div><div class="alt-why">Warum diese Regel? '+a.why+'</div></div></div>';
+  }).join('');
+}
+function exportD(){
+  try{var blob=new Blob([JSON.stringify({sessions:state.sessions,kwData:state.kwData},null,2)],{type:'application/json'});var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download='gabrijela-training.json';a.click();}
+  catch(e){alert('Export nicht verfuegbar - bitte die Datei lokal im Browser oeffnen.');}
+}
+function resetAll(){
+  if(!confirm('Wirklich alle Daten loeschen?'))return;
+  state.sessions=[];state.kwData=[];state.progWeekStart=new Date().toISOString();
+  state.setData={};state.doneSets={};state.doneEx={};
+  saveAll();updateProgBadge();renderExercises();updateStats();
+  renderVerlauf();renderExProg();renderKW();
+  alert('Alle Daten geloescht. Woche 1 beginnt heute.');
+}
+
+// MODAL
+function openModal(title,sub,val,cb){
+  document.getElementById('modal-title').textContent=title;
+  document.getElementById('modal-sub').textContent=sub;
+  var inp=document.getElementById('modal-input');inp.value=val||'';
+  document.getElementById('modal-overlay').classList.remove('hidden');
+  modalCallback=cb;setTimeout(function(){inp.focus();},50);
+}
+function closeModal(){document.getElementById('modal-overlay').classList.add('hidden');modalCallback=null;}
+function confirmModal(){var val=document.getElementById('modal-input').value;if(modalCallback)modalCallback(val);closeModal();}
+
+// IMG TOGGLE
+var IMG_URLS = {
+  rowing: 'data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHRleHQgeD0iMTAwIiB5PSIxNCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxMSIgZmlsbD0iIzdhNWE2MCIgZm9udC1mYW1pbHk9IkdlaXN0LHNhbnMtc2VyaWYiPkVpbmFybWlnZXMgUnVkZXJuIOKAkyBFbmRwb3NpdGlvbjwvdGV4dD4KPCEtLSBCYW5rIC0tPjxyZWN0IHg9IjI4IiB5PSIxMzAiIHdpZHRoPSIxNDQiIGhlaWdodD0iMTQiIHJ4PSI0IiBmaWxsPSIjZmFlZWYwIiBzdHJva2U9IiNmMGQ5ZGMiIHN0cm9rZS13aWR0aD0iMS41Ii8+CjxyZWN0IHg9IjM2IiB5PSIxNDQiIHdpZHRoPSIxMCIgaGVpZ2h0PSIyNCIgcng9IjIiIGZpbGw9IiNmMGQ5ZGMiLz4KPCEtLSBLw7ZycGVyIHNjaHLDpGcgKGxpbmtzIGxpZWd0IGF1ZiBCYW5rKSAtLT4KPGNpcmNsZSBjeD0iNTYiIGN5PSIxMTAiIHI9IjExIiBmaWxsPSJub25lIiBzdHJva2U9IiNiMDUwNzAiIHN0cm9rZS13aWR0aD0iMi41Ii8+CjxsaW5lIHgxPSI1NiIgeTE9IjEyMSIgeDI9IjEwMCIgeTI9IjEzMCIgc3Ryb2tlPSIjMmExYTFjIiBzdHJva2Utd2lkdGg9IjIuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjwhLS0gU3TDvHR6YXJtIGxpbmtzIC0tPjxsaW5lIHgxPSI3MCIgeTE9IjEyNyIgeDI9IjQ2IiB5Mj0iMTQ0IiBzdHJva2U9IiMyYTFhMWMiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjwhLS0gWnVnYXJtIHJlY2h0cyBnZWJldWd0IGhvY2ggLS0+PGxpbmUgeDE9IjEwMCIgeTE9IjEyMiIgeDI9IjEyOCIgeTI9IjExMiIgc3Ryb2tlPSIjMmExYTFjIiBzdHJva2Utd2lkdGg9IjIuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjxsaW5lIHgxPSIxMjgiIHkxPSIxMTIiIHgyPSIxMzYiIHkyPSI4MCIgc3Ryb2tlPSIjMmExYTFjIiBzdHJva2Utd2lkdGg9IjIuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjwhLS0gSGFudGVsIC0tPjxyZWN0IHg9IjEyOCIgeT0iNzAiIHdpZHRoPSIxMCIgaGVpZ2h0PSIyMCIgcng9IjIiIGZpbGw9IiNmY2VlZjIiIHN0cm9rZT0iIzcwNTBhMCIgc3Ryb2tlLXdpZHRoPSIyIi8+CjwhLS0gRWxsYm9nZW4tUHVua3QgLS0+PGNpcmNsZSBjeD0iMTI4IiBjeT0iMTEyIiByPSI0IiBmaWxsPSIjYjA1MDcwIi8+Cjx0ZXh0IHg9IjE0MiIgeT0iMTA4IiBmb250LXNpemU9IjkiIGZpbGw9IiNiMDUwNzAiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIj7ihpEgaG9jaDwvdGV4dD4KPCEtLSBTY2h1bHRlcmJsYXR0IFBmZWlsIC0tPjxwYXRoIGQ9Ik0gMTAwIDExOCBRIDExMiAxMDQgMTI0IDEwOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYjA1MDcwIiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLWRhc2hhcnJheT0iMywyIi8+CjwhLS0gQm9kZW4gLS0+PGxpbmUgeDE9IjI4IiB5MT0iMTc4IiB4Mj0iMTcyIiB5Mj0iMTc4IiBzdHJva2U9IiNmMGQ5ZGMiIHN0cm9rZS13aWR0aD0iMiIvPgo8dGV4dCB4PSIxMDAiIHk9IjE5NiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxMCIgZmlsbD0iI2IwNTA3MCIgZm9udC1mYW1pbHk9IkdlaXN0LHNhbnMtc2VyaWYiPkVsbGJvZ2VuIG5haCBhbSBLw7ZycGVyIGbDvGhyZW48L3RleHQ+Cjx0ZXh0IHg9IjEwMCIgeT0iMjExIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEwIiBmaWxsPSIjN2E1YTYwIiBmb250LWZhbWlseT0iR2Vpc3Qsc2Fucy1zZXJpZiI+U2NodWx0ZXJibGF0dCBlaW56aWVoZW4gwrcgMyBTZWsuIGFibGFzc2VuPC90ZXh0Pgo8L3N2Zz4=',
+  glute: 'data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHRleHQgeD0iMTAwIiB5PSIxNCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxMSIgZmlsbD0iIzdhNWE2MCIgZm9udC1mYW1pbHk9IkdlaXN0LHNhbnMtc2VyaWYiPkdsdXRlIEJyaWRnZSDigJMgRW5kcG9zaXRpb248L3RleHQ+CjwhLS0gQm9kZW4gLS0+PGxpbmUgeDE9IjIwIiB5MT0iMTc1IiB4Mj0iMTgwIiB5Mj0iMTc1IiBzdHJva2U9IiNmMGQ5ZGMiIHN0cm9rZS13aWR0aD0iMiIvPgo8IS0tIEtvcGYgLS0+PGNpcmNsZSBjeD0iNTIiIGN5PSIxMjUiIHI9IjExIiBmaWxsPSJub25lIiBzdHJva2U9IiNiMDUwNzAiIHN0cm9rZS13aWR0aD0iMi41Ii8+CjwhLS0gT2JlcmvDtnJwZXIgYW0gQm9kZW4gLS0+PGxpbmUgeDE9IjUyIiB5MT0iMTM2IiB4Mj0iMTAwIiB5Mj0iMTU1IiBzdHJva2U9IiMyYTFhMWMiIHN0cm9rZS13aWR0aD0iMi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPCEtLSBBcm1lIHNlaXRsaWNoIC0tPjxsaW5lIHgxPSI2NSIgeTE9IjE0MyIgeDI9IjQyIiB5Mj0iMTYyIiBzdHJva2U9IiMyYTFhMWMiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjxsaW5lIHgxPSI5MCIgeTE9IjE1MiIgeDI9IjExMiIgeTI9IjE2MiIgc3Ryb2tlPSIjMmExYTFjIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8IS0tIFNjaHVsdGVybiAtLT48ZWxsaXBzZSBjeD0iMTAwIiBjeT0iMTU4IiByeD0iMTIiIHJ5PSI1IiBmaWxsPSIjZmFlZWYwIiBzdHJva2U9IiNmMGQ5ZGMiIHN0cm9rZS13aWR0aD0iMSIvPgo8IS0tIEjDvGZ0ZSBvYmVuIC0tPjxjaXJjbGUgY3g9IjExOCIgY3k9IjExOCIgcj0iNSIgZmlsbD0iI2IwNTA3MCIvPgo8IS0tIE9iZXJzY2hlbmtlbCAtLT48bGluZSB4MT0iMTE4IiB5MT0iMTE4IiB4Mj0iMTMwIiB5Mj0iMTYwIiBzdHJva2U9IiMyYTFhMWMiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjwhLS0gVW50ZXJzY2hlbmtlbCBzZW5rcmVjaHQgLS0+PGxpbmUgeDE9IjEzMCIgeTE9IjE2MCIgeDI9IjEzMCIgeTI9IjE3NSIgc3Ryb2tlPSIjMmExYTFjIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8IS0tIHp3ZWl0ZXMgQmVpbiAtLT48bGluZSB4MT0iMTE4IiB5MT0iMTE4IiB4Mj0iMTQ4IiB5Mj0iMTU2IiBzdHJva2U9IiMyYTFhMWMiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjxsaW5lIHgxPSIxNDgiIHkxPSIxNTYiIHgyPSIxNTIiIHkyPSIxNzUiIHN0cm9rZT0iIzJhMWExYyIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPCEtLSBIw7xmdHBmZWlsIC0tPjxwYXRoIGQ9Ik0gMTAwIDE1NSBRIDEwOCAxMzAgMTE4IDExOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYjA1MDcwIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1kYXNoYXJyYXk9IjQsMiIvPgo8dGV4dCB4PSI4MCIgeT0iMTEwIiBmb250LXNpemU9IjkiIGZpbGw9IiNiMDUwNzAiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIj5Iw7xmdGUgb2JlbiE8L3RleHQ+Cjx0ZXh0IHg9IjEwMCIgeT0iMTk2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEwIiBmaWxsPSIjYjA1MDcwIiBmb250LWZhbWlseT0iR2Vpc3Qsc2Fucy1zZXJpZiI+SMO8ZnRlIHZvbGwgc3RyZWNrZW4gwrcgR2Vzw6TDnyBhbnNwYW5uZW48L3RleHQ+Cjx0ZXh0IHg9IjEwMCIgeT0iMjExIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEwIiBmaWxsPSIjN2E1YTYwIiBmb250LWZhbWlseT0iR2Vpc3Qsc2Fucy1zZXJpZiI+MeKAkzIgU2VrLiBoYWx0ZW4gwrcgbGFuZ3NhbSBhYmxhc3NlbjwvdGV4dD4KPC9zdmc+',
+  deadbug: 'data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHRleHQgeD0iMTAwIiB5PSIxNCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxMSIgZmlsbD0iIzdhNWE2MCIgZm9udC1mYW1pbHk9IkdlaXN0LHNhbnMtc2VyaWYiPkRlYWQgQnVnIOKAkyBTdGFydHBvc2l0aW9uPC90ZXh0Pgo8IS0tIEJvZGVuIC0tPjxsaW5lIHgxPSIyMCIgeTE9IjEzMCIgeDI9IjE4MCIgeTI9IjEzMCIgc3Ryb2tlPSIjZjBkOWRjIiBzdHJva2Utd2lkdGg9IjIiLz4KPCEtLSBLw7ZycGVyIGxpZWd0IC0tPjxsaW5lIHgxPSI2MCIgeTE9IjExMCIgeDI9IjE1MCIgeTI9IjExMCIgc3Ryb2tlPSIjMmExYTFjIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8IS0tIEtvcGYgLS0+PGNpcmNsZSBjeD0iMTU1IiBjeT0iMTAzIiByPSIxMSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYjA1MDcwIiBzdHJva2Utd2lkdGg9IjIuNSIvPgo8IS0tIEFybWUgaG9jaCAtLT48bGluZSB4MT0iODAiIHkxPSIxMTAiIHgyPSI3MiIgeTI9Ijc0IiBzdHJva2U9IiMyYTFhMWMiIHN0cm9rZS13aWR0aD0iMi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPGxpbmUgeDE9IjEyMCIgeTE9IjExMCIgeDI9IjEyOCIgeTI9Ijc0IiBzdHJva2U9IiMyYTFhMWMiIHN0cm9rZS13aWR0aD0iMi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPCEtLSBCZWluZSA5MMKwIC0tPjxsaW5lIHgxPSI4MCIgeTE9IjExMCIgeDI9Ijc4IiB5Mj0iMTMwIiBzdHJva2U9IiMyYTFhMWMiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjxsaW5lIHgxPSI3OCIgeTE9IjEzMCIgeDI9IjYwIiB5Mj0iMTMyIiBzdHJva2U9IiMyYTFhMWMiIHN0cm9rZS13aWR0aD0iMi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPGxpbmUgeDE9IjEyMCIgeTE9IjExMCIgeDI9IjEyMiIgeTI9IjEzMCIgc3Ryb2tlPSIjMmExYTFjIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8bGluZSB4MT0iMTIyIiB5MT0iMTMwIiB4Mj0iMTQyIiB5Mj0iMTMyIiBzdHJva2U9IiMyYTFhMWMiIHN0cm9rZS13aWR0aD0iMi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPCEtLSBSw7xja2VuIGZsYWNoIE1hcmtlciAtLT48ZWxsaXBzZSBjeD0iMTAwIiBjeT0iMTEwIiByeD0iOCIgcnk9IjMiIGZpbGw9IiNmY2VlZjIiIHN0cm9rZT0iI2IwNTA3MCIgc3Ryb2tlLXdpZHRoPSIxIi8+Cjx0ZXh0IHg9IjEwMCIgeT0iMTA2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjgiIGZpbGw9IiNiMDUwNzAiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIj5MV1MhPC90ZXh0Pgo8dGV4dCB4PSIxMDAiIHk9IjE2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxMCIgZmlsbD0iI2IwNTA3MCIgZm9udC1mYW1pbHk9IkdlaXN0LHNhbnMtc2VyaWYiPkxlbmRlbndpcmJlbCBibGVpYnQgYW0gQm9kZW48L3RleHQ+Cjx0ZXh0IHg9IjEwMCIgeT0iMTc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEwIiBmaWxsPSIjN2E1YTYwIiBmb250LWZhbWlseT0iR2Vpc3Qsc2Fucy1zZXJpZiI+QXJtICsgR2VnZW5iZWluIHN0cmVja2VuIMK3IHNlaHIgbGFuZ3NhbTwvdGV4dD4KPC9zdmc+',
+  push: 'data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHRleHQgeD0iMTAwIiB5PSIxNCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxMSIgZmlsbD0iIzdhNWE2MCIgZm9udC1mYW1pbHk9IkdlaXN0LHNhbnMtc2VyaWYiPktILUJhbmtkcsO8Y2tlbiDigJMgTmV1dHJhbC1HcmlmZjwvdGV4dD4KPCEtLSBCYW5rIC0tPjxyZWN0IHg9IjI4IiB5PSIxMzAiIHdpZHRoPSIxNDQiIGhlaWdodD0iMTQiIHJ4PSI0IiBmaWxsPSIjZmFlZWYwIiBzdHJva2U9IiNmMGQ5ZGMiIHN0cm9rZS13aWR0aD0iMS41Ii8+CjxyZWN0IHg9IjM2IiB5PSIxNDQiIHdpZHRoPSIxMCIgaGVpZ2h0PSIyNCIgcng9IjIiIGZpbGw9IiNmMGQ5ZGMiLz4KPHJlY3QgeD0iMTU0IiB5PSIxNDQiIHdpZHRoPSIxMCIgaGVpZ2h0PSIyNCIgcng9IjIiIGZpbGw9IiNmMGQ5ZGMiLz4KPCEtLSBLw7ZycGVyIGxpZWd0IC0tPjxsaW5lIHgxPSI1MiIgeTE9IjEyNSIgeDI9IjE0OCIgeTI9IjEyNSIgc3Ryb2tlPSIjMmExYTFjIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8IS0tIEtvcGYgLS0+PGNpcmNsZSBjeD0iMTU1IiBjeT0iMTE4IiByPSIxMSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYjA1MDcwIiBzdHJva2Utd2lkdGg9IjIuNSIvPgo8IS0tIEFybWUgZ2VzdHJlY2t0IG5hY2ggb2JlbiAtLT48bGluZSB4MT0iODAiIHkxPSIxMjQiIHgyPSI3NiIgeTI9IjgwIiBzdHJva2U9IiMyYTFhMWMiIHN0cm9rZS13aWR0aD0iMi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPGxpbmUgeDE9IjEyMCIgeTE9IjEyNCIgeDI9IjEyNCIgeTI9IjgwIiBzdHJva2U9IiMyYTFhMWMiIHN0cm9rZS13aWR0aD0iMi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPCEtLSBLSCBuZXV0cmFsIC0tPjxyZWN0IHg9IjY4IiB5PSI3MCIgd2lkdGg9IjEwIiBoZWlnaHQ9IjIwIiByeD0iMiIgZmlsbD0iI2ZjZWVmMiIgc3Ryb2tlPSIjNzA1MGEwIiBzdHJva2Utd2lkdGg9IjIiLz4KPHJlY3QgeD0iMTIyIiB5PSI3MCIgd2lkdGg9IjEwIiBoZWlnaHQ9IjIwIiByeD0iMiIgZmlsbD0iI2ZjZWVmMiIgc3Ryb2tlPSIjNzA1MGEwIiBzdHJva2Utd2lkdGg9IjIiLz4KPCEtLSBOZXV0cmFsLUdyaWZmIExhYmVsIC0tPjx0ZXh0IHg9IjU4IiB5PSI2NiIgZm9udC1zaXplPSI5IiBmaWxsPSIjYjA1MDcwIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiI+8J+knSBuZXV0cmFsPC90ZXh0Pgo8IS0tIEJvZGVuIC0tPjxsaW5lIHgxPSIyOCIgeTE9IjE3OCIgeDI9IjE3MiIgeTI9IjE3OCIgc3Ryb2tlPSIjZjBkOWRjIiBzdHJva2Utd2lkdGg9IjIiLz4KPHRleHQgeD0iMTAwIiB5PSIxOTYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMTAiIGZpbGw9IiNiMDUwNzAiIGZvbnQtZmFtaWx5PSJHZWlzdCxzYW5zLXNlcmlmIj5OZXV0cmFsLUdyaWZmIHNjaG9udCBTY2h1bHRlcmdlbGVuazwvdGV4dD4KPHRleHQgeD0iMTAwIiB5PSIyMTEiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMTAiIGZpbGw9IiM3YTVhNjAiIGZvbnQtZmFtaWx5PSJHZWlzdCxzYW5zLXNlcmlmIj4zIFNlay4gYWJsYXNzZW4gwrcgTmFja2VuIGVudHNwYW5udDwvdGV4dD4KPC9zdmc+',
+  hipthrust: 'data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHRleHQgeD0iMTAwIiB5PSIxNCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxMSIgZmlsbD0iIzdhNWE2MCIgZm9udC1mYW1pbHk9IkdlaXN0LHNhbnMtc2VyaWYiPkhpcCBUaHJ1c3Qg4oCTIEVuZHBvc2l0aW9uPC90ZXh0Pgo8IS0tIEJhbmsgLS0+PHJlY3QgeD0iMjgiIHk9IjkwIiB3aWR0aD0iODAiIGhlaWdodD0iMTQiIHJ4PSI0IiBmaWxsPSIjZmFlZWYwIiBzdHJva2U9IiNmMGQ5ZGMiIHN0cm9rZS13aWR0aD0iMS41Ii8+CjwhLS0gU2NodWx0ZXJuIGF1ZiBCYW5rIC0tPjxlbGxpcHNlIGN4PSI2OCIgY3k9IjkwIiByeD0iMTYiIHJ5PSI2IiBmaWxsPSIjZmFlZWYwIiBzdHJva2U9IiNmMGQ5ZGMiIHN0cm9rZS13aWR0aD0iMS41Ii8+CjwhLS0gS29wZiAtLT48Y2lyY2xlIGN4PSI0OCIgY3k9Ijc2IiByPSIxMSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYjA1MDcwIiBzdHJva2Utd2lkdGg9IjIuNSIvPgo8IS0tIE9iZXJrw7ZycGVyIHNjaHLDpGcgLS0+PGxpbmUgeDE9IjY4IiB5MT0iOTAiIHgyPSIxMTgiIHkyPSIxMTgiIHN0cm9rZT0iIzJhMWExYyIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPCEtLSBBcm1lIGF1ZiBIw7xmdGUgLS0+PGxpbmUgeDE9IjgwIiB5MT0iOTYiIHgyPSIxMDAiIHkyPSIxMTIiIHN0cm9rZT0iIzJhMWExYyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPCEtLSBHZXdpY2h0IGF1ZiBIw7xmdGUgLS0+PHJlY3QgeD0iMTAwIiB5PSIxMDgiIHdpZHRoPSIzNiIgaGVpZ2h0PSIxNCIgcng9IjMiIGZpbGw9IiNmY2VlZjIiIHN0cm9rZT0iI2IwNTA3MCIgc3Ryb2tlLXdpZHRoPSIyIi8+Cjx0ZXh0IHg9IjExOCIgeT0iMTE5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjgiIGZpbGw9IiNiMDUwNzAiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIj5LSDwvdGV4dD4KPCEtLSBIw7xmdGUgLS0+PGNpcmNsZSBjeD0iMTE4IiBjeT0iMTE4IiByPSI1IiBmaWxsPSIjYjA1MDcwIi8+CjwhLS0gT2JlcnNjaGVua2VsIC0tPjxsaW5lIHgxPSIxMTgiIHkxPSIxMTgiIHgyPSIxMjgiIHkyPSIxNjAiIHN0cm9rZT0iIzJhMWExYyIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPCEtLSBVbnRlcnNjaGVua2VsIHNlbmtyZWNodCAtLT48bGluZSB4MT0iMTI4IiB5MT0iMTYwIiB4Mj0iMTI4IiB5Mj0iMTc4IiBzdHJva2U9IiMyYTFhMWMiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjwhLS0gendlaXRlcyBCZWluIC0tPjxsaW5lIHgxPSIxMTgiIHkxPSIxMTgiIHgyPSIxNDgiIHkyPSIxNTUiIHN0cm9rZT0iIzJhMWExYyIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPGxpbmUgeDE9IjE0OCIgeTE9IjE1NSIgeDI9IjE1MCIgeTI9IjE3OCIgc3Ryb2tlPSIjMmExYTFjIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8IS0tIEJvZGVuIC0tPjxsaW5lIHgxPSIyMCIgeTE9IjE3OCIgeDI9IjE4MCIgeTI9IjE3OCIgc3Ryb2tlPSIjZjBkOWRjIiBzdHJva2Utd2lkdGg9IjIiLz4KPHRleHQgeD0iMTAwIiB5PSIxOTYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMTAiIGZpbGw9IiNiMDUwNzAiIGZvbnQtZmFtaWx5PSJHZWlzdCxzYW5zLXNlcmlmIj5Iw7xmdGUgdm9sbCBzdHJlY2tlbiDCtyBHZXPDpMOfIG1heGltYWw8L3RleHQ+Cjx0ZXh0IHg9IjEwMCIgeT0iMjExIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEwIiBmaWxsPSIjN2E1YTYwIiBmb250LWZhbWlseT0iR2Vpc3Qsc2Fucy1zZXJpZiI+S25pZSB6ZWlnZW4gYXXDn2VuIMK3IG9iZW4ga3VyeiBoYWx0ZW48L3RleHQ+Cjwvc3ZnPg==',
+  seitheben: 'data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHRleHQgeD0iMTAwIiB5PSIxNCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxMSIgZmlsbD0iIzdhNWE2MCIgZm9udC1mYW1pbHk9IkdlaXN0LHNhbnMtc2VyaWYiPlNlaXRoZWJlbiDigJMgRW5kcG9zaXRpb248L3RleHQ+CjxjaXJjbGUgY3g9IjEwMCIgY3k9IjM4IiByPSIxMiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYjA1MDcwIiBzdHJva2Utd2lkdGg9IjIuNSIvPgo8bGluZSB4MT0iMTAwIiB5MT0iNTAiIHgyPSIxMDAiIHkyPSIxMzAiIHN0cm9rZT0iIzJhMWExYyIgc3Ryb2tlLXdpZHRoPSIyLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8IS0tIEFybWUgc2VpdGxpY2ggb2JlbiAtLT48bGluZSB4MT0iMTAwIiB5MT0iNzAiIHgyPSI1MiIgeTI9IjgwIiBzdHJva2U9IiMyYTFhMWMiIHN0cm9rZS13aWR0aD0iMi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPGxpbmUgeDE9IjEwMCIgeTE9IjcwIiB4Mj0iMTQ4IiB5Mj0iODAiIHN0cm9rZT0iIzJhMWExYyIgc3Ryb2tlLXdpZHRoPSIyLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8IS0tIEtIIGxpbmtzIC0tPjxyZWN0IHg9IjQyIiB5PSI3NCIgd2lkdGg9IjEwIiBoZWlnaHQ9IjE0IiByeD0iMiIgZmlsbD0iI2ZjZWVmMiIgc3Ryb2tlPSIjNzA1MGEwIiBzdHJva2Utd2lkdGg9IjIiLz4KPCEtLSBLSCByZWNodHMgLS0+PHJlY3QgeD0iMTQ4IiB5PSI3NCIgd2lkdGg9IjEwIiBoZWlnaHQ9IjE0IiByeD0iMiIgZmlsbD0iI2ZjZWVmMiIgc3Ryb2tlPSIjNzA1MGEwIiBzdHJva2Utd2lkdGg9IjIiLz4KPCEtLSBFbGxib2dlbiBsZWljaHQgZ2ViZXVndCAtLT48Y2lyY2xlIGN4PSI2OCIgY3k9Ijc2IiByPSI0IiBmaWxsPSIjYjA1MDcwIi8+CjxjaXJjbGUgY3g9IjEzMiIgY3k9Ijc2IiByPSI0IiBmaWxsPSIjYjA1MDcwIi8+CjwhLS0gUGZlaWwgLS0+PHBhdGggZD0iTSA1MiA4MiBRIDc2IDYwIDEwMCA3MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYjA1MDcwIiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLWRhc2hhcnJheT0iMywyIi8+Cjx0ZXh0IHg9IjM0IiB5PSI2NiIgZm9udC1zaXplPSI5IiBmaWxsPSIjYjA1MDcwIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiI+bGVpY2h0IGdlYmV1Z3Q8L3RleHQ+CjwhLS0gQmVpbmUgLS0+PGxpbmUgeDE9IjEwMCIgeTE9IjEzMCIgeDI9Ijg4IiB5Mj0iMTc4IiBzdHJva2U9IiMyYTFhMWMiIHN0cm9rZS13aWR0aD0iMi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPGxpbmUgeDE9IjEwMCIgeTE9IjEzMCIgeDI9IjExMiIgeTI9IjE3OCIgc3Ryb2tlPSIjMmExYTFjIiBzdHJva2Utd2lkdGg9IjIuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjxsaW5lIHgxPSI4OCIgeTE9IjE3OCIgeDI9Ijc0IiB5Mj0iMTgxIiBzdHJva2U9IiMyYTFhMWMiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjxsaW5lIHgxPSIxMTIiIHkxPSIxNzgiIHgyPSIxMjYiIHkyPSIxODEiIHN0cm9rZT0iIzJhMWExYyIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPGxpbmUgeDE9IjMwIiB5MT0iMTg0IiB4Mj0iMTcwIiB5Mj0iMTg0IiBzdHJva2U9IiNmMGQ5ZGMiIHN0cm9rZS13aWR0aD0iMiIvPgo8dGV4dCB4PSIxMDAiIHk9IjIwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxMCIgZmlsbD0iI2IwNTA3MCIgZm9udC1mYW1pbHk9IkdlaXN0LHNhbnMtc2VyaWYiPlNlaHIgbGVpY2h0ZXMgR2V3aWNodCEgTmFja2VuIGVudHNwYW5udDwvdGV4dD4KPHRleHQgeD0iMTAwIiB5PSIyMTUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMTAiIGZpbGw9IiM3YTVhNjAiIGZvbnQtZmFtaWx5PSJHZWlzdCxzYW5zLXNlcmlmIj5Bcm1lIGxlaWNodCBnZWJldWd0IMK3IGtvbnRyb2xsaWVydDwvdGV4dD4KPC9zdmc+',
+  reflyes: 'data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHRleHQgeD0iMTAwIiB5PSIxNCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxMSIgZmlsbD0iIzdhNWE2MCIgZm9udC1mYW1pbHk9IkdlaXN0LHNhbnMtc2VyaWYiPlJldmVyc2UgRmx5ZXMg4oCTIDQ1wrAgdm9yZ2ViZXVndDwvdGV4dD4KPCEtLSBLb3BmIC0tPjxjaXJjbGUgY3g9IjEwMCIgY3k9IjU4IiByPSIxMSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYjA1MDcwIiBzdHJva2Utd2lkdGg9IjIuNSIvPgo8IS0tIE9iZXJrw7ZycGVyIDQ1wrAgdm9yZ2ViZXVndCAtLT48bGluZSB4MT0iMTAwIiB5MT0iNjkiIHgyPSIxMDAiIHkyPSIxMTAiIHN0cm9rZT0iIzJhMWExYyIgc3Ryb2tlLXdpZHRoPSIyLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgdHJhbnNmb3JtPSJyb3RhdGUoLTQ1LCAxMDAsIDExMCkiLz4KPCEtLSBSw7xja2VuIHNjaHLDpGcgLS0+PGxpbmUgeDE9Ijg0IiB5MT0iNjAiIHgyPSIxMTYiIHkyPSIxMzAiIHN0cm9rZT0iIzJhMWExYyIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPCEtLSBBcm1lIG9mZmVuIC0tPjxsaW5lIHgxPSI5MCIgeTE9IjgwIiB4Mj0iNDgiIHkyPSI2NiIgc3Ryb2tlPSIjMmExYTFjIiBzdHJva2Utd2lkdGg9IjIuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjxsaW5lIHgxPSIxMTAiIHkxPSI4MCIgeDI9IjE1MiIgeTI9IjY2IiBzdHJva2U9IiMyYTFhMWMiIHN0cm9rZS13aWR0aD0iMi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPCEtLSBLSCAtLT48cmVjdCB4PSIzOCIgeT0iNjAiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxNCIgcng9IjIiIGZpbGw9IiNmY2VlZjIiIHN0cm9rZT0iIzcwNTBhMCIgc3Ryb2tlLXdpZHRoPSIyIi8+CjxyZWN0IHg9IjE1MiIgeT0iNjAiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxNCIgcng9IjIiIGZpbGw9IiNmY2VlZjIiIHN0cm9rZT0iIzcwNTBhMCIgc3Ryb2tlLXdpZHRoPSIyIi8+CjwhLS0gQmV3ZWd1bmdzcGZlaWwgLS0+PHBhdGggZD0iTSA0OCA2OCBRIDgwIDUwIDkwIDgwIiBmaWxsPSJub25lIiBzdHJva2U9IiNiMDUwNzAiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtZGFzaGFycmF5PSIzLDIiLz4KPCEtLSBCZWluZSAtLT48bGluZSB4MT0iMTE2IiB5MT0iMTMwIiB4Mj0iMTA2IiB5Mj0iMTc4IiBzdHJva2U9IiMyYTFhMWMiIHN0cm9rZS13aWR0aD0iMi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPGxpbmUgeDE9IjExNiIgeTE9IjEzMCIgeDI9IjEyNiIgeTI9IjE3NSIgc3Ryb2tlPSIjMmExYTFjIiBzdHJva2Utd2lkdGg9IjIuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjxsaW5lIHgxPSIzMCIgeTE9IjE4MSIgeDI9IjE3MCIgeTI9IjE4MSIgc3Ryb2tlPSIjZjBkOWRjIiBzdHJva2Utd2lkdGg9IjIiLz4KPHRleHQgeD0iMTAwIiB5PSIxOTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMTAiIGZpbGw9IiNiMDUwNzAiIGZvbnQtZmFtaWx5PSJHZWlzdCxzYW5zLXNlcmlmIj5PYmVya8O2cnBlciA0NcKwIMK3IE5hY2tlbiBuZXV0cmFsPC90ZXh0Pgo8dGV4dCB4PSIxMDAiIHk9IjIxMyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxMCIgZmlsbD0iIzdhNWE2MCIgZm9udC1mYW1pbHk9IkdlaXN0LHNhbnMtc2VyaWYiPkFybWUgbGVpY2h0IGdlYmV1Z3Qgwrcga2VpbiBLb3BmaGViZW48L3RleHQ+Cjwvc3ZnPg==',
+  hammer: 'data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHRleHQgeD0iMTAwIiB5PSIxNCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxMSIgZmlsbD0iIzdhNWE2MCIgZm9udC1mYW1pbHk9IkdlaXN0LHNhbnMtc2VyaWYiPkhhbW1lciBDdXJscyDigJMgTmV1dHJhbC1HcmlmZjwvdGV4dD4KPCEtLSBLb3BmIC0tPjxjaXJjbGUgY3g9IjEwMCIgY3k9IjM4IiByPSIxMiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYjA1MDcwIiBzdHJva2Utd2lkdGg9IjIuNSIvPgo8IS0tIEvDtnJwZXIgLS0+PGxpbmUgeDE9IjEwMCIgeTE9IjUwIiB4Mj0iMTAwIiB5Mj0iMTMwIiBzdHJva2U9IiMyYTFhMWMiIHN0cm9rZS13aWR0aD0iMi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPCEtLSBMaW5rZXIgQXJtIHVudGVuID0gU3RhcnQgLS0+PGxpbmUgeDE9IjEwMCIgeTE9IjcwIiB4Mj0iNzAiIHkyPSI4MCIgc3Ryb2tlPSIjMmExYTFjIiBzdHJva2Utd2lkdGg9IjIuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjxsaW5lIHgxPSI3MCIgeTE9IjgwIiB4Mj0iNjYiIHkyPSIxMzAiIHN0cm9rZT0iIzJhMWExYyIgc3Ryb2tlLXdpZHRoPSIyLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8IS0tIEtIIGxpbmtzIHVudGVuIC0tPjxyZWN0IHg9IjU4IiB5PSIxMjgiIHdpZHRoPSIxMCIgaGVpZ2h0PSIyMCIgcng9IjIiIGZpbGw9IiNmY2VlZjIiIHN0cm9rZT0iIzcwNTBhMCIgc3Ryb2tlLXdpZHRoPSIyIi8+CjwhLS0gUmVjaHRlciBBcm0gb2JlbiA9IEVuZCAtLT48bGluZSB4MT0iMTAwIiB5MT0iNzAiIHgyPSIxMzAiIHkyPSI4MCIgc3Ryb2tlPSIjMmExYTFjIiBzdHJva2Utd2lkdGg9IjIuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjxsaW5lIHgxPSIxMzAiIHkxPSI4MCIgeDI9IjEyNCIgeTI9IjUwIiBzdHJva2U9IiMyYTFhMWMiIHN0cm9rZS13aWR0aD0iMi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPCEtLSBLSCByZWNodHMgb2JlbiBuZXV0cmFsIC0tPjxyZWN0IHg9IjExOCIgeT0iMzYiIHdpZHRoPSIxMCIgaGVpZ2h0PSIyMCIgcng9IjIiIGZpbGw9IiNmY2VlZjIiIHN0cm9rZT0iIzcwNTBhMCIgc3Ryb2tlLXdpZHRoPSIyIi8+Cjx0ZXh0IHg9IjEzNiIgeT0iNDIiIGZvbnQtc2l6ZT0iOSIgZmlsbD0iI2IwNTA3MCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiPvCfkY0gbmV1dHJhbDwvdGV4dD4KPCEtLSBCb2dlbiBCZXdlZ3VuZyAtLT48cGF0aCBkPSJNIDYyIDEzMiBRIDgwIDYwIDEyMiA0NCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYjA1MDcwIiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLWRhc2hhcnJheT0iNCwyIi8+CjwhLS0gQmVpbmUgLS0+PGxpbmUgeDE9IjEwMCIgeTE9IjEzMCIgeDI9Ijg4IiB5Mj0iMTc4IiBzdHJva2U9IiMyYTFhMWMiIHN0cm9rZS13aWR0aD0iMi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPGxpbmUgeDE9IjEwMCIgeTE9IjEzMCIgeDI9IjExMiIgeTI9IjE3OCIgc3Ryb2tlPSIjMmExYTFjIiBzdHJva2Utd2lkdGg9IjIuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjxsaW5lIHgxPSI4OCIgeTE9IjE3OCIgeDI9Ijc0IiB5Mj0iMTgxIiBzdHJva2U9IiMyYTFhMWMiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjxsaW5lIHgxPSIxMTIiIHkxPSIxNzgiIHgyPSIxMjYiIHkyPSIxODEiIHN0cm9rZT0iIzJhMWExYyIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPGxpbmUgeDE9IjMwIiB5MT0iMTg0IiB4Mj0iMTcwIiB5Mj0iMTg0IiBzdHJva2U9IiNmMGQ5ZGMiIHN0cm9rZS13aWR0aD0iMiIvPgo8dGV4dCB4PSIxMDAiIHk9IjIwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxMCIgZmlsbD0iI2IwNTA3MCIgZm9udC1mYW1pbHk9IkdlaXN0LHNhbnMtc2VyaWYiPkRhdW1lbiB6ZWlndCBvYmVuIMK3IEVsbGJvZ2VuIGFtIEvDtnJwZXI8L3RleHQ+Cjx0ZXh0IHg9IjEwMCIgeT0iMjE1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEwIiBmaWxsPSIjN2E1YTYwIiBmb250LWZhbWlseT0iR2Vpc3Qsc2Fucy1zZXJpZiI+U2Nob250IEhhbmRnZWxlbmtlIMK3IGxhbmdzYW0gYWJsYXNzZW48L3RleHQ+Cjwvc3ZnPg==',
+  szcurls: 'data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHRleHQgeD0iMTAwIiB5PSIxNCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxMSIgZmlsbD0iIzdhNWE2MCIgZm9udC1mYW1pbHk9IkdlaXN0LHNhbnMtc2VyaWYiPlNaLUN1cmxzIOKAkyBFbmRwb3NpdGlvbjwvdGV4dD4KPCEtLSBLb3BmIC0tPjxjaXJjbGUgY3g9IjEwMCIgY3k9IjM4IiByPSIxMiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYjA1MDcwIiBzdHJva2Utd2lkdGg9IjIuNSIvPgo8IS0tIEvDtnJwZXIgLS0+PGxpbmUgeDE9IjEwMCIgeTE9IjUwIiB4Mj0iMTAwIiB5Mj0iMTMwIiBzdHJva2U9IiMyYTFhMWMiIHN0cm9rZS13aWR0aD0iMi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPCEtLSBBcm1lIGdlY3VybHQgLS0+PGxpbmUgeDE9IjEwMCIgeTE9IjcwIiB4Mj0iNjgiIHkyPSI4MCIgc3Ryb2tlPSIjMmExYTFjIiBzdHJva2Utd2lkdGg9IjIuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjxsaW5lIHgxPSIxMDAiIHkxPSI3MCIgeDI9IjEzMiIgeTI9IjgwIiBzdHJva2U9IiMyYTFhMWMiIHN0cm9rZS13aWR0aD0iMi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPGxpbmUgeDE9IjY4IiB5MT0iODAiIHgyPSI2MiIgeTI9IjU0IiBzdHJva2U9IiMyYTFhMWMiIHN0cm9rZS13aWR0aD0iMi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPGxpbmUgeDE9IjEzMiIgeTE9IjgwIiB4Mj0iMTM4IiB5Mj0iNTQiIHN0cm9rZT0iIzJhMWExYyIgc3Ryb2tlLXdpZHRoPSIyLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8IS0tIFNaLVN0YW5nZSAoZ2Vib2dlbmUgRm9ybSkgLS0+PHBhdGggZD0iTSA1NCA1MiBRIDYyIDQ2IDcwIDUyIFEgNzggNTggODYgNTIgUSA5NCA0NiAxMDAgNTIgUSAxMDYgNTggMTE0IDUyIFEgMTIyIDQ2IDEzMCA1MiBRIDEzOCA1OCAxNDYgNTIiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzJhMWExYyIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPCEtLSBHZXdpY2h0c3NjaGVpYmVuIC0tPjxyZWN0IHg9IjQ2IiB5PSI0NiIgd2lkdGg9IjgiIGhlaWdodD0iMTgiIHJ4PSIyIiBmaWxsPSIjZmNlZWYyIiBzdHJva2U9IiM3MDUwYTAiIHN0cm9rZS13aWR0aD0iMiIvPgo8cmVjdCB4PSIxNDYiIHk9IjQ2IiB3aWR0aD0iOCIgaGVpZ2h0PSIxOCIgcng9IjIiIGZpbGw9IiNmY2VlZjIiIHN0cm9rZT0iIzcwNTBhMCIgc3Ryb2tlLXdpZHRoPSIyIi8+Cjx0ZXh0IHg9IjEwMCIgeT0iNDIiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMTAiIGZpbGw9IiM3MDUwYTAiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIj5TWi1TdGFuZ2U8L3RleHQ+CjwhLS0gQmVpbmUgLS0+PGxpbmUgeDE9IjEwMCIgeTE9IjEzMCIgeDI9Ijg4IiB5Mj0iMTc4IiBzdHJva2U9IiMyYTFhMWMiIHN0cm9rZS13aWR0aD0iMi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPGxpbmUgeDE9IjEwMCIgeTE9IjEzMCIgeDI9IjExMiIgeTI9IjE3OCIgc3Ryb2tlPSIjMmExYTFjIiBzdHJva2Utd2lkdGg9IjIuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjxsaW5lIHgxPSI4OCIgeTE9IjE3OCIgeDI9Ijc0IiB5Mj0iMTgxIiBzdHJva2U9IiMyYTFhMWMiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjxsaW5lIHgxPSIxMTIiIHkxPSIxNzgiIHgyPSIxMjYiIHkyPSIxODEiIHN0cm9rZT0iIzJhMWExYyIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPGxpbmUgeDE9IjMwIiB5MT0iMTg0IiB4Mj0iMTcwIiB5Mj0iMTg0IiBzdHJva2U9IiNmMGQ5ZGMiIHN0cm9rZS13aWR0aD0iMiIvPgo8dGV4dCB4PSIxMDAiIHk9IjIwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxMCIgZmlsbD0iI2IwNTA3MCIgZm9udC1mYW1pbHk9IkdlaXN0LHNhbnMtc2VyaWYiPlNaLVN0YW5nZSBzY2hvbnQgSGFuZGdlbGVua2U8L3RleHQ+Cjx0ZXh0IHg9IjEwMCIgeT0iMjE1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEwIiBmaWxsPSIjN2E1YTYwIiBmb250LWZhbWlseT0iR2Vpc3Qsc2Fucy1zZXJpZiI+RWxsYm9nZW4gZml4aWVydCDCtyB2b2xsZSBCZXdlZ3VuZzwvdGV4dD4KPC9zdmc+',
+  tricep: 'data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHRleHQgeD0iMTAwIiB5PSIxNCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxMSIgZmlsbD0iIzdhNWE2MCIgZm9udC1mYW1pbHk9IkdlaXN0LHNhbnMtc2VyaWYiPlNrdWxsIENydXNoZXIg4oCTIFNaLVN0YW5nZTwvdGV4dD4KPCEtLSBCYW5rIC0tPgo8cmVjdCB4PSIyOCIgeT0iMTMyIiB3aWR0aD0iMTQ0IiBoZWlnaHQ9IjE0IiByeD0iNCIgZmlsbD0iI2ZhZWVmMCIgc3Ryb2tlPSIjZjBkOWRjIiBzdHJva2Utd2lkdGg9IjEuNSIvPgo8cmVjdCB4PSIzNiIgeT0iMTQ2IiB3aWR0aD0iMTAiIGhlaWdodD0iMjQiIHJ4PSIyIiBmaWxsPSIjZjBkOWRjIi8+CjxyZWN0IHg9IjE1NCIgeT0iMTQ2IiB3aWR0aD0iMTAiIGhlaWdodD0iMjQiIHJ4PSIyIiBmaWxsPSIjZjBkOWRjIi8+CjwhLS0gS8O2cnBlciBsaWVndCAtLT4KPGxpbmUgeDE9IjUyIiB5MT0iMTI3IiB4Mj0iMTQ4IiB5Mj0iMTI3IiBzdHJva2U9IiMyYTFhMWMiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjwhLS0gS29wZiAtLT4KPGNpcmNsZSBjeD0iMTU1IiBjeT0iMTIwIiByPSIxMSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYjA1MDcwIiBzdHJva2Utd2lkdGg9IjIuNSIvPgo8IS0tIE9iZXJhcm1lIHNlbmtyZWNodCBuYWNoIG9iZW4gLS0+CjxsaW5lIHgxPSI4MiIgeTE9IjEyNiIgeDI9IjgyIiB5Mj0iODIiIHN0cm9rZT0iIzJhMWExYyIgc3Ryb2tlLXdpZHRoPSIyLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8bGluZSB4MT0iMTE4IiB5MT0iMTI2IiB4Mj0iMTE4IiB5Mj0iODIiIHN0cm9rZT0iIzJhMWExYyIgc3Ryb2tlLXdpZHRoPSIyLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8IS0tIFVudGVyYXJtZSB6dXIgU3Rpcm4gZ2VuZWlndCAtLT4KPGxpbmUgeDE9IjgyIiB5MT0iODIiIHgyPSI5NCIgeTI9IjYwIiBzdHJva2U9IiMyYTFhMWMiIHN0cm9rZS13aWR0aD0iMi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPGxpbmUgeDE9IjExOCIgeTE9IjgyIiB4Mj0iMTA2IiB5Mj0iNjAiIHN0cm9rZT0iIzJhMWExYyIgc3Ryb2tlLXdpZHRoPSIyLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8IS0tIFNaLVN0YW5nZSAoZ2V6YWNrdGUgRm9ybSkgLS0+CjxwYXRoIGQ9Ik0gODUgNTggUSA5MCA1MiA5NSA1OCBRIDEwMCA2NCAxMDUgNTggUSAxMTAgNTIgMTE1IDU4IiBmaWxsPSJub25lIiBzdHJva2U9IiMyYTFhMWMiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjwhLS0gR2V3aWNodHNzY2hlaWJlbiAtLT4KPHJlY3QgeD0iNzYiIHk9IjUwIiB3aWR0aD0iOCIgaGVpZ2h0PSIxOCIgcng9IjIiIGZpbGw9IiNmY2VlZjIiIHN0cm9rZT0iIzcwNTBhMCIgc3Ryb2tlLXdpZHRoPSIyIi8+CjxyZWN0IHg9IjExNiIgeT0iNTAiIHdpZHRoPSI4IiBoZWlnaHQ9IjE4IiByeD0iMiIgZmlsbD0iI2ZjZWVmMiIgc3Ryb2tlPSIjNzA1MGEwIiBzdHJva2Utd2lkdGg9IjIiLz4KPCEtLSBFbGxib2dlbiBGaXhpZXItUHVua3RlIC0tPgo8Y2lyY2xlIGN4PSI4MiIgY3k9IjgyIiByPSI1IiBmaWxsPSIjYjA1MDcwIi8+CjxjaXJjbGUgY3g9IjExOCIgY3k9IjgyIiByPSI1IiBmaWxsPSIjYjA1MDcwIi8+Cjx0ZXh0IHg9IjU0IiB5PSI4MCIgZm9udC1zaXplPSI5IiBmaWxsPSIjYjA1MDcwIiBmb250LWZhbWlseT0iR2Vpc3Qsc2Fucy1zZXJpZiI+RWxsYm9nZW48L3RleHQ+Cjx0ZXh0IHg9IjU0IiB5PSI5MCIgZm9udC1zaXplPSI5IiBmaWxsPSIjYjA1MDcwIiBmb250LWZhbWlseT0iR2Vpc3Qsc2Fucy1zZXJpZiI+Zml4aWVydCE8L3RleHQ+CjwhLS0gQmV3ZWd1bmdzcGZlaWwgLS0+CjxwYXRoIGQ9Ik0gMTAwIDU4IFEgMTI4IDQ2IDE0OCA1MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzAzOTJiIiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLWRhc2hhcnJheT0iMywyIi8+Cjx0ZXh0IHg9IjE1MCIgeT0iNDgiIGZvbnQtc2l6ZT0iOSIgZmlsbD0iI2MwMzkyYiIgZm9udC1mYW1pbHk9IkdlaXN0LHNhbnMtc2VyaWYiPuKGkiBTdGlybjwvdGV4dD4KPCEtLSBCb2RlbiAtLT4KPGxpbmUgeDE9IjI4IiB5MT0iMTc4IiB4Mj0iMTcyIiB5Mj0iMTc4IiBzdHJva2U9IiNmMGQ5ZGMiIHN0cm9rZS13aWR0aD0iMiIvPgo8dGV4dCB4PSIxMDAiIHk9IjE5NiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxMCIgZmlsbD0iI2IwNTA3MCIgZm9udC1mYW1pbHk9IkdlaXN0LHNhbnMtc2VyaWYiPkVsbGJvZ2VuIGZpeGllcnQgwrcgMyBTZWsuIGFic2Vua2VuPC90ZXh0Pgo8dGV4dCB4PSIxMDAiIHk9IjIxMSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxMCIgZmlsbD0iIzdhNWE2MCIgZm9udC1mYW1pbHk9IkdlaXN0LHNhbnMtc2VyaWYiPkxlaWNodGVzIEdld2ljaHQgwrcgTmFja2VuIGxvY2tlciDCtyBTWi1TdGFuZ2U8L3RleHQ+Cjwvc3ZnPg==',
+  innerthigh: 'data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHRleHQgeD0iMTAwIiB5PSIxNCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxMSIgZmlsbD0iIzdhNWE2MCIgZm9udC1mYW1pbHk9IkdlaXN0LHNhbnMtc2VyaWYiPkdsdXRlIEJyaWRnZSDigJMgRW5kcG9zaXRpb248L3RleHQ+CjwhLS0gQm9kZW4gLS0+PGxpbmUgeDE9IjIwIiB5MT0iMTc1IiB4Mj0iMTgwIiB5Mj0iMTc1IiBzdHJva2U9IiNmMGQ5ZGMiIHN0cm9rZS13aWR0aD0iMiIvPgo8IS0tIEtvcGYgLS0+PGNpcmNsZSBjeD0iNTIiIGN5PSIxMjUiIHI9IjExIiBmaWxsPSJub25lIiBzdHJva2U9IiNiMDUwNzAiIHN0cm9rZS13aWR0aD0iMi41Ii8+CjwhLS0gT2JlcmvDtnJwZXIgYW0gQm9kZW4gLS0+PGxpbmUgeDE9IjUyIiB5MT0iMTM2IiB4Mj0iMTAwIiB5Mj0iMTU1IiBzdHJva2U9IiMyYTFhMWMiIHN0cm9rZS13aWR0aD0iMi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPCEtLSBBcm1lIHNlaXRsaWNoIC0tPjxsaW5lIHgxPSI2NSIgeTE9IjE0MyIgeDI9IjQyIiB5Mj0iMTYyIiBzdHJva2U9IiMyYTFhMWMiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjxsaW5lIHgxPSI5MCIgeTE9IjE1MiIgeDI9IjExMiIgeTI9IjE2MiIgc3Ryb2tlPSIjMmExYTFjIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8IS0tIFNjaHVsdGVybiAtLT48ZWxsaXBzZSBjeD0iMTAwIiBjeT0iMTU4IiByeD0iMTIiIHJ5PSI1IiBmaWxsPSIjZmFlZWYwIiBzdHJva2U9IiNmMGQ5ZGMiIHN0cm9rZS13aWR0aD0iMSIvPgo8IS0tIEjDvGZ0ZSBvYmVuIC0tPjxjaXJjbGUgY3g9IjExOCIgY3k9IjExOCIgcj0iNSIgZmlsbD0iI2IwNTA3MCIvPgo8IS0tIE9iZXJzY2hlbmtlbCAtLT48bGluZSB4MT0iMTE4IiB5MT0iMTE4IiB4Mj0iMTMwIiB5Mj0iMTYwIiBzdHJva2U9IiMyYTFhMWMiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjwhLS0gVW50ZXJzY2hlbmtlbCBzZW5rcmVjaHQgLS0+PGxpbmUgeDE9IjEzMCIgeTE9IjE2MCIgeDI9IjEzMCIgeTI9IjE3NSIgc3Ryb2tlPSIjMmExYTFjIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8IS0tIHp3ZWl0ZXMgQmVpbiAtLT48bGluZSB4MT0iMTE4IiB5MT0iMTE4IiB4Mj0iMTQ4IiB5Mj0iMTU2IiBzdHJva2U9IiMyYTFhMWMiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjxsaW5lIHgxPSIxNDgiIHkxPSIxNTYiIHgyPSIxNTIiIHkyPSIxNzUiIHN0cm9rZT0iIzJhMWExYyIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPCEtLSBIw7xmdHBmZWlsIC0tPjxwYXRoIGQ9Ik0gMTAwIDE1NSBRIDEwOCAxMzAgMTE4IDExOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYjA1MDcwIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1kYXNoYXJyYXk9IjQsMiIvPgo8dGV4dCB4PSI4MCIgeT0iMTEwIiBmb250LXNpemU9IjkiIGZpbGw9IiNiMDUwNzAiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIj5Iw7xmdGUgb2JlbiE8L3RleHQ+Cjx0ZXh0IHg9IjEwMCIgeT0iMTk2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEwIiBmaWxsPSIjYjA1MDcwIiBmb250LWZhbWlseT0iR2Vpc3Qsc2Fucy1zZXJpZiI+SMO8ZnRlIHZvbGwgc3RyZWNrZW4gwrcgR2Vzw6TDnyBhbnNwYW5uZW48L3RleHQ+Cjx0ZXh0IHg9IjEwMCIgeT0iMjExIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEwIiBmaWxsPSIjN2E1YTYwIiBmb250LWZhbWlseT0iR2Vpc3Qsc2Fucy1zZXJpZiI+MeKAkzIgU2VrLiBoYWx0ZW4gwrcgbGFuZ3NhbSBhYmxhc3NlbjwvdGV4dD4KPC9zdmc+',
+  kickback: 'data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHRleHQgeD0iMTAwIiB5PSIxNCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxMSIgZmlsbD0iIzdhNWE2MCIgZm9udC1mYW1pbHk9IkdlaXN0LHNhbnMtc2VyaWYiPktIIFRyaXplcHMtS2lja2JhY2sg4oCTIEVuZHBvc2l0aW9uPC90ZXh0Pgo8IS0tIEtvcGYgdm9yZ2ViZXVndCAtLT4KPGNpcmNsZSBjeD0iNTIiIGN5PSI0OCIgcj0iMTEiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzhiM2E1MiIgc3Ryb2tlLXdpZHRoPSIyLjUiLz4KPCEtLSBPYmVya8O2cnBlciBob3Jpem9udGFsIC0tPgo8bGluZSB4MT0iNTIiIHkxPSI1OSIgeDI9IjEzMCIgeTI9Ijc1IiBzdHJva2U9IiMyYTFhMWMiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjwhLS0gU3TDvHR6YXJtIGxpbmtzIGFtIEtuaWUgLS0+CjxsaW5lIHgxPSI2NSIgeTE9IjYzIiB4Mj0iNTgiIHkyPSIxMDUiIHN0cm9rZT0iIzJhMWExYyIgc3Ryb2tlLXdpZHRoPSIyLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8bGluZSB4MT0iNTgiIHkxPSIxMDUiIHgyPSI0NCIgeTI9IjEwOCIgc3Ryb2tlPSIjMmExYTFjIiBzdHJva2Utd2lkdGg9IjIuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjwhLS0gVHJhaW5pbmdzYXJtIHJlY2h0czogT2JlcmFybSBmaXhpZXJ0IHdhYWdlcmVjaHQgLS0+CjxsaW5lIHgxPSIxMTAiIHkxPSI3MCIgeDI9IjEzOCIgeTI9IjY1IiBzdHJva2U9IiMyYTFhMWMiIHN0cm9rZS13aWR0aD0iMi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPCEtLSBFbGxib2dlbi1QdW5rdCAtLT4KPGNpcmNsZSBjeD0iMTM4IiBjeT0iNjUiIHI9IjUiIGZpbGw9IiM4YjNhNTIiLz4KPCEtLSBVbnRlcmFybSBnZXN0cmVja3QgKEVuZHBvc2l0aW9uKSAtLT4KPGxpbmUgeDE9IjEzOCIgeTE9IjY1IiB4Mj0iMTY4IiB5Mj0iNjAiIHN0cm9rZT0iIzJhMWExYyIgc3Ryb2tlLXdpZHRoPSIyLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8IS0tIEtIIGFtIEVuZGUgLS0+CjxyZWN0IHg9IjE2MiIgeT0iNTIiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxOCIgcng9IjIiIGZpbGw9IiNmY2VlZjIiIHN0cm9rZT0iIzcwNTBhMCIgc3Ryb2tlLXdpZHRoPSIyIi8+CjwhLS0gQmV3ZWd1bmdzcGZlaWwgKEJvZ2VuIG5hY2ggdW50ZW4gPSBTdGFydHBvcykgLS0+CjxwYXRoIGQ9Ik0gMTYyIDYyIFEgMTU4IDg1IDEzOCA3NSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjOGIzYTUyIiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLWRhc2hhcnJheT0iNCwyIi8+Cjx0ZXh0IHg9IjE0OCIgeT0iOTQiIGZvbnQtc2l6ZT0iOSIgZmlsbD0iIzhiM2E1MiIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiPuKGkyBTdGFydDwvdGV4dD4KPCEtLSBFbGxib2dlbi1MYWJlbCAtLT4KPHRleHQgeD0iMTI2IiB5PSI1OCIgZm9udC1zaXplPSI5IiBmaWxsPSIjOGIzYTUyIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiI+RWxsYm9nZW48L3RleHQ+Cjx0ZXh0IHg9IjEyNiIgeT0iNjgiIGZvbnQtc2l6ZT0iOSIgZmlsbD0iIzhiM2E1MiIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiPmZpeGllcnQhPC90ZXh0Pgo8IS0tIEJlaW5lIGFuZ2VkZXV0ZXQgLS0+CjxsaW5lIHgxPSIxMzAiIHkxPSI3NSIgeDI9IjEyOCIgeTI9IjEzMCIgc3Ryb2tlPSIjMmExYTFjIiBzdHJva2Utd2lkdGg9IjIuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjxsaW5lIHgxPSIxMjgiIHkxPSIxMzAiIHgyPSIxMTIiIHkyPSIxMzQiIHN0cm9rZT0iIzJhMWExYyIgc3Ryb2tlLXdpZHRoPSIyLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8bGluZSB4MT0iMTI4IiB5MT0iMTMwIiB4Mj0iMTQyIiB5Mj0iMTM0IiBzdHJva2U9IiMyYTFhMWMiIHN0cm9rZS13aWR0aD0iMi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPCEtLSBCb2RlbiAtLT4KPGxpbmUgeDE9IjIwIiB5MT0iMTM4IiB4Mj0iMTgwIiB5Mj0iMTM4IiBzdHJva2U9IiNmMGQ5ZGMiIHN0cm9rZS13aWR0aD0iMiIvPgo8dGV4dCB4PSIxMDAiIHk9IjE1OCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxMCIgZmlsbD0iIzhiM2E1MiIgZm9udC1mYW1pbHk9IkdlaXN0LHNhbnMtc2VyaWYiPkVsbGJvZ2VuIG9iZW4gZml4aWVydCDCtyBVbnRlcmFybSBzdHJlY2tlbjwvdGV4dD4KPHRleHQgeD0iMTAwIiB5PSIxNzMiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMTAiIGZpbGw9IiM3YTVhNjAiIGZvbnQtZmFtaWx5PSJHZWlzdCxzYW5zLXNlcmlmIj4zIFNlay4genVyw7xjayDCtyBzZWhyIGxlaWNodGVzIEdld2ljaHQ8L3RleHQ+Cjwvc3ZnPg=='
+};
+
+function toggleExImg(btn){
+  var exId=btn.id.replace('imgbtn-','');
+  var wrap=document.getElementById('img-'+exId);
+  if(!wrap)return;
+  var opening=!wrap.classList.contains('open');
+  wrap.classList.toggle('open');
+  btn.textContent=opening?'Bild schliessen':'Ausfuehrung anzeigen';
+  if(opening&&IMG_URLS[exId]){var img=wrap.querySelector('img');if(img&&!img.getAttribute('src'))img.setAttribute('src',IMG_URLS[exId]);}
+}
+
+// VIDEO
+function openVideoModal(exId,exName){
+  var queries={rowing:'Einarmiges+Rudern+Kurzhantel+Technik+deutsch',reflyes:'Reverse+Flyes+hintere+Schulter+Technik+deutsch',deadbug:'Dead+Bug+Core+richtig+ausführen+deutsch',push:'Kurzhantel+Bankdrücken+neutral+Technik+deutsch',glute:'Glute+Bridge+richtig+ausführen+Technik+deutsch',hipthrust:'Hip+Thrust+Bank+Gesaess+Technik+deutsch',seitheben:'Seitheben+Kurzhantel+Schulter+Technik+deutsch',hammer:'Hammer+Curls+Bizeps+Technik+deutsch',szcurls:'SZ+Curls+Bizeps+Technik+deutsch',tricep:'Trizeps+Extension+liegend+Technik+deutsch',kickback:'Trizeps+Kickback+Kurzhantel+Technik+deutsch',innerthigh:'Inner+Thigh+Lift+innerer+Oberschenkel+Technik'};
+  var q=queries[exId]||(exName.replace(/ /g,'+')+'+Technik+deutsch');
+  document.getElementById('video-iframe').src='https://www.youtube-nocookie.com/embed?listType=search&list='+q+'&autoplay=1';
+  document.getElementById('video-modal-title').textContent=exName;
+  document.getElementById('video-modal').classList.remove('hidden');
+}
+function closeVideoModal(){document.getElementById('video-modal').classList.add('hidden');document.getElementById('video-iframe').src='';}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeVideoModal();});
+
+function sdKey(inp){state.setData[inp.getAttribute('data-skey')]=inp.value;}
+function ckClick(btn){
+  var exId=btn.getAttribute('data-exid'),idx=parseInt(btn.getAttribute('data-idx'));
+  var k=exId+'_'+idx;
+  state.doneSets[k]=!state.doneSets[k];
+  btn.className='ck'+(state.doneSets[k]?' on':'')+' exck';
+  btn.textContent=state.doneSets[k]?'✓':'';
+}
+function exhClick(el){var id=el.getAttribute('data-exid');var eb=document.getElementById('eb-'+id);var chv=document.getElementById('chv-'+id);if(eb)eb.classList.toggle('open');if(chv)chv.classList.toggle('open');}
+function doneClick(btn){markDone(btn.getAttribute('data-exid'));}
+function bizepsPick(btn){chooseBizeps(btn.getAttribute('data-eid'));}
+function trizepsPick(btn){chooseTrizeps(btn.getAttribute('data-eid'));}
+function leToggle(el){el.nextElementSibling.classList.toggle('open');}
+function expToggle(el){el.nextElementSibling.classList.toggle('open');}
+function altToggle(el){el.nextElementSibling.classList.toggle('open');}
+function kwEditClick(btn){editKW(parseInt(btn.getAttribute('data-idx')));}
+
+function navSettings(btn){
+  document.querySelectorAll('.pg').forEach(function(p){p.classList.remove('on');});
+  document.querySelectorAll('.nt, .nt-settings').forEach(function(b){b.classList.remove('on');});
+  document.getElementById('pg-einstellungen').classList.add('on');
+  btn.classList.add('on');
+}
+
+var FS_MAP = {small:'13px', normal:'15px', large:'17px'};
+function setFontSize(sz){
+  document.documentElement.style.setProperty('--fs-base', FS_MAP[sz] || '15px');
+  document.body.style.fontSize = FS_MAP[sz] || '15px';
+  ['small','normal','large'].forEach(function(s){
+    var el = document.getElementById('fsz-'+s);
+    if(el) el.className = 'fsz-btn' + (s===sz?' fsz-active':'');
+  });
+  try{localStorage.setItem('mkraft_fs', sz);}catch(e){}
+}
+function loadFontSize(){
+  try{
+    var sz = localStorage.getItem('mkraft_fs') || 'normal';
+    setFontSize(sz);
+  }catch(e){}
+}
+
+document.addEventListener("DOMContentLoaded", function(){init();});
+</script>
+</body>
+</html>
