@@ -956,9 +956,50 @@ function renderAlternativen(){
 
 var FS={normal:'17px',large:'20px'};
 function setFontSize(size){
-  // Scale only the text container — leaves fixed-size UI elements (icons, nav, badges) untouched
-  var pages=document.querySelector('.pages');
-  if(pages)pages.style.fontSize=FS[size];
+  // Inject a <style> tag that overrides ONLY readable text classes
+  // This is the only method that reliably works on Chrome Android
+  var tag=document.getElementById('fs-override');
+  if(!tag){
+    tag=document.createElement('style');
+    tag.id='fs-override';
+    document.head.appendChild(tag);
+  }
+  var sz=FS[size];
+  var sm=size==='large'?'16px':'14px';  // slightly smaller for secondary text
+  var xs=size==='large'?'13px':'11px';  // for meta/labels
+  tag.textContent=[
+    // Main readable text
+    '.ec-name{font-size:'+sz+'!important}',
+    '.ec-muscle{font-size:'+sm+'!important}',
+    '.status-q{font-size:'+sz+'!important}',
+    '.sb{font-size:13px!important}',
+    // Notes and descriptions  
+    '.enote{font-size:'+sm+'!important}',
+    '.enote span{font-size:'+sm+'!important}',
+    '.notiz-input{font-size:'+sz+'!important}',
+    '.notiz-input::placeholder{font-size:'+sz+'!important}',
+    // Progress / info
+    '.pb-title{font-size:'+sm+'!important}',
+    '.pb-desc{font-size:'+xs+'!important}',
+    // Log entries
+    '.lt{font-size:'+sm+'!important}',
+    '.ls{font-size:'+xs+'!important}',
+    // Principles
+    '.pct strong{font-size:'+sm+'!important}',
+    '.pct-text{font-size:'+xs+'!important}',
+    '.pc-detail{font-size:'+xs+'!important}',
+    // Progression
+    '.progwt{font-size:'+sm+'!important}',
+    '.progwd{font-size:'+xs+'!important}',
+    // Goal cards
+    '.goal-title{font-size:'+sm+'!important}',
+    '.goal-desc{font-size:'+xs+'!important}',
+    // Save button
+    '.save-btn{font-size:'+sz+'!important}',
+    '.done-btn{font-size:'+sz+'!important}',
+    // Alt descriptions
+    '.alt-b-row{font-size:'+sm+'!important}',
+  ].join('');
   ['normal','large'].forEach(function(s){
     var el=document.getElementById('fs-'+s);
     if(el)el.className='font-btn'+(s===size?' active-size':'');
