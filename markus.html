@@ -59,10 +59,9 @@
 }
 
 /* ── BASE ── */
-:root{--fs:17px}
 html{
   font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;
-  font-size:var(--fs);line-height:1.5;
+  font-size:17px;line-height:1.5;
   overflow-x:hidden;-webkit-font-smoothing:antialiased;
 }
 body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;transition:background .25s,color .25s}
@@ -126,7 +125,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;t
 @keyframes slideUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
 /* ── SECTION LABEL ── */
-.sl{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.18em;text-transform:uppercase;margin:22px 0 12px;display:flex;align-items:center;gap:10px}
+.sl{font-size:10px;font-weight:700;color:var(--text2);letter-spacing:.14em;text-transform:uppercase;margin:22px 0 12px;display:flex;align-items:center;gap:10px}
 .sl::after{content:"";flex:1;height:1px;background:var(--border)}
 .sl:first-child{margin-top:0}
 
@@ -163,7 +162,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;t
 /* ── PROGRESS BAR ── */
 .prog-track{margin-bottom:16px}
 .prog-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.prog-lbl{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.14em;text-transform:uppercase}
+.prog-lbl{font-size:10px;font-weight:700;color:var(--text2);letter-spacing:.12em;text-transform:uppercase}
 .prog-num{font-size:13px;font-weight:700;color:var(--accent)}
 .prog-bar-bg{height:4px;background:var(--surface3);border-radius:99px;overflow:hidden}
 .prog-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:99px;transition:width .45s cubic-bezier(.4,0,.2,1)}
@@ -204,14 +203,14 @@ body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;t
 .pk{font-size:12px;font-weight:600;padding:5px 12px;border-radius:99px;background:var(--accent-dim);border:1px solid var(--accent-dim2);color:var(--accent)}
 
 /* ── SETS ── */
-.sets-meta{font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}
+.sets-meta{font-size:12px;font-weight:600;color:var(--text2);letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px}
 .set-labels{display:grid;grid-template-columns:30px 1fr 1fr 58px;gap:10px;margin-bottom:8px}
 .setlbl{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;text-align:center}
 .set-row{display:grid;grid-template-columns:30px 1fr 1fr 58px;gap:10px;align-items:center;margin-bottom:10px}
-.sn{font-size:13px;color:var(--text3);text-align:center;font-weight:700}
+.sn{font-size:13px;color:var(--text2);text-align:center;font-weight:700}
 .si{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:12px 8px;color:var(--text);font-size:17px;text-align:center;outline:none;width:100%;transition:border-color .15s;-webkit-appearance:none;font-family:inherit;font-weight:600}
 .si:focus{border-color:var(--accent)}
-.si::placeholder{color:var(--text3);font-weight:400}
+.si::placeholder{color:#888;font-weight:400}
 /* Checkboxen — groß und sicher treffbar */
 .ck{width:58px;height:58px;border-radius:13px;border:1.5px solid var(--border);background:var(--surface);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:22px;transition:all .15s;flex-shrink:0;color:transparent}
 .ck.on{background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:var(--accent);color:#fff;font-weight:700}
@@ -219,7 +218,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;t
 
 /* ── TIMER ── */
 .timer-wrap{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:13px 16px;margin-bottom:16px}
-.timer-display{font-size:26px;font-weight:800;color:var(--text3);font-variant-numeric:tabular-nums;min-width:60px;letter-spacing:-1px;transition:color .3s}
+.timer-display{font-size:26px;font-weight:800;color:var(--text2);font-variant-numeric:tabular-nums;min-width:60px;letter-spacing:-1px;transition:color .3s}
 .timer-display.active{color:var(--accent)}
 .timer-lbl{font-size:12px;color:var(--text3);flex:1;font-weight:600}
 .tbtn{font-size:13px;font-weight:700;padding:8px 16px;border-radius:10px;border:1px solid var(--border2);background:var(--surface2);color:var(--text2);cursor:pointer;white-space:nowrap;min-height:40px;transition:all .15s;font-family:inherit}
@@ -608,15 +607,15 @@ var PROG_DATA=[
 ];
 var EXERCISES=[
   {id:'goblet',    name:'Goblet Squat',            type:'basis',emoji:'🏋️',muscle:'Quadrizeps · Gesäß',        reps:'12–15',       note:'Langsames Tempo: 3 Sek. runter / 3 Sek. hoch. Nacken entspannt, Blick geradeaus. Ausatmen beim Hochkommen.',showFor:['r','a','b']},
-  {id:'rdl',       name:'Romanian Deadlift',        type:'basis',emoji:'🙇',muscle:'Hintere OS · Gesäß · Rücken',reps:'12–15',       note:'Rücken neutral, Hüfte nach hinten schieben. Ausatmen beim Strecken. Nicht bei Ischias — dann Glute Bridge.',showFor:['a','b']},
+  {id:'rdl',       name:'Romanian Deadlift',        type:'basis',emoji:'🏗️',muscle:'Hintere OS · Gesäß · Rücken',reps:'12–15',       note:'Rücken neutral, Hüfte nach hinten schieben. Ausatmen beim Strecken. Nicht bei Ischias — dann Glute Bridge.',showFor:['a','b']},
   {id:'push',      name:'KH-Bankdrücken (neutral)', type:'basis',emoji:'💪',muscle:'Brust · Trizeps · Schulter', reps:'12–15',       note:'Neutral-Griff schont das Schultergelenk. Bei Nackenproblemen weglassen. Alternative: Floor Press.',showFor:['a','b']},
   {id:'row',       name:'Einarmiges Rudern',        type:'basis',emoji:'🚣',muscle:'Lat · oberer Rücken · Bizeps',reps:'12–15/Seite',note:'Abgestützt auf der Bank. Ellbogen nah am Körper. Schulterblatt am Ende bewusst einziehen.',showFor:['r','a','b']},
-  {id:'glute',     name:'Glute Bridge',             type:'basis',emoji:'🌉',muscle:'Gesäß · Core',              reps:'15–20',       note:'Langsam und bewusst. Becken oben 1–2 Sek. halten. Hervorragend zur Ischias-Prävention.',showFor:['r','a','b']},
-  {id:'seitheben', name:'Seitheben (leicht)',       type:'stab', emoji:'🦋',muscle:'Seitliche Schulter',        reps:'12–15',       note:'Pflicht zur Nackenprävention! Sehr leichtes Gewicht. Arme leicht gebeugt, kontrolliert.',showFor:['a','b']},
+  {id:'glute',     name:'Glute Bridge',             type:'basis',emoji:'⛩️',muscle:'Gesäß · Core',              reps:'15–20',       note:'Langsam und bewusst. Becken oben 1–2 Sek. halten. Hervorragend zur Ischias-Prävention.',showFor:['r','a','b']},
+  {id:'seitheben', name:'Seitheben (leicht)',       type:'stab', emoji:'🕊️',muscle:'Seitliche Schulter',        reps:'12–15',       note:'Pflicht zur Nackenprävention! Sehr leichtes Gewicht. Arme leicht gebeugt, kontrolliert.',showFor:['a','b']},
   {id:'reflyes',   name:'Reverse Flyes (leicht)',   type:'stab', emoji:'🦅',muscle:'Hintere Schulter · Rücken', reps:'12–15',       note:'Oberkörper 45° vorgebeugt. Arme leicht gebeugt, langsam öffnen. Nacken neutral — kein Kopfheben!',showFor:['a','b']},
   {id:'hammer',    name:'Hammer Curls',             type:'bonus',emoji:'🔨',muscle:'Bizeps · Brachialis',       reps:'12–15',       note:'Neutraler Griff (Daumen oben) — schont Handgelenke. Langsam ablassen.',showFor:['b'],altGroup:'bizeps'},
-  {id:'szcurls',   name:'SZ-Curls',                type:'bonus',emoji:'🌀',muscle:'Bizeps (klassisch)',         reps:'12–15',       note:'Variante zu Hammer Curls — nicht beides an einem Tag. SZ-Stange schont die Handgelenke.',showFor:['b'],altGroup:'bizeps'},
-  {id:'tricep',    name:'Trizeps-Extension',        type:'bonus',emoji:'🏹',muscle:'Trizeps · Oberarm',         reps:'12–15',       note:'Ellbogen fixiert, 3 Sek. absenken. Leichtes Gewicht! Nacken entspannt. Bei Schmerzen abbrechen.',showFor:['b']},
+  {id:'szcurls',   name:'SZ-Curls',                type:'bonus',emoji:'〰️',muscle:'Bizeps (klassisch)',         reps:'12–15',       note:'Variante zu Hammer Curls — nicht beides an einem Tag. SZ-Stange schont die Handgelenke.',showFor:['b'],altGroup:'bizeps'},
+  {id:'tricep',    name:'Trizeps-Extension',        type:'bonus',emoji:'⚡',muscle:'Trizeps · Oberarm',         reps:'12–15',       note:'Ellbogen fixiert, 3 Sek. absenken. Leichtes Gewicht! Nacken entspannt. Bei Schmerzen abbrechen.',showFor:['b']},
 ];
 var PRINZIPIEN=[
   {icon:'🧘',title:'Nacken entspannt',   text:'Immer auf Nackenspannung achten — vor und während jeder Übung.',detail:'Der Nacken ist der sensibelste Bereich dieses Plans. Schultern unten, Kiefer locker, Blick geradeaus. Bei ersten Anzeichen sofort Gewicht reduzieren.'},
@@ -957,27 +956,9 @@ function renderAlternativen(){
 
 var FS={normal:'17px',large:'20px'};
 function setFontSize(size){
-  var tag=document.getElementById('fs-style');
-  if(!tag){tag=document.createElement('style');tag.id='fs-style';document.head.appendChild(tag);}
-  // Only target readable text, NOT icons, badges, buttons with fixed sizes, nav
-  tag.textContent=
-    '.ec-name{font-size:'+FS[size]+'!important}'+
-    '.ec-muscle{font-size:calc('+FS[size]+' * 0.75)!important}'+
-    '.enote{font-size:calc('+FS[size]+' * 0.82)!important}'+
-    '.status-q{font-size:calc('+FS[size]+' * 1.4)!important}'+
-    '.sb{font-size:calc('+FS[size]+' * 0.72)!important}'+
-    '.prog-badge .pb-title{font-size:calc('+FS[size]+' * 0.82)!important}'+
-    '.prog-badge .pb-desc{font-size:calc('+FS[size]+' * 0.7)!important}'+
-    '.goal-title{font-size:calc('+FS[size]+' * 0.78)!important}'+
-    '.goal-desc{font-size:calc('+FS[size]+' * 0.78)!important}'+
-    '.pc .pct strong{font-size:calc('+FS[size]+' * 0.88)!important}'+
-    '.pc .pct-text{font-size:calc('+FS[size]+' * 0.78)!important}'+
-    '.pc-detail{font-size:calc('+FS[size]+' * 0.78)!important}'+
-    '.le .lt{font-size:calc('+FS[size]+' * 0.82)!important}'+
-    '.notiz-input{font-size:'+FS[size]+'!important}'+
-    '.sets-meta{font-size:calc('+FS[size]+' * 0.65)!important}'+
-    '.progwt{font-size:calc('+FS[size]+' * 0.88)!important}'+
-    '.progwd{font-size:calc('+FS[size]+' * 0.72)!important}';
+  // Scale only the text container — leaves fixed-size UI elements (icons, nav, badges) untouched
+  var pages=document.querySelector('.pages');
+  if(pages)pages.style.fontSize=FS[size];
   ['normal','large'].forEach(function(s){
     var el=document.getElementById('fs-'+s);
     if(el)el.className='font-btn'+(s===size?' active-size':'');
