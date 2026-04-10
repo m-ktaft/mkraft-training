@@ -424,46 +424,53 @@ body.fs-large{font-size:19px}
     c.width=c.height=size;
     var ctx=c.getContext('2d');
     var cx=size/2,cy=size/2;
-    // Black background
+    // Black background — full square, Android clips to circle/rounded itself
     ctx.fillStyle='#0d0d0d';
     ctx.fillRect(0,0,size,size);
-    // Gradient
-    var grd=ctx.createLinearGradient(size*0.1,size*0.1,size*0.9,size*0.9);
+    // Gradient orange
+    var grd=ctx.createLinearGradient(cx-size*0.35,cy-size*0.35,cx+size*0.35,cy+size*0.35);
     grd.addColorStop(0,'#ff6b35');
     grd.addColorStop(1,'#ff9500');
-    // Ring
+    // Ring — stroke only, no fill, so background shows through
+    var ringR=size*0.40;
+    var ringW=size*0.045;
     ctx.beginPath();
-    ctx.arc(cx,cy,size*0.42,0,Math.PI*2);
+    ctx.arc(cx,cy,ringR,0,Math.PI*2);
     ctx.strokeStyle=grd;
-    ctx.lineWidth=size*0.038;
+    ctx.lineWidth=ringW;
     ctx.stroke();
-    // Letter m
+    // Letter m — italic, centered inside ring
+    var fontSize=Math.round(size*0.44);
+    ctx.font='900 italic '+fontSize+'px Georgia,serif';
     ctx.fillStyle=grd;
-    ctx.font='900 italic '+Math.round(size*0.52)+'px Georgia,serif';
     ctx.textAlign='center';
-    ctx.textBaseline='middle';
-    ctx.fillText('m',cx,cy+size*0.04);
+    ctx.textBaseline='alphabetic';
+    // measure and center properly
+    ctx.fillText('m',cx+size*0.02,cy+fontSize*0.32);
     return c.toDataURL('image/png');
   }
-  var png=makeIcon(192);
+  var png192=makeIcon(192);
   var png512=makeIcon(512);
   var fi=document.getElementById('favicon');
   var ai=document.getElementById('ati');
   if(fi)fi.href=png512;
-  if(ai)ai.href=png;
-  // Inline PWA manifest with real PNG icon
-  var manifest={
-    name:'mkraft · Markus',short_name:'mkraft',
-    start_url:'.',display:'standalone',
-    background_color:'#0d0d0d',theme_color:'#0d0d0d',
-    icons:[{src:png512,sizes:'512x512',type:'image/png',purpose:'any maskable'},
-           {src:png,sizes:'192x192',type:'image/png',purpose:'any maskable'}]
-  };
-  var blob=new Blob([JSON.stringify(manifest)],{type:'application/manifest+json'});
-  var url=URL.createObjectURL(blob);
-  var ml=document.createElement('link');
-  ml.rel='manifest';ml.href=url;
-  document.head.appendChild(ml);
+  if(ai)ai.href=png192;
+  // PWA manifest with canvas-generated PNG icons
+  try{
+    var manifest={
+      name:'mkraft · Markus',short_name:'mkraft',
+      start_url:'.',display:'standalone',
+      background_color:'#0d0d0d',theme_color:'#0d0d0d',
+      icons:[
+        {src:png192,sizes:'192x192',type:'image/png',purpose:'any maskable'},
+        {src:png512,sizes:'512x512',type:'image/png',purpose:'any maskable'}
+      ]
+    };
+    var blob=new Blob([JSON.stringify(manifest)],{type:'application/manifest+json'});
+    var ml=document.createElement('link');
+    ml.rel='manifest';ml.href=URL.createObjectURL(blob);
+    document.head.appendChild(ml);
+  }catch(e){}
 })();
 </script>
 </head>
@@ -606,9 +613,8 @@ body.fs-large{font-size:19px}
     <div id="alt-con"></div>
     <div class="sl">Schriftgröße</div>
     <div class="settings-block">
-      <div class="font-row"><div><div class="font-lbl">Klein</div><div class="font-sub">15px</div></div><button class="font-btn" onclick="setFontSize('small')" id="fs-small">A−</button></div>
       <div class="font-row"><div><div class="font-lbl">Normal</div><div class="font-sub">17px · Standard</div></div><button class="font-btn active-size" onclick="setFontSize('normal')" id="fs-normal">A</button></div>
-      <div class="font-row"><div><div class="font-lbl">Groß</div><div class="font-sub">19px</div></div><button class="font-btn" onclick="setFontSize('large')" id="fs-large">A+</button></div>
+      <div class="font-row"><div><div class="font-lbl">Groß</div><div class="font-sub">20px · Besser lesbar</div></div><button class="font-btn" onclick="setFontSize('large')" id="fs-large">A+</button></div>
     </div>
     <div class="sl">Daten</div>
     <div class="sys-actions">
@@ -656,16 +662,16 @@ var PROG_DATA=[
   {t:'Woche 4 – Deload',     d:'2 Sätze · Gewicht reduzieren · Erholung',       sets:2},
 ];
 var EXERCISES=[
-  {id:'goblet',    name:'Goblet Squat',            type:'basis',emoji:'🦵',muscle:'Quadrizeps · Gesäß',        reps:'12–15',       note:'Langsames Tempo: 3 Sek. runter / 3 Sek. hoch. Nacken entspannt, Blick geradeaus. Ausatmen beim Hochkommen.',showFor:['r','a','b']},
-  {id:'rdl',       name:'Romanian Deadlift',        type:'basis',emoji:'🍑',muscle:'Hintere OS · Gesäß · Rücken',reps:'12–15',       note:'Rücken neutral, Hüfte nach hinten schieben. Ausatmen beim Strecken. Nicht bei Ischias — dann Glute Bridge.',showFor:['a','b']},
+  {id:'goblet',    name:'Goblet Squat',            type:'basis',emoji:'🏋️',muscle:'Quadrizeps · Gesäß',        reps:'12–15',       note:'Langsames Tempo: 3 Sek. runter / 3 Sek. hoch. Nacken entspannt, Blick geradeaus. Ausatmen beim Hochkommen.',showFor:['r','a','b']},
+  {id:'rdl',       name:'Romanian Deadlift',        type:'basis',emoji:'🦵',muscle:'Hintere OS · Gesäß · Rücken',reps:'12–15',       note:'Rücken neutral, Hüfte nach hinten schieben. Ausatmen beim Strecken. Nicht bei Ischias — dann Glute Bridge.',showFor:['a','b']},
   {id:'push',      name:'KH-Bankdrücken (neutral)', type:'basis',emoji:'💪',muscle:'Brust · Trizeps · Schulter', reps:'12–15',       note:'Neutral-Griff schont das Schultergelenk. Bei Nackenproblemen weglassen. Alternative: Floor Press.',showFor:['a','b']},
-  {id:'row',       name:'Einarmiges Rudern',        type:'basis',emoji:'🏋️',muscle:'Lat · oberer Rücken · Bizeps',reps:'12–15/Seite',note:'Abgestützt auf der Bank. Ellbogen nah am Körper. Schulterblatt am Ende bewusst einziehen.',showFor:['r','a','b']},
-  {id:'glute',     name:'Glute Bridge',             type:'basis',emoji:'🧱',muscle:'Core · Gesäß',              reps:'15–20',       note:'Langsam und bewusst. Becken oben 1–2 Sek. halten. Hervorragend zur Ischias-Prävention.',showFor:['r','a','b']},
-  {id:'seitheben', name:'Seitheben (leicht)',       type:'stab', emoji:'🧩',muscle:'Seitliche Schulter',        reps:'12–15',       note:'Pflicht zur Nackenprävention! Sehr leichtes Gewicht. Arme leicht gebeugt, kontrolliert.',showFor:['a','b']},
-  {id:'reflyes',   name:'Reverse Flyes (leicht)',   type:'stab', emoji:'🦋',muscle:'Hintere Schulter · Rücken', reps:'12–15',       note:'Oberkörper 45° vorgebeugt. Arme leicht gebeugt, langsam öffnen. Nacken neutral — kein Kopfheben!',showFor:['a','b']},
+  {id:'row',       name:'Einarmiges Rudern',        type:'basis',emoji:'↩️',muscle:'Lat · oberer Rücken · Bizeps',reps:'12–15/Seite',note:'Abgestützt auf der Bank. Ellbogen nah am Körper. Schulterblatt am Ende bewusst einziehen.',showFor:['r','a','b']},
+  {id:'glute',     name:'Glute Bridge',             type:'basis',emoji:'🍑',muscle:'Gesäß · Core',              reps:'15–20',       note:'Langsam und bewusst. Becken oben 1–2 Sek. halten. Hervorragend zur Ischias-Prävention.',showFor:['r','a','b']},
+  {id:'seitheben', name:'Seitheben (leicht)',       type:'stab', emoji:'↔️',muscle:'Seitliche Schulter',        reps:'12–15',       note:'Pflicht zur Nackenprävention! Sehr leichtes Gewicht. Arme leicht gebeugt, kontrolliert.',showFor:['a','b']},
+  {id:'reflyes',   name:'Reverse Flyes (leicht)',   type:'stab', emoji:'🦅',muscle:'Hintere Schulter · Rücken', reps:'12–15',       note:'Oberkörper 45° vorgebeugt. Arme leicht gebeugt, langsam öffnen. Nacken neutral — kein Kopfheben!',showFor:['a','b']},
   {id:'hammer',    name:'Hammer Curls',             type:'bonus',emoji:'🔨',muscle:'Bizeps · Brachialis',       reps:'12–15',       note:'Neutraler Griff (Daumen oben) — schont Handgelenke. Langsam ablassen.',showFor:['b'],altGroup:'bizeps'},
-  {id:'szcurls',   name:'SZ-Curls',                type:'bonus',emoji:'💪',muscle:'Bizeps (klassisch)',         reps:'12–15',       note:'Variante zu Hammer Curls — nicht beides an einem Tag. SZ-Stange schont die Handgelenke.',showFor:['b'],altGroup:'bizeps'},
-  {id:'tricep',    name:'Trizeps-Extension',        type:'bonus',emoji:'🏋️',muscle:'Trizeps · Oberarm',         reps:'12–15',       note:'Ellbogen fixiert, 3 Sek. absenken. Leichtes Gewicht! Nacken entspannt. Bei Schmerzen abbrechen.',showFor:['b']},
+  {id:'szcurls',   name:'SZ-Curls',                type:'bonus',emoji:'〰️',muscle:'Bizeps (klassisch)',         reps:'12–15',       note:'Variante zu Hammer Curls — nicht beides an einem Tag. SZ-Stange schont die Handgelenke.',showFor:['b'],altGroup:'bizeps'},
+  {id:'tricep',    name:'Trizeps-Extension',        type:'bonus',emoji:'💪',muscle:'Trizeps · Oberarm',         reps:'12–15',       note:'Ellbogen fixiert, 3 Sek. absenken. Leichtes Gewicht! Nacken entspannt. Bei Schmerzen abbrechen.',showFor:['b']},
 ];
 var PRINZIPIEN=[
   {icon:'🧘',title:'Nacken entspannt',   text:'Immer auf Nackenspannung achten — vor und während jeder Übung.',detail:'Der Nacken ist der sensibelste Bereich dieses Plans. Schultern unten, Kiefer locker, Blick geradeaus. Bei ersten Anzeichen sofort Gewicht reduzieren.'},
@@ -1004,28 +1010,19 @@ function renderAlternativen(){
   document.getElementById('alt-con').innerHTML=ALTERNATIVEN.map(function(a){return'<div class="alt-c"><div class="alt-h" onclick="this.nextElementSibling.classList.toggle(\'open\')"><span style="font-size:22px">'+a.icon+'</span><div style="flex:1"><div style="font-size:15px;font-weight:700;color:var(--text)">'+a.label+'</div><div style="font-size:12px;color:var(--text3)">Tippen für Details</div></div><span style="font-size:11px;color:var(--text3)">▾</span></div><div class="alt-b"><div class="alt-b-row" style="color:var(--red)">❌ Auslassen: '+a.skip+'</div><div class="alt-b-row" style="color:var(--accent)">✅ Stattdessen: '+a['do']+'</div>'+(a.why?'<div class="alt-b-row" style="color:var(--text2);font-size:13px">💬 '+a.why+'</div>':'')+'</div></div>';}).join('');
 }
 
-var FS={small:'15px',normal:'17px',large:'19px'};
+var FS={normal:'17px',large:'20px'};
 function setFontSize(size){
-  document.documentElement.style.setProperty('--fs',FS[size]);
-  ['small','normal','large'].forEach(function(s){
+  var tag=document.getElementById('fs-style');
+  if(!tag){tag=document.createElement('style');tag.id='fs-style';document.head.appendChild(tag);}
+  tag.textContent='html,body,*{font-size:'+FS[size]+'!important}';
+  ['normal','large'].forEach(function(s){
     var el=document.getElementById('fs-'+s);
     if(el)el.className='font-btn'+(s===size?' active-size':'');
   });
   try{localStorage.setItem('mkraft_fs',size);}catch(e){}
 }
 function loadFontSize(){
-  try{
-    var s=localStorage.getItem('mkraft_fs');
-    if(s&&FS[s]){
-      document.documentElement.style.setProperty('--fs',FS[s]);
-      setTimeout(function(){
-        ['small','normal','large'].forEach(function(x){
-          var el=document.getElementById('fs-'+x);
-          if(el)el.className='font-btn'+(x===s?' active-size':'');
-        });
-      },0);
-    }
-  }catch(e){}
+  try{var s=localStorage.getItem('mkraft_fs');if(s&&FS[s])setFontSize(s);}catch(e){}
 }
 
 function openModal(title,sub,val,type,cb){
