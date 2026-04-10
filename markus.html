@@ -8,8 +8,11 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#0d0d0d" id="meta-theme">
 <title>mkraft · Markus</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='115' fill='%230d0d0d'/%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%23ff6b35'/%3E%3Cstop offset='100%25' stop-color='%23ff9500'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='256' cy='256' r='220' fill='none' stroke='url(%23g)' stroke-width='22'/%3E%3Ctext x='256' y='330' text-anchor='middle' font-family='Georgia,serif' font-size='280' font-weight='900' font-style='italic' fill='url(%23g)'%3Em%3C/text%3E%3C/svg%3E">
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='115' fill='%230d0d0d'/%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%23ff6b35'/%3E%3Cstop offset='100%25' stop-color='%23ff9500'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='256' cy='256' r='220' fill='none' stroke='url(%23g)' stroke-width='22'/%3E%3Ctext x='256' y='330' text-anchor='middle' font-family='Georgia,serif' font-size='280' font-weight='900' font-style='italic' fill='url(%23g)'%3Em%3C/text%3E%3C/svg%3E">
+<meta name="apple-mobile-web-app-title" content="mkraft">
+<meta name="application-name" content="mkraft">
+<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22mkraft%20Markus%22%2C%22short_name%22%3A%22mkraft%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230d0d0d%22%2C%22theme_color%22%3A%22%230d0d0d%22%7D">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%230d0d0d'/%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%23ff6b35'/%3E%3Cstop offset='100%25' stop-color='%23ff9500'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='256' cy='256' r='210' fill='none' stroke='url(%23g)' stroke-width='20'/%3E%3Ctext x='258' y='328' text-anchor='middle' font-family='Georgia%2Cserif' font-size='264' font-weight='900' font-style='italic' fill='url(%23g)'%3Em%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' fill='%230d0d0d'/%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%23ff6b35'/%3E%3Cstop offset='100%25' stop-color='%23ff9500'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='90' cy='90' r='74' fill='none' stroke='url(%23g)' stroke-width='7'/%3E%3Ctext x='91' y='116' text-anchor='middle' font-family='Georgia%2Cserif' font-size='93' font-weight='900' font-style='italic' fill='url(%23g)'%3Em%3C/text%3E%3C/svg%3E">
 <style>
 /* ── RESET ── */
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -61,7 +64,7 @@ html{
   font-size:17px;line-height:1.5;
   overflow-x:hidden;-webkit-font-smoothing:antialiased;
 }
-body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;transition:background .25s,color .25s}
+body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;transition:background .25s,color .25s;font-size:1rem}
 
 /* ── GRADIENT LOGO HELPER ── */
 .grad{
@@ -361,11 +364,11 @@ body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;t
 .kw-edit-btn{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface2);color:var(--text2);cursor:pointer;min-height:38px;font-family:inherit}
 
 /* ── SYSTEM ── */
-.goals-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:18px}
-.goal-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:13px 14px}
-.goal-icon{font-size:22px;margin-bottom:6px}
+.goals-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:18px}
+.goal-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 13px;display:flex;align-items:flex-start;gap:10px}
+.goal-icon{font-size:20px;flex-shrink:0;margin-top:1px}
 .goal-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px;letter-spacing:-.1px}
-.goal-desc{font-size:12px;color:var(--text2);line-height:1.5}
+.goal-desc{font-size:12px;color:var(--text2);line-height:1.45}
 .pc{background:var(--surface);border:1.5px solid var(--border);border-radius:18px;padding:18px;margin-bottom:12px;cursor:pointer;transition:border-color .2s}
 .pc:active{opacity:.85}
 .pc.open{border-color:var(--accent)}
@@ -544,10 +547,10 @@ body.fs-large{font-size:19px}
   <div class="page" id="pg-system">
     <div class="sl">Meine Ziele</div>
     <div class="goals-grid">
-      <div class="goal-card"><div class="goal-icon">⚡</div><div class="goal-title">Stoffwechsel</div><div class="goal-desc">Krafttraining aktiviert den Stoffwechsel dauerhaft — auch in Ruhephasen</div></div>
-      <div class="goal-card"><div class="goal-icon">🩸</div><div class="goal-title">Insulinsensitivität</div><div class="goal-desc">Muskelarbeit verbessert die Glukoseverwertung — direkte Wirkung auf Blutzucker</div></div>
-      <div class="goal-card"><div class="goal-icon">🌿</div><div class="goal-title">Longevity</div><div class="goal-desc">Langfristige Gesundheit — Konstanz schlägt Intensität</div></div>
-      <div class="goal-card"><div class="goal-icon">🦴</div><div class="goal-title">Gelenkschutz</div><div class="goal-desc">Saubere Technik und Nacken-Prävention sind nicht verhandelbar</div></div>
+      <div class="goal-card"><div class="goal-icon">⚡</div><div><div class="goal-title">Stoffwechsel</div><div class="goal-desc">Krafttraining aktiviert den Stoffwechsel dauerhaft</div></div></div>
+      <div class="goal-card"><div class="goal-icon">🩸</div><div><div class="goal-title">Insulinsensitivität</div><div class="goal-desc">Muskelarbeit verbessert die Glukoseverwertung</div></div></div>
+      <div class="goal-card"><div class="goal-icon">🌿</div><div><div class="goal-title">Longevity</div><div class="goal-desc">Langfristige Gesundheit — Konstanz schlägt Intensität</div></div></div>
+      <div class="goal-card"><div class="goal-icon">🦴</div><div><div class="goal-title">Gelenkschutz</div><div class="goal-desc">Saubere Technik und Nacken-Prävention</div></div></div>
     </div>
     <div class="sl">Grundprinzipien</div>
     <div id="prin-con"></div>
@@ -955,12 +958,26 @@ function renderAlternativen(){
 
 var FS={small:'15px',normal:'17px',large:'19px'};
 function setFontSize(size){
-  document.documentElement.style.fontSize=FS[size];
-  document.body.style.fontSize=FS[size];
-  ['small','normal','large'].forEach(function(s){var el=document.getElementById('fs-'+s);if(el)el.className='font-btn'+(s===size?' active-size':'');});
+  var root=document.documentElement;
+  root.style.setProperty('font-size',FS[size],'important');
+  ['small','normal','large'].forEach(function(s){
+    var el=document.getElementById('fs-'+s);
+    if(el)el.className='font-btn'+(s===size?' active-size':'');
+  });
   try{localStorage.setItem('mkraft_fs',size);}catch(e){}
 }
-function loadFontSize(){try{var s=localStorage.getItem('mkraft_fs');if(s&&FS[s])setFontSize(s);}catch(e){}}
+function loadFontSize(){
+  try{
+    var s=localStorage.getItem('mkraft_fs');
+    if(s&&FS[s]){
+      document.documentElement.style.setProperty('font-size',FS[s],'important');
+      ['small','normal','large'].forEach(function(x){
+        var el=document.getElementById('fs-'+x);
+        if(el)el.className='font-btn'+(x===s?' active-size':'');
+      });
+    }
+  }catch(e){}
+}
 
 function openModal(title,sub,val,type,cb){
   document.getElementById('modal-title').textContent=title;document.getElementById('modal-sub').textContent=sub;
