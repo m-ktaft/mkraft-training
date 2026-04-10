@@ -956,69 +956,58 @@ function renderAlternativen(){
 
 var FS={normal:'17px',large:'19px'};
 function setFontSize(size){
-  // Inject a <style> tag that overrides ONLY readable text classes
-  // This is the only method that reliably works on Chrome Android
   var tag=document.getElementById('fs-override');
-  if(!tag){
-    tag=document.createElement('style');
-    tag.id='fs-override';
-    document.head.appendChild(tag);
+  if(size==='normal'){
+    // Remove overrides entirely — let CSS defaults apply
+    if(tag)tag.textContent='';
+  } else {
+    // large: only inject LARGER values than CSS defaults
+    if(!tag){tag=document.createElement('style');tag.id='fs-override';document.head.appendChild(tag);}
+    tag.textContent=[
+      // Training
+      '.ec-name{font-size:19px!important}',
+      '.ec-muscle{font-size:15px!important}',
+      '.status-q{font-size:22px!important}',
+      '.enote{font-size:15px!important}',
+      '.enote span{font-size:15px!important}',
+      '.notiz-input{font-size:19px!important}',
+      '.pb-title{font-size:15px!important}',
+      '.pb-desc{font-size:13px!important}',
+      '.sets-meta{font-size:13px!important}',
+      '.shoulder-hint{font-size:15px!important}',
+      '.save-btn{font-size:19px!important}',
+      '.done-btn{font-size:19px!important}',
+      '.tbtn{font-size:15px!important}',
+      '.status-info{font-size:15px!important}',
+      // Woche
+      '.wtitle{font-size:17px!important}',
+      '.stat-val{font-size:28px!important}',
+      '.progwt{font-size:17px!important}',
+      '.progwd{font-size:14px!important}',
+      '.reset-prog-btn{font-size:16px!important}',
+      // Verlauf
+      '.lt{font-size:16px!important}',
+      '.ls{font-size:14px!important}',
+      '.le-exrow{font-size:14px!important}',
+      '.le-notiz{font-size:15px!important}',
+      '.ex-prog-name{font-size:16px!important}',
+      '.ex-prog-last{font-size:16px!important}',
+      // Koerper
+      '.kw-stat-val{font-size:24px!important}',
+      '.kw-btn{font-size:16px!important}',
+      '.rt{font-size:15px!important}',
+      // System
+      '.goal-title{font-size:16px!important}',
+      '.goal-desc{font-size:14px!important}',
+      '.pct strong{font-size:17px!important}',
+      '.pct-text{font-size:15px!important}',
+      '.pc-detail{font-size:15px!important}',
+      '.alt-b-row{font-size:16px!important}',
+      '.font-lbl{font-size:18px!important}',
+      '.font-sub{font-size:14px!important}',
+      '.sys-btn{font-size:17px!important}',
+    ].join('');
   }
-  var sz=FS[size];
-  var sm=size==='large'?'16px':'14px';  // slightly smaller for secondary text
-  var xs=size==='large'?'13px':'11px';  // for meta/labels
-  tag.textContent=[
-    // ── TRAINING PAGE ──
-    '.ec-name{font-size:'+sz+'!important}',
-    '.ec-muscle{font-size:'+sm+'!important}',
-    '.status-q{font-size:'+sz+'!important}',
-    '.enote{font-size:'+sm+'!important}',
-    '.enote span{font-size:'+sm+'!important}',
-    '.notiz-input{font-size:'+sz+'!important}',
-    '.notiz-input::placeholder{font-size:'+sz+'!important}',
-    '.pb-title{font-size:'+sm+'!important}',
-    '.pb-desc{font-size:'+xs+'!important}',
-    '.sets-meta{font-size:'+xs+'!important}',
-    '.shoulder-hint{font-size:'+sm+'!important}',
-    '.save-btn{font-size:'+sz+'!important}',
-    '.done-btn{font-size:'+sz+'!important}',
-    '.tbtn{font-size:'+sm+'!important}',
-    '.bizeps-btn-name{font-size:'+sm+'!important}',
-    '.status-info{font-size:'+sm+'!important}',
-    // ── WOCHE PAGE ──
-    '.wtitle{font-size:'+sm+'!important}',
-    '.stat-val{font-size:'+sz+'!important}',
-    '.stat-lbl{font-size:'+xs+'!important}',
-    '.progwt{font-size:'+sm+'!important}',
-    '.progwd{font-size:'+xs+'!important}',
-    '.ptag{font-size:'+xs+'!important}',
-    '.reset-prog-btn{font-size:'+sm+'!important}',
-    // ── VERLAUF PAGE ──
-    '.lt{font-size:'+sm+'!important}',
-    '.ls{font-size:'+xs+'!important}',
-    '.le-exrow{font-size:'+sm+'!important}',
-    '.le-notiz{font-size:'+sm+'!important}',
-    '.ex-prog-name{font-size:'+sm+'!important}',
-    '.ex-prog-last{font-size:'+sm+'!important}',
-    '.ex-prog-date{font-size:'+xs+'!important}',
-    '.ex-prog-kg{font-size:'+xs+'!important}',
-    // ── KÖRPER PAGE ──
-    '.kw-stat-val{font-size:'+sz+'!important}',
-    '.kw-stat-label{font-size:'+xs+'!important}',
-    '.kw-btn{font-size:'+sm+'!important}',
-    '.rt{font-size:'+sm+'!important}',
-    // ── SYSTEM PAGE ──
-    '.goal-title{font-size:'+sm+'!important}',
-    '.goal-desc{font-size:'+xs+'!important}',
-    '.pct strong{font-size:'+sm+'!important}',
-    '.pct-text{font-size:'+xs+'!important}',
-    '.pc-detail{font-size:'+xs+'!important}',
-    '.alt-b-row{font-size:'+sm+'!important}',
-    '.font-lbl{font-size:'+sm+'!important}',
-    '.font-sub{font-size:'+xs+'!important}',
-    '.settings-title{font-size:'+sm+'!important}',
-    '.sys-btn{font-size:'+sm+'!important}',
-  ].join('');
   ['normal','large'].forEach(function(s){
     var el=document.getElementById('fs-'+s);
     if(el)el.className='font-btn'+(s===size?' active-size':'');
@@ -1027,6 +1016,7 @@ function setFontSize(size){
 }
 function loadFontSize(){
   try{var s=localStorage.getItem('mkraft_fs');if(s&&FS[s])setFontSize(s);}catch(e){}
+}catch(e){}
 }
 
 function openModal(title,sub,val,type,cb){
