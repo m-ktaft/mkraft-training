@@ -10,8 +10,9 @@
 <title>mkraft · Markus</title>
 <meta name="apple-mobile-web-app-title" content="mkraft">
 <meta name="application-name" content="mkraft">
-<link rel="icon" id="favicon" type="image/png">
-<link rel="apple-touch-icon" id="ati" type="image/png">
+<link rel="icon" type="image/png" href="icon-512.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="manifest" href="manifest.json">
 <style>
 /* ── RESET ── */
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -417,62 +418,6 @@ body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;t
 body.fs-small{font-size:15px}
 body.fs-large{font-size:19px}
 </style>
-<script>
-(function(){
-  function makeIcon(size){
-    var c=document.createElement('canvas');
-    c.width=c.height=size;
-    var ctx=c.getContext('2d');
-    var cx=size/2,cy=size/2;
-    // Black background — full square, Android clips to circle/rounded itself
-    ctx.fillStyle='#0d0d0d';
-    ctx.fillRect(0,0,size,size);
-    // Gradient orange
-    var grd=ctx.createLinearGradient(cx-size*0.35,cy-size*0.35,cx+size*0.35,cy+size*0.35);
-    grd.addColorStop(0,'#ff6b35');
-    grd.addColorStop(1,'#ff9500');
-    // Ring — stroke only, no fill, so background shows through
-    var ringR=size*0.40;
-    var ringW=size*0.045;
-    ctx.beginPath();
-    ctx.arc(cx,cy,ringR,0,Math.PI*2);
-    ctx.strokeStyle=grd;
-    ctx.lineWidth=ringW;
-    ctx.stroke();
-    // Letter m — italic, centered inside ring
-    var fontSize=Math.round(size*0.44);
-    ctx.font='900 italic '+fontSize+'px Georgia,serif';
-    ctx.fillStyle=grd;
-    ctx.textAlign='center';
-    ctx.textBaseline='alphabetic';
-    // measure and center properly
-    ctx.fillText('m',cx+size*0.02,cy+fontSize*0.32);
-    return c.toDataURL('image/png');
-  }
-  var png192=makeIcon(192);
-  var png512=makeIcon(512);
-  var fi=document.getElementById('favicon');
-  var ai=document.getElementById('ati');
-  if(fi)fi.href=png512;
-  if(ai)ai.href=png192;
-  // PWA manifest with canvas-generated PNG icons
-  try{
-    var manifest={
-      name:'mkraft · Markus',short_name:'mkraft',
-      start_url:'.',display:'standalone',
-      background_color:'#0d0d0d',theme_color:'#0d0d0d',
-      icons:[
-        {src:png192,sizes:'192x192',type:'image/png',purpose:'any maskable'},
-        {src:png512,sizes:'512x512',type:'image/png',purpose:'any maskable'}
-      ]
-    };
-    var blob=new Blob([JSON.stringify(manifest)],{type:'application/manifest+json'});
-    var ml=document.createElement('link');
-    ml.rel='manifest';ml.href=URL.createObjectURL(blob);
-    document.head.appendChild(ml);
-  }catch(e){}
-})();
-</script>
 </head>
 <body>
 
@@ -1014,7 +959,25 @@ var FS={normal:'17px',large:'20px'};
 function setFontSize(size){
   var tag=document.getElementById('fs-style');
   if(!tag){tag=document.createElement('style');tag.id='fs-style';document.head.appendChild(tag);}
-  tag.textContent='html,body,*{font-size:'+FS[size]+'!important}';
+  // Only target readable text, NOT icons, badges, buttons with fixed sizes, nav
+  tag.textContent=
+    '.ec-name{font-size:'+FS[size]+'!important}'+
+    '.ec-muscle{font-size:calc('+FS[size]+' * 0.75)!important}'+
+    '.enote{font-size:calc('+FS[size]+' * 0.82)!important}'+
+    '.status-q{font-size:calc('+FS[size]+' * 1.4)!important}'+
+    '.sb{font-size:calc('+FS[size]+' * 0.72)!important}'+
+    '.prog-badge .pb-title{font-size:calc('+FS[size]+' * 0.82)!important}'+
+    '.prog-badge .pb-desc{font-size:calc('+FS[size]+' * 0.7)!important}'+
+    '.goal-title{font-size:calc('+FS[size]+' * 0.78)!important}'+
+    '.goal-desc{font-size:calc('+FS[size]+' * 0.78)!important}'+
+    '.pc .pct strong{font-size:calc('+FS[size]+' * 0.88)!important}'+
+    '.pc .pct-text{font-size:calc('+FS[size]+' * 0.78)!important}'+
+    '.pc-detail{font-size:calc('+FS[size]+' * 0.78)!important}'+
+    '.le .lt{font-size:calc('+FS[size]+' * 0.82)!important}'+
+    '.notiz-input{font-size:'+FS[size]+'!important}'+
+    '.sets-meta{font-size:calc('+FS[size]+' * 0.65)!important}'+
+    '.progwt{font-size:calc('+FS[size]+' * 0.88)!important}'+
+    '.progwd{font-size:calc('+FS[size]+' * 0.72)!important}';
   ['normal','large'].forEach(function(s){
     var el=document.getElementById('fs-'+s);
     if(el)el.className='font-btn'+(s===size?' active-size':'');
