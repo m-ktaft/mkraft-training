@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weg A & B — Übungsvorschau</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0d0d0d;color:#f5f5f5;font-family:-apple-system,sans-serif;padding:16px;max-width:480px;margin:0 auto}
+h1{font-size:17px;font-weight:700;color:#ff6b35;margin-bottom:4px}
+.sub{font-size:12px;color:#808080;margin-bottom:20px}
+.ex{background:#242424;border-radius:16px;overflow:hidden;margin-bottom:20px}
+.ex-head{padding:14px 16px;border-bottom:1px solid rgba(255,255,255,0.08)}
+.ex-name{font-size:15px;font-weight:700;color:#f5f5f5}
+.ex-muscle{font-size:11px;color:#808080;margin-top:2px}
+
+/* WEG B: Animation */
+.anim-box{background:#181818;display:flex;justify-content:center;align-items:center;padding:16px;min-height:160px}
+.anim-label{font-size:10px;color:#ff6b35;text-align:center;padding:6px 16px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+
+/* WEG A: YouTube */
+.yt-btn{display:flex;align-items:center;gap:14px;padding:16px;text-decoration:none;background:#1e1e1e;border-top:1px solid rgba(255,255,255,0.06)}
+.yt-icon{width:48px;height:48px;border-radius:10px;background:#ff0000;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.yt-icon svg{width:22px;height:22px;fill:white}
+.yt-info{flex:1}
+.yt-title{font-size:13px;font-weight:600;color:#f5f5f5}
+.yt-ch{font-size:11px;color:#808080;margin-top:2px}
+.yt-link{font-size:11px;color:#ff6b35;margin-top:5px}
+
+/* Animations */
+@keyframes squat{0%,100%{transform:translateY(0)}50%{transform:translateY(28px)}}
+@keyframes rdl-bow{0%,100%{transform:rotate(0deg)}50%{transform:rotate(-40deg)}}
+@keyframes rdl-bar{0%,100%{transform:translateY(0)}50%{transform:translateY(42px)}}
+@keyframes press{0%,100%{transform:translateY(0)}50%{transform:translateY(24px)}}
+@keyframes row-pull{0%,100%{transform:translateX(0)}50%{transform:translateX(-28px)}}
+@keyframes bridge{0%,100%{transform:translateY(8px)}50%{transform:translateY(-4px)}}
+@keyframes lateral{0%,100%{transform:rotate(0deg)}50%{transform:rotate(-25deg)}}
+@keyframes fly{0%,100%{transform:rotate(0deg)}50%{transform:rotate(30deg)}}
+@keyframes curl{0%,100%{transform:rotate(0deg)}50%{transform:rotate(-55deg)}}
+@keyframes tricep{0%,100%{transform:rotate(0deg)}50%{transform:rotate(55deg)}}
+</style>
+</head>
+<body>
+<h1>Weg A & B — Alle 10 Übungen</h1>
+<p class="sub">Animation (Weg B) + YouTube-Link (Weg A) für jede Übung</p>
+
+<!-- 1. GOBLET SQUAT -->
+<div class="ex">
+  <div class="ex-head"><div class="ex-name">🏋️ Goblet Squat</div><div class="ex-muscle">Quadrizeps · Gesäß · Core</div></div>
+  <div class="anim-box">
+    <svg width="120" height="150" viewBox="0 0 120 150">
+      <!-- Beine statisch -->
+      <line x1="48" y1="98" x2="38" y2="145" stroke="#555" stroke-width="8" stroke-linecap="round"/>
+      <line x1="72" y1="98" x2="82" y2="145" stroke="#555" stroke-width="8" stroke-linecap="round"/>
+      <line x1="38" y1="145" x2="32" y2="145" stroke="#555" stroke-width="6" stroke-linecap="round"/>
+      <line x1="82" y1="145" x2="88" y2="145" stroke="#555" stroke-width="6" stroke-linecap="round"/>
+      <!-- Animierter Oberkörper -->
+      <g style="transform-origin:60px 98px;animation:squat 2s ease-in-out infinite">
+        <circle cx="60" cy="22" r="15" fill="none" stroke="#f5f5f5" stroke-width="3"/>
+        <!-- Hantel vor Brust -->
+        <rect x="40" y="50" width="40" height="10" rx="4" fill="#333" stroke="#ff6b35" stroke-width="1.5"/>
+        <line x1="60" y1="37" x2="60" y2="98" stroke="#f5f5f5" stroke-width="7" stroke-linecap="round"/>
+        <line x1="60" y1="58" x2="34" y2="72" stroke="#f5f5f5" stroke-width="6" stroke-linecap="round"/>
+        <line x1="60" y1="58" x2="86" y2="72" stroke="#f5f5f5" stroke-width="6" stroke-linecap="round"/>
+      </g>
+      <!-- Wirbelsäule neutral -->
+      <line x1="60" y1="37" x2="60" y2="98" stroke="#ff6b35" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.5" style="animation:squat 2s ease-in-out infinite;transform-origin:60px 98px"/>
+    </svg>
+  </div>
+  <div class="anim-label">Frontansicht · Kniebeuge tief · Rücken aufrecht</div>
+  <a class="yt-btn" href="https://www.youtube.com/results?search_query=Goblet+Squat+Kurzhantel+Ausf%C3%BChrung+deutsch" target="_blank">
+    <div class="yt-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+    <div class="yt-info">
+      <div class="yt-title">Goblet Squat — Ausführung deutsch</div>
+      <div class="yt-ch">YouTube Suche · mehrere Videos</div>
+      <div class="yt-link">▶ Videos ansehen →</div>
+    </div>
+  </a>
+  <a class="yt-btn" href="https://www.youtube.com/watch?v=MeIiIdhvXT4" target="_blank">
+    <div class="yt-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+    <div class="yt-info">
+      <div class="yt-title">Goblet Squat — Sascha Huber</div>
+      <div class="yt-ch">Direkt-Link zum Kanal</div>
+      <div class="yt-link">▶ Video ansehen →</div>
+    </div>
+  </a>
+</div>
+
+<!-- 2. ROMANIAN DEADLIFT -->
+<div class="ex">
+  <div class="ex-head"><div class="ex-name">🏗️ Romanian Deadlift</div><div class="ex-muscle">Hintere OS · Gesäß · Rücken</div></div>
+  <div class="anim-box">
+    <svg width="160" height="150" viewBox="0 0 160 150">
+      <!-- Beine statisch -->
+      <line x1="75" y1="105" x2="65" y2="145" stroke="#555" stroke-width="9" stroke-linecap="round"/>
+      <line x1="95" y1="105" x2="105" y2="145" stroke="#555" stroke-width="8" stroke-linecap="round"/>
+      <line x1="65" y1="145" x2="55" y2="145" stroke="#555" stroke-width="7" stroke-linecap="round"/>
+      <line x1="105" y1="145" x2="115" y2="145" stroke="#555" stroke-width="7" stroke-linecap="round"/>
+      <!-- Animierter Oberkörper (beugt sich vor) -->
+      <g style="transform-origin:85px 105px;animation:rdl-bow 2.4s ease-in-out infinite">
+        <circle cx="110" cy="22" r="15" fill="none" stroke="#f5f5f5" stroke-width="3"/>
+        <line x1="105" y1="37" x2="85" y2="105" stroke="#f5f5f5" stroke-width="7" stroke-linecap="round"/>
+        <!-- Wirbelsäule neutral -->
+        <line x1="105" y1="37" x2="85" y2="105" stroke="#ff6b35" stroke-width="2" stroke-dasharray="5,3" opacity="0.8"/>
+        <!-- Arme -->
+        <line x1="95" y1="65" x2="68" y2="72" stroke="#f5f5f5" stroke-width="6" stroke-linecap="round"/>
+        <line x1="95" y1="65" x2="118" y2="60" stroke="#f5f5f5" stroke-width="6" stroke-linecap="round"/>
+      </g>
+      <!-- Hanteln animiert -->
+      <g style="animation:rdl-bar 2.4s ease-in-out infinite">
+        <rect x="30" y="88" width="8" height="22" rx="3" fill="#555" stroke="#888" stroke-width="1"/>
+        <rect x="38" y="86" width="30" height="7" rx="2" fill="#888"/>
+        <rect x="105" y="88" width="8" height="22" rx="3" fill="#555" stroke="#888" stroke-width="1"/>
+        <rect x="95" y="86" width="30" height="7" rx="2" fill="#888"/>
+      </g>
+      <text x="80" y="148" text-anchor="middle" font-size="9" fill="#ff6b35" font-family="sans-serif">Seitenansicht</text>
+    </svg>
+  </div>
+  <div class="anim-label">Seitenansicht · Hüfte nach hinten · Rücken neutral</div>
+  <a class="yt-btn" href="https://www.youtube.com/results?search_query=Romanian+Deadlift+Kurzhantel+deutsch+Ausf%C3%BChrung" target="_blank">
+    <div class="yt-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+    <div class="yt-info">
+      <div class="yt-title">Romanian Deadlift — deutsch</div>
+      <div class="yt-ch">YouTube Suche · mehrere Videos</div>
+      <div class="yt-link">▶ Videos ansehen →</div>
+    </div>
+  </a>
+  <a class="yt-btn" href="https://www.youtube.com/watch?v=2SHsk9AzdjA" target="_blank">
+    <div class="yt-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+    <div class="yt-info">
+      <div class="yt-title">RDL Technik — Sascha Huber</div>
+      <div class="yt-ch">Direkt-Link</div>
+      <div class="yt-link">▶ Video ansehen →</div>
+    </div>
+  </a>
+</div>
+
+<!-- 3. BANKDRÜCKEN -->
+<div class="ex">
+  <div class="ex-head"><div class="ex-name">💪 KH-Bankdrücken (neutral)</div><div class="ex-muscle">Brust · Trizeps · Schulter</div></div>
+  <div class="anim-box">
+    <svg width="200" height="130" viewBox="0 0 200 130">
+      <!-- Bank -->
+      <rect x="20" y="95" width="160" height="10" rx="4" fill="#2a2a2a" stroke="#444" stroke-width="1.5"/>
+      <rect x="28" y="105" width="8" height="18" rx="2" fill="#222"/>
+      <rect x="164" y="105" width="8" height="18" rx="2" fill="#222"/>
+      <!-- Liegender Kopf -->
+      <circle cx="170" cy="75" r="13" fill="none" stroke="#f5f5f5" stroke-width="3"/>
+      <!-- Körper -->
+      <line x1="158" y1="82" x2="60" y2="93" stroke="#f5f5f5" stroke-width="9" stroke-linecap="round"/>
+      <!-- Beine -->
+      <line x1="60" y1="93" x2="45" y2="125" stroke="#555" stroke-width="8" stroke-linecap="round"/>
+      <line x1="60" y1="93" x2="80" y2="125" stroke="#555" stroke-width="8" stroke-linecap="round"/>
+      <!-- Arme animiert (Drücken) -->
+      <g style="transform-origin:110px 83px;animation:press 2s ease-in-out infinite">
+        <line x1="110" y1="83" x2="82" y2="55" stroke="#f5f5f5" stroke-width="6" stroke-linecap="round"/>
+        <line x1="110" y1="83" x2="138" y2="55" stroke="#f5f5f5" stroke-width="6" stroke-linecap="round"/>
+        <!-- Hanteln -->
+        <rect x="68" y="45" width="8" height="20" rx="3" fill="#555" stroke="#ff6b35" stroke-width="1.5"/>
+        <rect x="125" y="45" width="8" height="20" rx="3" fill="#555" stroke="#ff6b35" stroke-width="1.5"/>
+      </g>
+      <text x="100" y="128" text-anchor="middle" font-size="9" fill="#ff6b35" font-family="sans-serif">Neutral-Griff ↕ schont Schulter</text>
+    </svg>
+  </div>
+  <div class="anim-label">Seitenansicht · Drücken nach oben · Neutral-Griff</div>
+  <a class="yt-btn" href="https://www.youtube.com/results?search_query=Kurzhantel+Bankdr%C3%BCcken+neutral+Griff+deutsch" target="_blank">
+    <div class="yt-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+    <div class="yt-info">
+      <div class="yt-title">KH-Bankdrücken Neutral-Griff</div>
+      <div class="yt-ch">YouTube Suche</div>
+      <div class="yt-link">▶ Videos ansehen →</div>
+    </div>
+  </a>
+</div>
+
+<!-- 4. EINARMIGES RUDERN -->
+<div class="ex">
+  <div class="ex-head"><div class="ex-name">🚣 Einarmiges Rudern</div><div class="ex-muscle">Lat · oberer Rücken · Bizeps</div></div>
+  <div class="anim-box">
+    <svg width="200" height="140" viewBox="0 0 200 140">
+      <!-- Bank -->
+      <rect x="10" y="100" width="85" height="8" rx="3" fill="#2a2a2a" stroke="#444" stroke-width="1.5"/>
+      <rect x="14" y="108" width="7" height="14" rx="2" fill="#222"/>
+      <!-- Kopf -->
+      <circle cx="160" cy="32" r="13" fill="none" stroke="#f5f5f5" stroke-width="3"/>
+      <!-- Rumpf vorgebeugt -->
+      <line x1="148" y1="43" x2="75" y2="88" stroke="#f5f5f5" stroke-width="9" stroke-linecap="round"/>
+      <!-- Abstützarm auf Bank -->
+      <line x1="108" y1="64" x2="55" y2="78" stroke="#f5f5f5" stroke-width="6" stroke-linecap="round"/>
+      <line x1="55" y1="78" x2="45" y2="100" stroke="#f5f5f5" stroke-width="6" stroke-linecap="round"/>
+      <!-- Zugarm animiert -->
+      <g style="transform-origin:108px 64px;animation:row-pull 2s ease-in-out infinite">
+        <line x1="108" y1="64" x2="148" y2="80" stroke="#f5f5f5" stroke-width="6" stroke-linecap="round"/>
+        <line x1="148" y1="80" x2="158" y2="110" stroke="#f5f5f5" stroke-width="6" stroke-linecap="round"/>
+        <!-- Hantel -->
+        <rect x="152" y="108" width="8" height="22" rx="3" fill="#555" stroke="#ff6b35" stroke-width="1.5"/>
+      </g>
+      <!-- Beine -->
+      <line x1="75" y1="88" x2="62" y2="130" stroke="#555" stroke-width="9" stroke-linecap="round"/>
+      <line x1="75" y1="88" x2="92" y2="130" stroke="#555" stroke-width="8" stroke-linecap="round"/>
+      <text x="100" y="138" text-anchor="middle" font-size="9" fill="#ff6b35" font-family="sans-serif">Seitenansicht · Ellbogen nah am Körper</text>
+    </svg>
+  </div>
+  <div class="anim-label">Seitenansicht · Zugbewegung nach oben</div>
+  <a class="yt-btn" href="https://www.youtube.com/results?search_query=einarmiges+Rudern+Kurzhantel+Ausf%C3%BChrung+deutsch" target="_blank">
+    <div class="yt-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+    <div class="yt-info">
+      <div class="yt-title">Einarmiges Rudern — deutsch</div>
+      <div class="yt-ch">YouTube Suche</div>
+      <div class="yt-link">▶ Videos ansehen →</div>
+    </div>
+  </a>
+</div>
+
+<!-- 5. GLUTE BRIDGE -->
+<div class="ex">
+  <div class="ex-head"><div class="ex-name">⛩️ Glute Bridge</div><div class="ex-muscle">Gesäß · Core</div></div>
+  <div class="anim-box">
+    <svg width="220" height="110" viewBox="0 0 220 110">
+      <line x1="10" y1="100" x2="210" y2="100" stroke="#333" stroke-width="2"/>
+      <!-- Kopf -->
+      <circle cx="190" cy="68" r="13" fill="none" stroke="#f5f5f5" stroke-width="3"/>
+      <!-- Schultern/Oberkörper liegend -->
+      <line x1="178" y1="76" x2="100" y2="90" stroke="#f5f5f5" stroke-width="9" stroke-linecap="round"/>
+      <!-- Arme flach -->
+      <line x1="155" y1="82" x2="140" y2="100" stroke="#555" stroke-width="6" stroke-linecap="round"/>
+      <line x1="125" y1="87" x2="110" y2="100" stroke="#555" stroke-width="6" stroke-linecap="round"/>
+      <!-- Hüfte animiert (hebt sich) -->
+      <g style="animation:bridge 2s ease-in-out infinite">
+        <circle cx="100" cy="85" r="7" fill="#ff6b35"/>
+        <!-- Oberschenkel -->
+        <line x1="100" y1="85" x2="72" y2="68" stroke="#f5f5f5" stroke-width="9" stroke-linecap="round"/>
+        <line x1="100" y1="85" x2="128" y2="68" stroke="#f5f5f5" stroke-width="9" stroke-linecap="round"/>
+        <!-- Unterschenkel senkrecht -->
+        <line x1="72" y1="68" x2="68" y2="100" stroke="#f5f5f5" stroke-width="9" stroke-linecap="round"/>
+        <line x1="128" y1="68" x2="132" y2="100" stroke="#f5f5f5" stroke-width="9" stroke-linecap="round"/>
+      </g>
+      <text x="110" y="108" text-anchor="middle" font-size="9" fill="#ff6b35" font-family="sans-serif">Hüfte hoch · 1–2 Sek. halten</text>
+    </svg>
+  </div>
+  <div class="anim-label">Seitenansicht · Hüfte hebt und senkt sich</div>
+  <a class="yt-btn" href="https://www.youtube.com/results?search_query=Glute+Bridge+Ausf%C3%BChrung+deutsch+richtig" target="_blank">
+    <div class="yt-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+    <div class="yt-info">
+      <div class="yt-title">Glute Bridge — Ausführung deutsch</div>
+      <div class="yt-ch">YouTube Suche</div>
+      <div class="yt-link">▶ Videos ansehen →</div>
+    </div>
+  </a>
+</div>
+
+<!-- 6. SEITHEBEN -->
+<div class="ex">
+  <div class="ex-head"><div class="ex-name">🕊️ Seitheben (leicht)</div><div class="ex-muscle">Seitliche Schulter</div></div>
+  <div class="anim-box">
+    <svg width="180" height="150" viewBox="0 0 180 150">
+      <!-- Körper -->
+      <circle cx="90" cy="25" r="14" fill="none" stroke="#f5f5f5" stroke-width="3"/>
+      <line x1="90" y1="39" x2="90" y2="105" stroke="#f5f5f5" stroke-width="8" stroke-linecap="round"/>
+      <!-- Beine -->
+      <line x1="90" y1="105" x2="76" y2="145" stroke="#555" stroke-width="8" stroke-linecap="round"/>
+      <line x1="90" y1="105" x2="104" y2="145" stroke="#555" stroke-width="8" stroke-linecap="round"/>
+      <!-- Linker Arm animiert -->
+      <g style="transform-origin:90px 62px;animation:lateral 2s ease-in-out infinite">
+        <line x1="90" y1="62" x2="40" y2="80" stroke="#f5f5f5" stroke-width="6" stroke-linecap="round"/>
+        <circle cx="32" cy="83" r="6" fill="#333" stroke="#ff6b35" stroke-width="1.5"/>
+      </g>
+      <!-- Rechter Arm animiert (gespiegelt) -->
+      <g style="transform-origin:90px 62px;animation:lateral 2s ease-in-out infinite;transform:scaleX(-1) translateX(-180px)">
+        <line x1="90" y1="62" x2="40" y2="80" stroke="#f5f5f5" stroke-width="6" stroke-linecap="round"/>
+        <circle cx="32" cy="83" r="6" fill="#333" stroke="#ff6b35" stroke-width="1.5"/>
+      </g>
+      <!-- Max Linie -->
+      <line x1="20" y1="62" x2="160" y2="62" stroke="#ff6b35" stroke-width="1" stroke-dasharray="5,4" opacity="0.5"/>
+      <text x="90" y="148" text-anchor="middle" font-size="9" fill="#ff6b35" font-family="sans-serif">Frontansicht · max. Schulterhöhe</text>
+    </svg>
+  </div>
+  <div class="anim-label">Frontansicht · Arme heben seitlich bis Schulterhöhe</div>
+  <a class="yt-btn" href="https://www.youtube.com/results?search_query=Seitheben+Schulter+Kurzhantel+Ausf%C3%BChrung+deutsch" target="_blank">
+    <div class="yt-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+    <div class="yt-info">
+      <div class="yt-title">Seitheben — Ausführung deutsch</div>
+      <div class="yt-ch">YouTube Suche</div>
+      <div class="yt-link">▶ Videos ansehen →</div>
+    </div>
+  </a>
+</div>
+
+<!-- 7. REVERSE FLYES -->
+<div class="ex">
+  <div class="ex-head"><div class="ex-name">🦅 Reverse Flyes (leicht)</div><div class="ex-muscle">Hintere Schulter · Rücken</div></div>
+  <div class="anim-box">
+    <svg width="200" height="140" viewBox="0 0 200 140">
+      <!-- Kopf schräg nach unten -->
+      <circle cx="155" cy="30" r="13" fill="none" stroke="#f5f5f5" stroke-width="3"/>
+      <!-- Rumpf 45° vorgebeugt -->
+      <line x1="143" y1="40" x2="80" y2="90" stroke="#f5f5f5" stroke-width="9" stroke-linecap="round"/>
+      <!-- Beine -->
+      <line x1="80" y1="90" x2="68" y2="132" stroke="#555" stroke-width="9" stroke-linecap="round"/>
+      <line x1="80" y1="90" x2="96" y2="132" stroke="#555" stroke-width="8" stroke-linecap="round"/>
+      <line x1="10" y1="134" x2="190" y2="134" stroke="#333" stroke-width="1.5"/>
+      <!-- Linker Arm animiert (öffnet) -->
+      <g style="transform-origin:108px 62px;animation:fly 2s ease-in-out infinite">
+        <line x1="108" y1="62" x2="58" y2="48" stroke="#f5f5f5" stroke-width="6" stroke-linecap="round"/>
+        <circle cx="48" cy="45" r="6" fill="#333" stroke="#ff6b35" stroke-width="1.5"/>
+      </g>
+      <!-- Rechter Arm animiert -->
+      <g style="transform-origin:108px 62px;animation:fly 2s ease-in-out infinite;transform:scaleX(-1) translateX(-216px)">
+        <line x1="108" y1="62" x2="58" y2="48" stroke="#f5f5f5" stroke-width="6" stroke-linecap="round"/>
+        <circle cx="48" cy="45" r="6" fill="#333" stroke="#ff6b35" stroke-width="1.5"/>
+      </g>
+      <text x="100" y="140" text-anchor="middle" font-size="9" fill="#ff6b35" font-family="sans-serif">Frontansicht · 45° vorgebeugt</text>
+    </svg>
+  </div>
+  <div class="anim-label">Frontansicht · Arme öffnen nach hinten oben</div>
+  <a class="yt-btn" href="https://www.youtube.com/results?search_query=Reverse+Flyes+Kurzhantel+deutsch+hintere+Schulter" target="_blank">
+    <div class="yt-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+    <div class="yt-info">
+      <div class="yt-title">Reverse Flyes — Ausführung deutsch</div>
+      <div class="yt-ch">YouTube Suche</div>
+      <div class="yt-link">▶ Videos ansehen →</div>
+    </div>
+  </a>
+</div>
+
+<!-- 8. HAMMER CURLS -->
+<div class="ex">
+  <div class="ex-head"><div class="ex-name">🔨 Hammer Curls</div><div class="ex-muscle">Bizeps · Brachialis</div></div>
+  <div class="anim-box">
+    <svg width="160" height="150" viewBox="0 0 160 150">
+      <circle cx="80" cy="22" r="14" fill="none" stroke="#f5f5f5" stroke-width="3"/>
+      <line x1="80" y1="36" x2="80" y2="105" stroke="#f5f5f5" stroke-width="8" stroke-linecap="round"/>
+      <line x1="80" y1="105" x2="65" y2="145" stroke="#555" stroke-width="8" stroke-linecap="round"/>
+      <line x1="80" y1="105" x2="95" y2="145" stroke="#555" stroke-width="8" stroke-linecap="round"/>
+      <!-- Linker Arm: hängt -->
+      <line x1="80" y1="60" x2="48" y2="75" stroke="#f5f5f5" stroke-width="6" stroke-linecap="round"/>
+      <line x1="48" y1="75" x2="44" y2="112" stroke="#f5f5f5" stroke-width="6" stroke-linecap="round"/>
+      <rect x="37" y="110" width="8" height="20" rx="3" fill="#555" stroke="#888" stroke-width="1.5"/>
+      <!-- Rechter Arm animiert (curlt) -->
+      <g style="transform-origin:112px 75px;animation:curl 2s ease-in-out infinite">
+        <line x1="80" y1="60" x2="112" y2="75" stroke="#f5f5f5" stroke-width="6" stroke-linecap="round"/>
+        <line x1="112" y1="75" x2="116" y2="112" stroke="#f5f5f5" stroke-width="6" stroke-linecap="round"/>
+        <rect x="110" y="110" width="8" height="20" rx="3" fill="#555" stroke="#ff6b35" stroke-width="1.5"/>
+      </g>
+      <text x="80" y="148" text-anchor="middle" font-size="9" fill="#ff6b35" font-family="sans-serif">Frontansicht · Daumen oben</text>
+    </svg>
+  </div>
+  <div class="anim-label">Frontansicht · Neutral-Griff · ein Arm curlt</div>
+  <a class="yt-btn" href="https://www.youtube.com/results?search_query=Hammer+Curls+Kurzhantel+Ausf%C3%BChrung+deutsch" target="_blank">
+    <div class="yt-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+    <div class="yt-info">
+      <div class="yt-title">Hammer Curls — Ausführung deutsch</div>
+      <div class="yt-ch">YouTube Suche</div>
+      <div class="yt-link">▶ Videos ansehen →</div>
+    </div>
+  </a>
+</div>
+
+<!-- 9. SZ-CURLS -->
+<div class="ex">
+  <div class="ex-head"><div class="ex-name">〰️ SZ-Curls</div><div class="ex-muscle">Bizeps (klassisch)</div></div>
+  <div class="anim-box">
+    <svg width="180" height="150" viewBox="0 0 180 150">
+      <circle cx="90" cy="22" r="14" fill="none" stroke="#f5f5f5" stroke-width="3"/>
+      <line x1="90" y1="36" x2="90" y2="105" stroke="#f5f5f5" stroke-width="8" stroke-linecap="round"/>
+      <line x1="90" y1="105" x2="74" y2="145" stroke="#555" stroke-width="8" stroke-linecap="round"/>
+      <line x1="90" y1="105" x2="106" y2="145" stroke="#555" stroke-width="8" stroke-linecap="round"/>
+      <!-- Beide Arme curlen synchron -->
+      <g style="transform-origin:90px 62px;animation:curl 2.2s ease-in-out infinite">
+        <line x1="90" y1="62" x2="52" y2="78" stroke="#f5f5f5" stroke-width="6" stroke-linecap="round"/>
+        <line x1="90" y1="62" x2="128" y2="78" stroke="#f5f5f5" stroke-width="6" stroke-linecap="round"/>
+        <line x1="52" y1="78" x2="46" y2="115" stroke="#f5f5f5" stroke-width="6" stroke-linecap="round"/>
+        <line x1="128" y1="78" x2="134" y2="115" stroke="#f5f5f5" stroke-width="6" stroke-linecap="round"/>
+        <!-- SZ-Stange -->
+        <path d="M34 118 Q42 112 50 118 Q58 124 66 118 Q74 112 82 118 Q90 124 98 118 Q106 112 114 118 Q122 124 130 118 Q138 112 146 118" fill="none" stroke="#aaa" stroke-width="3.5" stroke-linecap="round"/>
+        <rect x="25" y="112" width="8" height="18" rx="3" fill="#555" stroke="#888"/>
+        <rect x="147" y="112" width="8" height="18" rx="3" fill="#555" stroke="#888"/>
+      </g>
+      <text x="90" y="148" text-anchor="middle" font-size="9" fill="#ff6b35" font-family="sans-serif">Frontansicht · SZ-Stange · Ellbogen fixiert</text>
+    </svg>
+  </div>
+  <div class="anim-label">Frontansicht · beide Arme · SZ-Stange</div>
+  <a class="yt-btn" href="https://www.youtube.com/results?search_query=SZ+Curls+Bizeps+Ausf%C3%BChrung+deutsch" target="_blank">
+    <div class="yt-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+    <div class="yt-info">
+      <div class="yt-title">SZ-Curls — Ausführung deutsch</div>
+      <div class="yt-ch">YouTube Suche</div>
+      <div class="yt-link">▶ Videos ansehen →</div>
+    </div>
+  </a>
+</div>
+
+<!-- 10. TRIZEPS-EXTENSION -->
+<div class="ex">
+  <div class="ex-head"><div class="ex-name">⚡ Trizeps-Extension</div><div class="ex-muscle">Trizeps · Oberarm</div></div>
+  <div class="anim-box">
+    <svg width="200" height="130" viewBox="0 0 200 130">
+      <!-- Bank -->
+      <rect x="15" y="95" width="170" height="10" rx="4" fill="#2a2a2a" stroke="#444" stroke-width="1.5"/>
+      <rect x="23" y="105" width="8" height="18" rx="2" fill="#222"/>
+      <rect x="169" y="105" width="8" height="18" rx="2" fill="#222"/>
+      <!-- Kopf liegend -->
+      <circle cx="168" cy="70" r="13" fill="none" stroke="#f5f5f5" stroke-width="3"/>
+      <!-- Körper -->
+      <line x1="156" y1="78" x2="60" y2="93" stroke="#f5f5f5" stroke-width="9" stroke-linecap="round"/>
+      <!-- Beine -->
+      <line x1="60" y1="93" x2="45" y2="124" stroke="#555" stroke-width="8" stroke-linecap="round"/>
+      <line x1="60" y1="93" x2="76" y2="124" stroke="#555" stroke-width="8" stroke-linecap="round"/>
+      <!-- Oberarme FIXIERT (senkrecht nach oben) -->
+      <line x1="95" y1="93" x2="85" y2="55" stroke="#f5f5f5" stroke-width="6" stroke-linecap="round"/>
+      <line x1="118" y1="90" x2="128" y2="52" stroke="#f5f5f5" stroke-width="6" stroke-linecap="round"/>
+      <!-- Ellbogen-Punkte orange -->
+      <circle cx="85" cy="55" r="6" fill="#ff6b35"/>
+      <circle cx="128" cy="52" r="6" fill="#ff6b35"/>
+      <!-- Unterarme animiert (strecken) -->
+      <g style="transform-origin:85px 55px;animation:tricep 2.2s ease-in-out infinite">
+        <line x1="85" y1="55" x2="72" y2="28" stroke="#f5f5f5" stroke-width="6" stroke-linecap="round"/>
+      </g>
+      <g style="transform-origin:128px 52px;animation:tricep 2.2s ease-in-out infinite">
+        <line x1="128" y1="52" x2="138" y2="25" stroke="#f5f5f5" stroke-width="6" stroke-linecap="round"/>
+      </g>
+      <!-- Hantel oben -->
+      <rect x="76" y="14" width="50" height="10" rx="4" fill="#333" stroke="#ff6b35" stroke-width="1.5"/>
+      <rect x="68" y="12" width="8" height="14" rx="2" fill="#555"/>
+      <rect x="124" y="12" width="8" height="14" rx="2" fill="#555"/>
+      <text x="100" y="127" text-anchor="middle" font-size="9" fill="#ff6b35" font-family="sans-serif">Seitenansicht · Ellbogen fixiert!</text>
+    </svg>
+  </div>
+  <div class="anim-label">Seitenansicht · Ellbogen bleiben oben fixiert</div>
+  <a class="yt-btn" href="https://www.youtube.com/results?search_query=Trizeps+Extension+liegend+Kurzhantel+deutsch" target="_blank">
+    <div class="yt-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+    <div class="yt-info">
+      <div class="yt-title">Trizeps-Extension — Ausführung deutsch</div>
+      <div class="yt-ch">YouTube Suche</div>
+      <div class="yt-link">▶ Videos ansehen →</div>
+    </div>
+  </a>
+  <a class="yt-btn" href="https://www.youtube.com/results?search_query=Sascha+Huber+Trizeps+Kurzhantel" target="_blank">
+    <div class="yt-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+    <div class="yt-info">
+      <div class="yt-title">Sascha Huber — Trizeps Kurzhantel</div>
+      <div class="yt-ch">YouTube Suche</div>
+      <div class="yt-link">▶ Videos ansehen →</div>
+    </div>
+  </a>
+</div>
+
+</body>
+</html>
