@@ -10,8 +10,8 @@
 <title>mkraft · Markus</title>
 <meta name="apple-mobile-web-app-title" content="mkraft">
 <meta name="application-name" content="mkraft">
-<link rel="icon" type="image/png" href="icon-512v3.png">
-<link rel="apple-touch-icon" href="icon-192v3.png">
+<link rel="icon" type="image/png" href="icon-512v4.png">
+<link rel="apple-touch-icon" href="icon-192v4.png">
 <link rel="manifest" href="manifest.json">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -313,7 +313,7 @@ body.fs-large .ec-name{font-size:19px}body.fs-large .ec-muscle{font-size:15px}bo
     <div class="konfetti-sub" id="konfetti-sub">Training abgeschlossen</div>
     <div class="konfetti-stats">
       <div class="konfetti-stat"><span class="konfetti-stat-val" id="k-uebungen">0</span><span class="konfetti-stat-lbl">Übungen</span></div>
-      <div class="konfetti-stat"><span class="konfetti-stat-val" id="k-dauer">0'</span><span class="konfetti-stat-lbl">Dauer</span></div>
+      <div class="konfetti-stat"><span class="konfetti-stat-val" id="k-dauer">0 Min</span><span class="konfetti-stat-lbl">Minuten</span></div>
       <div class="konfetti-stat"><span class="konfetti-stat-val" id="k-saetze">0</span><span class="konfetti-stat-lbl">Sätze</span></div>
     </div>
     <button class="konfetti-btn" onclick="closeKonfetti()">Weiter</button>
@@ -424,6 +424,8 @@ body.fs-large .ec-name{font-size:19px}body.fs-large .ec-muscle{font-size:15px}bo
     <div class="sl">Daten</div>
     <div class="sys-actions">
       <button onclick="exportD()" class="sys-btn export">↓ Export JSON</button>
+      <button onclick="importD()" class="sys-btn export">↑ Import JSON</button>
+      <input type="file" id="import-file" accept=".json" style="display:none" onchange="handleImport(this)">
       <button onclick="resetProgression()" class="sys-btn warn">↺ Progression zurücksetzen</button>
       <button onclick="resetAll()" class="sys-btn danger">⚠ Alle Daten löschen</button>
     </div>
@@ -528,8 +530,10 @@ function renderExercises(){
   }
   document.getElementById('ex-container').innerHTML=html;
   updateInfoChips();updateProgress();
+  var firstOpen=document.querySelector('#ex-container .ec:not(.done)');
+  if(firstOpen)firstOpen.classList.add('open');
 }
-function switchSchulter(){var slot=getSchulterSlot();state.manualSchulterSlot=slot===0?1:0;state.setData={};state.doneSets={};state.doneEx={};renderExercises();updateProgress();}
+function switchSchulter(){var sy=window.scrollY;var slot=getSchulterSlot();state.manualSchulterSlot=slot===0?1:0;state.setData={};state.doneSets={};state.doneEx={};renderExercises();updateProgress();setTimeout(function(){window.scrollTo(0,sy);},50);}
 function makeEx(e,ns){
   var done=state.doneEx[e.id];
   var tc=e.type==='basis'?'tag-basis':e.type==='stab'?'tag-stab':'tag-bonus';
@@ -547,7 +551,7 @@ function makeEx(e,ns){
   var actionHtml=done
     ?'<div class="ex-actions"><button class="done-btn completed" disabled>✓ Abgeschlossen</button><button class="undo-btn" onclick="undoDone(\''+e.id+'\')" title="Rückgängig">↩</button></div>'
     :'<div class="ex-actions"><button class="done-btn primary" id="donebn-'+e.id+'" onclick="markDone(\''+e.id+'\')">Übung abschließen</button></div>';
-  return '<div class="ec'+(done?' done':' open')+'" id="ec-'+e.id+'">'
+  return '<div class="ec'+(done?' done':'')+'" id="ec-'+e.id+'">'
     +'<div class="ec-head" onclick="toggleEx(\''+e.id+'\',event)">'
     +'<div class="ec-icon '+e.type+'">'+e.emoji+'</div>'
     +'<div class="ec-info"><div class="ec-name">'+e.name+'</div><div class="ec-muscle">'+e.muscle+'</div></div>'
@@ -591,7 +595,7 @@ function saveSession(){
   var wi=getProgWeekIndex();
   document.getElementById('konfetti-sub').textContent='Woche '+(wi+1)+' · '+PROG_DATA[wi].t.split('–')[1].trim();
   document.getElementById('k-uebungen').textContent=dc;
-  document.getElementById('k-dauer').textContent=durMin+"'";
+  document.getElementById('k-dauer').textContent=durMin+' Min';
   document.getElementById('k-saetze').textContent=ts;
   document.getElementById('konfetti-overlay').classList.remove('hidden');
 }
@@ -624,6 +628,8 @@ function confirmModal(){if(modalCallback)modalCallback(document.getElementById('
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();if(e.key==='Enter'&&!document.getElementById('modal-overlay').classList.contains('hidden'))confirmModal();});
 document.getElementById('modal-overlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
 function exportD(){try{var b=new Blob([JSON.stringify({sessions:state.sessions,kwData:state.kwData},null,2)],{type:'application/json'});var u=URL.createObjectURL(b);var a=document.createElement('a');a.href=u;a.download='mkraft-markus-export.json';a.click();}catch(e){alert('Export nicht verfügbar.');}}
+function importD(){document.getElementById('import-file').click();}
+function handleImport(inp){var file=inp.files[0];if(!file)return;var r=new FileReader();r.onload=function(e){try{var d=JSON.parse(e.target.result);if(!d.sessions&&!d.kwData){alert('Ungültige Datei.');return;}if(!confirm('Alle aktuellen Daten werden ersetzt. Fortfahren?'))return;if(d.sessions)state.sessions=d.sessions;if(d.kwData)state.kwData=d.kwData;saveAll();updateProgBadge();renderExercises();alert('Import erfolgreich! '+state.sessions.length+' Einheiten geladen.');}catch(ex){alert('Fehler beim Lesen der Datei.');}inp.value='';};r.readAsText(file);}
 function resetAll(){if(!confirm('Alle Daten löschen?'))return;state.sessions=[];state.kwData=[];state.progWeekStart=new Date().toISOString();state.setData={};state.doneSets={};state.doneEx={};saveAll();updateProgBadge();renderExercises();alert('Daten gelöscht.');}
 function init(){loadAll();applyTheme(loadTheme());loadFontSize();if(!state.progWeekStart){state.progWeekStart=new Date().toISOString();saveAll();}sessionStartTime=new Date();updateProgBadge();setStatus('a',true);checkTodayBanner();}
 init();
