@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Animationen v2</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0d0d0d;color:#f5f5f5;font-family:-apple-system,sans-serif;padding:16px;max-width:480px;margin:0 auto}
+h1{font-size:17px;font-weight:700;color:#ff6b35;margin-bottom:4px}
+.sub{font-size:12px;color:#808080;margin-bottom:20px}
+.ex{background:#242424;border-radius:16px;overflow:hidden;margin-bottom:20px}
+.ex-head{padding:14px 16px;border-bottom:1px solid rgba(255,255,255,0.08)}
+.ex-name{font-size:15px;font-weight:700;color:#f5f5f5}
+.ex-muscle{font-size:11px;color:#808080;margin-top:2px}
+.anim-box{background:#181818;display:flex;justify-content:center;align-items:center;padding:16px;min-height:160px}
+.anim-label{font-size:10px;color:#ff6b35;text-align:center;padding:6px 16px 10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+
+@keyframes squat{0%,100%{transform:translateY(0)}50%{transform:translateY(28px)}}
+@keyframes rdl-bow{0%,100%{transform:rotate(0deg)}50%{transform:rotate(-40deg)}}
+@keyframes rdl-bar{0%,100%{transform:translateY(0)}50%{transform:translateY(44px)}}
+@keyframes press-up{0%,100%{transform:translateY(0)}50%{transform:translateY(22px)}}
+@keyframes row-ud{0%,100%{transform:translateY(0)}50%{transform:translateY(-30px)}}
+@keyframes bridge-hip{0%,100%{transform:translateY(10px)}50%{transform:translateY(-6px)}}
+@keyframes lateral-both{0%,100%{transform:rotate(0deg)}50%{transform:rotate(-28deg)}}
+@keyframes fly-up{0%,100%{transform:rotate(0deg)}50%{transform:rotate(32deg)}}
+@keyframes curl-fwd{0%,100%{transform:rotate(0deg)}50%{transform:rotate(-58deg)}}
+@keyframes tricep-ext{0%,100%{transform:rotate(0deg)}50%{transform:rotate(52deg)}}
+</style>
+</head>
+<body>
+<h1>Animationen v2 — alle 10 Übungen</h1>
+<p class="sub">Korrekturen: RDL mit Hanteln, Rudern auf/ab, Glute Bridge Bank, Seitheben zweiarmig, Reverse Flyes mit Bank, Curls nach vorn, Trizeps mit Hanteln</p>
+
+<!-- 1. GOBLET SQUAT — unverändert, passt -->
+<div class="ex">
+  <div class="ex-head"><div class="ex-name">🏋️ Goblet Squat</div><div class="ex-muscle">Quadrizeps · Gesäß · Core</div></div>
+  <div class="anim-box">
+    <svg width="130" height="155" viewBox="0 0 130 155">
+      <line x1="52" y1="100" x2="40" y2="148" stroke="#555" stroke-width="9" stroke-linecap="round"/>
+      <line x1="78" y1="100" x2="90" y2="148" stroke="#555" stroke-width="9" stroke-linecap="round"/>
+      <line x1="40" y1="148" x2="30" y2="148" stroke="#555" stroke-width="7" stroke-linecap="round"/>
+      <line x1="90" y1="148" x2="100" y2="148" stroke="#555" stroke-width="7" stroke-linecap="round"/>
+      <g style="transform-origin:65px 100px;animation:squat 2s ease-in-out infinite">
+        <circle cx="65" cy="22" r="15" fill="none" stroke="#f5f5f5" stroke-width="3.5"/>
+        <rect x="44" y="50" width="42" height="11" rx="4" fill="#2a2a2a" stroke="#ff6b35" stroke-width="2"/>
+        <line x1="65" y1="37" x2="65" y2="100" stroke="#f5f5f5" stroke-width="8" stroke-linecap="round"/>
+        <line x1="65" y1="60" x2="36" y2="74" stroke="#f5f5f5" stroke-width="6" stroke-linecap="round"/>
+        <line x1="65" y1="60" x2="94" y2="74" stroke="#f5f5f5" stroke-width="6" stroke-linecap="round"/>
+        <line x1="36" y1="74" x2="44" y2="55" stroke="#f5f5f5" stroke-width="5" stroke-linecap="round"/>
+        <line x1="94" y1="74" x2="86" y2="55" stroke="#f5f5f5" stroke-width="5" stroke-linecap="round"/>
+      </g>
+    </svg>
+  </div>
+  <div class="anim-label">✓ Passt — Frontansicht · Tiefkniebeuge</div>
+</div>
+
+<!-- 2. ROMANIAN DEADLIFT — mit deutlichen Kurzhanteln -->
+<div class="ex">
+  <div class="ex-head"><div class="ex-name">🏗️ Romanian Deadlift</div><div class="ex-muscle">Hintere OS · Gesäß · Rücken</div></div>
+  <div class="anim-box">
+    <svg width="220" height="158" viewBox="0 0 220 158">
+      <!-- Boden -->
+      <line x1="10" y1="150" x2="210" y2="150" stroke="#333" stroke-width="2"/>
+      <!-- Beine statisch -->
+      <line x1="88" y1="108" x2="78" y2="148" stroke="#555" stroke-width="10" stroke-linecap="round"/>
+      <line x1="108" y1="108" x2="118" y2="148" stroke="#555" stroke-width="9" stroke-linecap="round"/>
+      <line x1="78" y1="148" x2="65" y2="148" stroke="#555" stroke-width="8" stroke-linecap="round"/>
+      <line x1="118" y1="148" x2="131" y2="148" stroke="#555" stroke-width="8" stroke-linecap="round"/>
+      <!-- Oberkörper beugt sich vor -->
+      <g style="transform-origin:98px 108px;animation:rdl-bow 2.4s ease-in-out infinite">
+        <circle cx="128" cy="26" r="15" fill="none" stroke="#f5f5f5" stroke-width="3.5"/>
+        <line x1="122" y1="40" x2="98" y2="108" stroke="#f5f5f5" stroke-width="9" stroke-linecap="round"/>
+        <!-- Wirbelsäule neutral -->
+        <line x1="122" y1="40" x2="98" y2="108" stroke="#ff6b35" stroke-width="2" stroke-dasharray="5,3" opacity="0.7"/>
+        <!-- Arme hängen mit Kurzhanteln -->
+        <line x1="110" y1="68" x2="80" y2="78" stroke="#f5f5f5" stroke-width="6" stroke-linecap="round"/>
+        <line x1="80" y1="78" x2="74" y2="108" stroke="#f5f5f5" stroke-width="6" stroke-linecap="round"/>
+        <line x1="110" y1="68" x2="138" y2="74" stroke="#f5f5f5" stroke-width="6" stroke-linecap="round"/>
+        <line x1="138" y1="74" x2="144" y2="104" stroke="#f5f5f5" stroke-width="6" stroke-linecap="round"/>
+        <!-- Kurzhantel links -->
+        <rect x="63" y="105" width="10" height="26" rx="4" fill="#444" stroke="#ff6b35" stroke-width="2"/>
+        <rect x="56" y="103" width="24" height="8" rx="3" fill="#666"/>
+        <!-- Kurzhantel rechts -->
+        <rect x="138" y="101" width="10" height="26" rx="4" fill="#444" stroke="#ff6b35" stroke-width="2"/>
+        <rect x="131" y="99" width="24" height="8" rx="3" fill="#666"/>
+      </g>
+      <!-- Hanteln animiert mit nach unten -->
+      <g style="animation:rdl-bar 2.4s ease-in-out infinite;opacity:0.35">
+        <rect x="63" y="105" width="10" height="26" rx="4" fill="#ff6b35"/>
+        <rect x="138" y="101" width="10" height="26" rx="4" fill="#ff6b35"/>
+      </g>
+      <text x="110" y="157" text-anchor="middle" font-size="9" fill="#ff6b35" font-family="sans-serif">Seitenansicht · 2 Kurzhanteln · Rücken neutral</text>
+    </svg>
+  </div>
+  <div class="anim-label">Seitenansicht · Vorbeuge mit zwei Kurzhanteln</div>
+</div>
+
+<!-- 3. BANKDRÜCKEN — passt -->
+<div class="ex">
+  <div class="ex-head"><div class="ex-name">💪 KH-Bankdrücken (neutral)</div><div class="ex-muscle">Brust · Trizeps · Schulter</div></div>
+  <div class="anim-box">
+    <svg width="210" height="130" viewBox="0 0 210 130">
+      <rect x="15" y="95" width="175" height="11" rx="4" fill="#2a2a2a" stroke="#555" stroke-width="1.5"/>
+      <rect x="24" y="106" width="9" height="20" rx="2" fill="#1e1e1e"/>
+      <rect x="172" y="106" width="9" height="20" rx="2" fill="#1e1e1e"/>
+      <circle cx="178" cy="74" r="13" fill="none" stroke="#f5f5f5" stroke-width="3.5"/>
+      <line x1="166" y1="82" x2="60" y2="93" stroke="#f5f5f5" stroke-width="10" stroke-linecap="round"/>
+      <line x1="60" y1="93" x2="44" y2="124" stroke="#555" stroke-width="9" stroke-linecap="round"/>
+      <line x1="60" y1="93" x2="78" y2="124" stroke="#555" stroke-width="8" stroke-linecap="round"/>
+      <g style="transform-origin:112px 83px;animation:press-up 2s ease-in-out infinite">
+        <line x1="112" y1="83" x2="82" y2="52" stroke="#f5f5f5" stroke-width="7" stroke-linecap="round"/>
+        <line x1="112" y1="83" x2="142" y2="52" stroke="#f5f5f5" stroke-width="7" stroke-linecap="round"/>
+        <rect x="68" y="42" width="10" height="22" rx="4" fill="#444" stroke="#ff6b35" stroke-width="2"/>
+        <rect x="60" y="40" width="26" height="8" rx="3" fill="#666"/>
+        <rect x="130" y="42" width="10" height="22" rx="4" fill="#444" stroke="#ff6b35" stroke-width="2"/>
+        <rect x="122" y="40" width="26" height="8" rx="3" fill="#666"/>
+      </g>
+      <text x="105" y="128" text-anchor="middle" font-size="9" fill="#ff6b35" font-family="sans-serif">✓ Passt — Neutral-Griff ↕</text>
+    </svg>
+  </div>
+  <div class="anim-label">Seitenansicht · Drücken nach oben</div>
+</div>
+
+<!-- 4. EINARMIGES RUDERN — Arm geht auf/ab -->
+<div class="ex">
+  <div class="ex-head"><div class="ex-name">🚣 Einarmiges Rudern</div><div class="ex-muscle">Lat · oberer Rücken · Bizeps</div></div>
+  <div class="anim-box">
+    <svg width="210" height="148" viewBox="0 0 210 148">
+      <!-- Hantelbank -->
+      <rect x="8" y="100" width="90" height="10" rx="3" fill="#2a2a2a" stroke="#555" stroke-width="1.5"/>
+      <rect x="14" y="110" width="8" height="18" rx="2" fill="#1e1e1e"/>
+      <rect x="82" y="110" width="8" height="18" rx="2" fill="#1e1e1e"/>
+      <!-- Boden -->
+      <line x1="8" y1="140" x2="200" y2="140" stroke="#333" stroke-width="1.5"/>
+      <!-- Kopf -->
+      <circle cx="170" cy="32" r="14" fill="none" stroke="#f5f5f5" stroke-width="3.5"/>
+      <!-- Rumpf vorgebeugt -->
+      <line x1="158" y1="43" x2="76" y2="88" stroke="#f5f5f5" stroke-width="10" stroke-linecap="round"/>
+      <!-- Wirbelsäule -->
+      <line x1="158" y1="43" x2="76" y2="88" stroke="#ff6b35" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.6"/>
+      <!-- Abstützarm auf Bank -->
+      <line x1="114" y1="64" x2="58" y2="78" stroke="#f5f5f5" stroke-width="6" stroke-linecap="round"/>
+      <line x1="58" y1="78" x2="48" y2="100" stroke="#f5f5f5" stroke-width="6" stroke-linecap="round"/>
+      <!-- Zugarm: geht auf und ab -->
+      <g style="transform-origin:114px 64px;animation:row-ud 2s ease-in-out infinite">
+        <line x1="114" y1="64" x2="158" y2="74" stroke="#f5f5f5" stroke-width="6" stroke-linecap="round"/>
+        <line x1="158" y1="74" x2="166" y2="110" stroke="#f5f5f5" stroke-width="6" stroke-linecap="round"/>
+        <!-- Kurzhantel -->
+        <rect x="160" y="108" width="10" height="24" rx="4" fill="#444" stroke="#ff6b35" stroke-width="2"/>
+        <rect x="153" y="106" width="24" height="8" rx="3" fill="#666"/>
+      </g>
+      <!-- Beine -->
+      <line x1="76" y1="88" x2="63" y2="130" stroke="#555" stroke-width="10" stroke-linecap="round"/>
+      <line x1="76" y1="88" x2="94" y2="130" stroke="#555" stroke-width="9" stroke-linecap="round"/>
+      <text x="105" y="147" text-anchor="middle" font-size="9" fill="#ff6b35" font-family="sans-serif">Seitenansicht · Arm zieht nach oben</text>
+    </svg>
+  </div>
+  <div class="anim-label">Seitenansicht · Zugarm geht auf und ab</div>
+</div>
+
+<!-- 5. GLUTE BRIDGE — mit Hantelbank klar dargestellt -->
+<div class="ex">
+  <div class="ex-head"><div class="ex-name">⛩️ Glute Bridge</div><div class="ex-muscle">Gesäß · Core</div></div>
+  <div class="anim-box">
+    <svg width="230" height="130" viewBox="0 0 230 130">
+      <!-- Boden -->
+      <line x1="8" y1="122" x2="222" y2="122" stroke="#555" stroke-width="2.5"/>
+      <!-- Hantelbank klar: Beine lehnen oben an -->
+      <rect x="155" y="78" width="60" height="14" rx="5" fill="#2a2a2a" stroke="#666" stroke-width="2"/>
+      <rect x="162" y="92" width="8" height="30" rx="3" fill="#1e1e1e" stroke="#555" stroke-width="1"/>
+      <rect x="196" y="92" width="8" height="30" rx="3" fill="#1e1e1e" stroke="#555" stroke-width="1"/>
+      <!-- Kopf (liegend am Boden) -->
+      <circle cx="30" cy="90" r="13" fill="none" stroke="#f5f5f5" stroke-width="3.5"/>
+      <!-- Schultern am Boden -->
+      <line x1="42" y1="96" x2="100" y2="105" stroke="#f5f5f5" stroke-width="10" stroke-linecap="round"/>
+      <!-- Arme flach am Boden -->
+      <line x1="60" y1="102" x2="45" y2="120" stroke="#555" stroke-width="6" stroke-linecap="round"/>
+      <line x1="80" y1="104" x2="65" y2="120" stroke="#555" stroke-width="6" stroke-linecap="round"/>
+      <!-- Hüfte + Oberschenkel animiert -->
+      <g style="animation:bridge-hip 2s ease-in-out infinite">
+        <!-- Hüfte -->
+        <circle cx="100" cy="100" r="8" fill="#ff6b35"/>
+        <!-- Oberschenkel zu Bank -->
+        <line x1="100" y1="100" x2="148" y2="86" stroke="#f5f5f5" stroke-width="10" stroke-linecap="round"/>
+        <!-- Unterschenkel senkrecht auf Bank -->
+        <line x1="148" y1="86" x2="162" y2="92" stroke="#f5f5f5" stroke-width="10" stroke-linecap="round"/>
+      </g>
+      <text x="115" y="128" text-anchor="middle" font-size="9" fill="#ff6b35" font-family="sans-serif">Seitenansicht · Füße auf Bank · Hüfte hebt</text>
+    </svg>
+  </div>
+  <div class="anim-label">Seitenansicht · Füße auf Hantelbank · Hüfte hoch</div>
+</div>
+
+<!-- 6. SEITHEBEN — zweiarmig, beide Arme gleichzeitig -->
+<div class="ex">
+  <div class="ex-head"><div class="ex-name">🕊️ Seitheben (leicht)</div><div class="ex-muscle">Seitliche Schulter</div></div>
+  <div class="anim-box">
+    <svg width="200" height="155" viewBox="0 0 200 155">
+      <!-- Körper -->
+      <circle cx="100" cy="24" r="15" fill="none" stroke="#f5f5f5" stroke-width="3.5"/>
+      <line x1="100" y1="39" x2="100" y2="108" stroke="#f5f5f5" stroke-width="9" stroke-linecap="round"/>
+      <!-- Beine -->
+      <line x1="100" y1="108" x2="86" y2="148" stroke="#555" stroke-width="9" stroke-linecap="round"/>
+      <line x1="100" y1="108" x2="114" y2="148" stroke="#555" stroke-width="9" stroke-linecap="round"/>
+      <line x1="86" y1="148" x2="76" y2="148" stroke="#555" stroke-width="7" stroke-linecap="round"/>
+      <line x1="114" y1="148" x2="124" y2="148" stroke="#555" stroke-width="7" stroke-linecap="round"/>
+      <!-- Linker Arm + Hantel — hebt sich -->
+      <g style="transform-origin:100px 65px;animation:lateral-both 2.2s ease-in-out infinite">
+        <line x1="100" y1="65" x2="44" y2="82" stroke="#f5f5f5" stroke-width="7" stroke-linecap="round"/>
+        <!-- Kurzhantel links -->
+        <rect x="30" y="78" width="10" height="20" rx="4" fill="#444" stroke="#ff6b35" stroke-width="2"/>
+        <rect x="24" y="76" width="22" height="7" rx="3" fill="#666"/>
+      </g>
+      <!-- Rechter Arm + Hantel — hebt sich gespiegelt -->
+      <g style="transform-origin:100px 65px;animation:lateral-both 2.2s ease-in-out infinite;transform-box:fill-box">
+        <line x1="100" y1="65" x2="156" y2="82" stroke="#f5f5f5" stroke-width="7" stroke-linecap="round"/>
+        <!-- Kurzhantel rechts -->
+        <rect x="158" y="78" width="10" height="20" rx="4" fill="#444" stroke="#ff6b35" stroke-width="2"/>
+        <rect x="152" y="76" width="22" height="7" rx="3" fill="#666"/>
+      </g>
+      <!-- Max-Höhe Linie -->
+      <line x1="18" y1="65" x2="182" y2="65" stroke="#ff6b35" stroke-width="1" stroke-dasharray="5,4" opacity="0.4"/>
+      <text x="100" y="153" text-anchor="middle" font-size="9" fill="#ff6b35" font-family="sans-serif">Frontansicht · beide Arme · max. Schulterhöhe</text>
+    </svg>
+  </div>
+  <div class="anim-label">Frontansicht · beide Arme heben gleichzeitig</div>
+</div>
+
+<!-- 7. REVERSE FLYES — mit Hantelbank, vorgebeugt -->
+<div class="ex">
+  <div class="ex-head"><div class="ex-name">🦅 Reverse Flyes (leicht)</div><div class="ex-muscle">Hintere Schulter · Rücken</div></div>
+  <div class="anim-box">
+    <svg width="230" height="148" viewBox="0 0 230 148">
+      <!-- Boden -->
+      <line x1="8" y1="140" x2="222" y2="140" stroke="#333" stroke-width="1.5"/>
+      <!-- Hantelbank — Person sitzt/lehnt vorgebeugt drauf -->
+      <rect x="70" y="98" width="110" height="12" rx="5" fill="#2a2a2a" stroke="#666" stroke-width="2"/>
+      <rect x="78" y="110" width="8" height="30" rx="3" fill="#1e1e1e" stroke="#555" stroke-width="1"/>
+      <rect x="172" y="110" width="8" height="30" rx="3" fill="#1e1e1e" stroke="#555" stroke-width="1"/>
+      <!-- Kopf (vorgebeugt) -->
+      <circle cx="170" cy="42" r="14" fill="none" stroke="#f5f5f5" stroke-width="3.5"/>
+      <!-- Rumpf 45° vorgebeugt, sitzt auf Bank -->
+      <line x1="158" y1="53" x2="108" y2="96" stroke="#f5f5f5" stroke-width="10" stroke-linecap="round"/>
+      <!-- Oberschenkel auf Bank -->
+      <line x1="108" y1="96" x2="82" y2="99" stroke="#f5f5f5" stroke-width="10" stroke-linecap="round"/>
+      <!-- Unterschenkel senkrecht -->
+      <line x1="82" y1="99" x2="80" y2="138" stroke="#555" stroke-width="9" stroke-linecap="round"/>
+      <line x1="108" y1="99" x2="110" y2="138" stroke="#555" stroke-width="9" stroke-linecap="round"/>
+      <!-- Linker Arm öffnet sich nach oben-hinten -->
+      <g style="transform-origin:130px 72px;animation:fly-up 2.2s ease-in-out infinite">
+        <line x1="130" y1="72" x2="80" y2="58" stroke="#f5f5f5" stroke-width="6" stroke-linecap="round"/>
+        <rect x="66" y="52" width="10" height="20" rx="4" fill="#444" stroke="#ff6b35" stroke-width="2"/>
+        <rect x="59" y="50" width="24" height="7" rx="3" fill="#666"/>
+      </g>
+      <!-- Rechter Arm öffnet sich gespiegelt -->
+      <g style="transform-origin:130px 72px;animation:fly-up 2.2s ease-in-out infinite">
+        <line x1="130" y1="72" x2="180" y2="58" stroke="#f5f5f5" stroke-width="6" stroke-linecap="round"/>
+        <rect x="180" y="52" width="10" height="20" rx="4" fill="#444" stroke="#ff6b35" stroke-width="2"/>
+        <rect x="174" y="50" width="24" height="7" rx="3" fill="#666"/>
+      </g>
+      <text x="115" y="147" text-anchor="middle" font-size="9" fill="#ff6b35" font-family="sans-serif">Frontansicht · auf Bank · Arme öffnen nach oben</text>
+    </svg>
+  </div>
+  <div class="anim-label">Frontansicht · vorgebeugt auf Hantelbank · Arme öffnen</div>
+</div>
+
+<!-- 8. HAMMER CURLS — Frontansicht, Arme curlen nach vorn/oben -->
+<div class="ex">
+  <div class="ex-head"><div class="ex-name">🔨 Hammer Curls</div><div class="ex-muscle">Bizeps · Brachialis</div></div>
+  <div class="anim-box">
+    <svg width="180" height="155" viewBox="0 0 180 155">
+      <circle cx="90" cy="22" r="15" fill="none" stroke="#f5f5f5" stroke-width="3.5"/>
+      <line x1="90" y1="37" x2="90" y2="108" stroke="#f5f5f5" stroke-width="9" stroke-linecap="round"/>
+      <line x1="90" y1="108" x2="74" y2="148" stroke="#555" stroke-width="9" stroke-linecap="round"/>
+      <line x1="90" y1="108" x2="106" y2="148" stroke="#555" stroke-width="9" stroke-linecap="round"/>
+      <line x1="74" y1="148" x2="64" y2="148" stroke="#555" stroke-width="7" stroke-linecap="round"/>
+      <line x1="106" y1="148" x2="116" y2="148" stroke="#555" stroke-width="7" stroke-linecap="round"/>
+      <!-- Linker Arm hängt (statisch) -->
+      <line x1="90" y1="62" x2="52" y2="78" stroke="#f5f5f5" stroke-width="7" stroke-linecap="round"/>
+      <line x1="52" y1="78" x2="46" y2="114" stroke="#f5f5f5" stroke-width="6" stroke-linecap="round"/>
+      <rect x="38" y="112" width="10" height="24" rx="4" fill="#444" stroke="#888" stroke-width="1.5"/>
+      <rect x="31" y="110" width="24" height="8" rx="3" fill="#555"/>
+      <!-- Rechter Arm curlt nach vorn/oben (in der Frontansicht = nach oben) -->
+      <g style="transform-origin:128px 78px;animation:curl-fwd 2s ease-in-out infinite">
+        <line x1="90" y1="62" x2="128" y2="78" stroke="#f5f5f5" stroke-width="7" stroke-linecap="round"/>
+        <line x1="128" y1="78" x2="134" y2="114" stroke="#f5f5f5" stroke-width="6" stroke-linecap="round"/>
+        <rect x="128" y="112" width="10" height="24" rx="4" fill="#444" stroke="#ff6b35" stroke-width="2"/>
+        <rect x="121" y="110" width="24" height="8" rx="3" fill="#666"/>
+      </g>
+      <text x="90" y="153" text-anchor="middle" font-size="9" fill="#ff6b35" font-family="sans-serif">Frontansicht · Daumen oben · ein Arm curlt</text>
+    </svg>
+  </div>
+  <div class="anim-label">Frontansicht · neutraler Griff · Curl nach oben</div>
+</div>
+
+<!-- 9. SZ-CURLS — Frontansicht, Arme curlen nach oben -->
+<div class="ex">
+  <div class="ex-head"><div class="ex-name">〰️ SZ-Curls</div><div class="ex-muscle">Bizeps (klassisch)</div></div>
+  <div class="anim-box">
+    <svg width="200" height="155" viewBox="0 0 200 155">
+      <circle cx="100" cy="22" r="15" fill="none" stroke="#f5f5f5" stroke-width="3.5"/>
+      <line x1="100" y1="37" x2="100" y2="108" stroke="#f5f5f5" stroke-width="9" stroke-linecap="round"/>
+      <line x1="100" y1="108" x2="84" y2="148" stroke="#555" stroke-width="9" stroke-linecap="round"/>
+      <line x1="100" y1="108" x2="116" y2="148" stroke="#555" stroke-width="9" stroke-linecap="round"/>
+      <!-- Beide Arme curlen synchron nach oben -->
+      <g style="transform-origin:100px 65px;animation:curl-fwd 2.2s ease-in-out infinite">
+        <!-- Linker Oberarm -->
+        <line x1="100" y1="65" x2="56" y2="80" stroke="#f5f5f5" stroke-width="7" stroke-linecap="round"/>
+        <!-- Linker Unterarm -->
+        <line x1="56" y1="80" x2="50" y2="116" stroke="#f5f5f5" stroke-width="6" stroke-linecap="round"/>
+        <!-- Rechter Oberarm -->
+        <line x1="100" y1="65" x2="144" y2="80" stroke="#f5f5f5" stroke-width="7" stroke-linecap="round"/>
+        <!-- Rechter Unterarm -->
+        <line x1="144" y1="80" x2="150" y2="116" stroke="#f5f5f5" stroke-width="6" stroke-linecap="round"/>
+        <!-- SZ-Stange -->
+        <path d="M36 120 Q44 114 52 120 Q60 126 68 120 Q76 114 84 120 Q92 126 100 120 Q108 114 116 120 Q124 126 132 120 Q140 114 148 120 Q156 126 164 120" fill="none" stroke="#aaa" stroke-width="3.5" stroke-linecap="round"/>
+        <rect x="27" y="114" width="9" height="20" rx="3" fill="#444" stroke="#888" stroke-width="1.5"/>
+        <rect x="164" y="114" width="9" height="20" rx="3" fill="#444" stroke="#888" stroke-width="1.5"/>
+      </g>
+      <text x="100" y="153" text-anchor="middle" font-size="9" fill="#ff6b35" font-family="sans-serif">Frontansicht · SZ-Stange · beide Arme</text>
+    </svg>
+  </div>
+  <div class="anim-label">Frontansicht · SZ-Stange curlt nach oben</div>
+</div>
+
+<!-- 10. TRIZEPS-EXTENSION — mit deutlichen Kurzhanteln -->
+<div class="ex">
+  <div class="ex-head"><div class="ex-name">⚡ Trizeps-Extension</div><div class="ex-muscle">Trizeps · Oberarm</div></div>
+  <div class="anim-box">
+    <svg width="220" height="130" viewBox="0 0 220 130">
+      <!-- Bank -->
+      <rect x="14" y="94" width="185" height="12" rx="5" fill="#2a2a2a" stroke="#666" stroke-width="2"/>
+      <rect x="22" y="106" width="9" height="20" rx="3" fill="#1e1e1e" stroke="#555" stroke-width="1"/>
+      <rect x="182" y="106" width="9" height="20" rx="3" fill="#1e1e1e" stroke="#555" stroke-width="1"/>
+      <!-- Kopf liegend -->
+      <circle cx="182" cy="70" r="14" fill="none" stroke="#f5f5f5" stroke-width="3.5"/>
+      <!-- Körper liegend -->
+      <line x1="170" y1="78" x2="62" y2="92" stroke="#f5f5f5" stroke-width="10" stroke-linecap="round"/>
+      <!-- Beine -->
+      <line x1="62" y1="92" x2="46" y2="124" stroke="#555" stroke-width="9" stroke-linecap="round"/>
+      <line x1="62" y1="92" x2="78" y2="124" stroke="#555" stroke-width="8" stroke-linecap="round"/>
+      <!-- Oberarme FIXIERT senkrecht nach oben -->
+      <line x1="98" y1="92" x2="88" y2="54" stroke="#f5f5f5" stroke-width="7" stroke-linecap="round"/>
+      <line x1="124" y1="89" x2="132" y2="51" stroke="#f5f5f5" stroke-width="7" stroke-linecap="round"/>
+      <!-- Ellbogen-Punkte orange = fixiert -->
+      <circle cx="88" cy="54" r="7" fill="#ff6b35"/>
+      <circle cx="132" cy="51" r="7" fill="#ff6b35"/>
+      <!-- Unterarme strecken sich — mit Kurzhanteln -->
+      <g style="transform-origin:88px 54px;animation:tricep-ext 2.2s ease-in-out infinite">
+        <line x1="88" y1="54" x2="74" y2="26" stroke="#f5f5f5" stroke-width="6" stroke-linecap="round"/>
+        <!-- Kurzhantel links -->
+        <rect x="66" y="14" width="10" height="18" rx="4" fill="#444" stroke="#ff6b35" stroke-width="2"/>
+        <rect x="59" y="12" width="24" height="7" rx="3" fill="#666"/>
+      </g>
+      <g style="transform-origin:132px 51px;animation:tricep-ext 2.2s ease-in-out infinite">
+        <line x1="132" y1="51" x2="146" y2="23" stroke="#f5f5f5" stroke-width="6" stroke-linecap="round"/>
+        <!-- Kurzhantel rechts -->
+        <rect x="142" y="11" width="10" height="18" rx="4" fill="#444" stroke="#ff6b35" stroke-width="2"/>
+        <rect x="135" y="9" width="24" height="7" rx="3" fill="#666"/>
+      </g>
+      <text x="110" y="128" text-anchor="middle" font-size="9" fill="#ff6b35" font-family="sans-serif">Seitenansicht · Ellbogen fixiert (orange) · Kurzhanteln</text>
+    </svg>
+  </div>
+  <div class="anim-label">Seitenansicht · zwei Kurzhanteln · Ellbogen bleiben oben</div>
+</div>
+
+</body>
+</html>
