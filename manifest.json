@@ -1,12 +1,12 @@
 {
   "name": "mkraft · Markus",
   "short_name": "mkraft",
-  "start_url": "./markus.html",
+  "start_url": "./markus.html?v=21",
   "display": "standalone",
   "background_color": "#ff7a20",
   "theme_color": "#0d0d0d",
   "icons": [
-    {"src": "icon-192v2.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable"},
-    {"src": "icon-512v2.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"}
+    {"src": "icon-192v3.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable"},
+    {"src": "icon-512v3.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"}
   ]
 }
