@@ -10,8 +10,8 @@
 <title>mkraft · Markus</title>
 <meta name="apple-mobile-web-app-title" content="mkraft">
 <meta name="application-name" content="mkraft">
-<link rel="icon" type="image/png" href="icon-512v4.png">
-<link rel="apple-touch-icon" href="icon-192v4.png">
+<link rel="icon" type="image/png" href="icon-512v5.png">
+<link rel="apple-touch-icon" href="icon-192v5.png">
 <link rel="manifest" href="manifest.json">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -71,9 +71,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;t
 .prog-num{font-size:13px;font-weight:700;color:var(--accent)}
 .prog-bar-bg{height:4px;background:var(--surface3);border-radius:99px;overflow:hidden}
 .prog-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:99px;transition:width .45s cubic-bezier(.4,0,.2,1)}
-.today-banner{display:flex;align-items:center;gap:12px;background:var(--accent-dim);border:1px solid var(--accent-dim2);border-radius:14px;padding:14px 16px;margin-bottom:14px}
-.today-banner-text{flex:1;font-size:14px;font-weight:600;color:var(--accent)}
-.today-banner-close{font-size:18px;color:var(--text3);cursor:pointer;padding:4px;flex-shrink:0;background:none;border:none;line-height:1}
+
 .status-info{border-radius:14px;padding:14px 16px;margin-bottom:14px;font-size:14px;line-height:1.6;border-left:3px solid}
 .si-r{background:var(--red-bg);border-color:var(--red);color:var(--red)}
 .si-b{background:var(--blue-bg);border-color:var(--blue);color:var(--blue)}
@@ -337,7 +335,7 @@ body.fs-large .ec-name{font-size:19px}body.fs-large .ec-muscle{font-size:15px}bo
         <svg width="44" height="44" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;overflow:visible">
           <defs><linearGradient id="ring-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ff6b35"/><stop offset="100%" stop-color="#ff9500"/></linearGradient></defs>
           <circle cx="22" cy="22" r="20" fill="none" stroke="url(#ring-g)" stroke-width="2.2"/>
-          <text x="22" y="29" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-size="24" font-weight="900" font-style="italic" fill="url(#ring-g)">m</text>
+          <text x="22" y="30" text-anchor="middle" font-family="Helvetica Neue,Arial,sans-serif" font-size="26" font-weight="400" fill="url(#ring-g)">m</text>
         </svg>
         <div>
           <div style="font-size:18px;font-weight:800;color:var(--text);letter-spacing:3px;text-transform:uppercase;line-height:1">kraft</div>
@@ -353,7 +351,7 @@ body.fs-large .ec-name{font-size:19px}body.fs-large .ec-muscle{font-size:15px}bo
 </header>
 <div class="pages">
   <div class="page active" id="pg-training">
-    <div id="today-banner-wrap"></div>
+
     <div class="status-hero">
       <div class="status-q">Wie fühlst du dich <em class="grad">heute?</em></div>
       <div class="status-row">
@@ -589,7 +587,6 @@ function saveSession(){
   var now=new Date(),durMin=sessionStartTime?Math.round((now-sessionStartTime)/60000):0;
   state.sessions.unshift({date:now.toISOString(),status:state.status,done:dc,total:exs.length,totalSets:ts,durationMin:durMin,notiz:document.getElementById('session-notiz').value,progWeek:getProgWeekIndex()+1,details:det});
   if(!state.progWeekStart)state.progWeekStart=now.toISOString();
-  try{localStorage.setItem('mkraft_trainedDate',now.toDateString());}catch(e){}
   saveAll();state.setData={};state.doneSets={};state.doneEx={};state.bizepsChoice=null;state.manualSchulterSlot=null;
   document.getElementById('session-notiz').value='';stopTimer();updateProgBadge();
   var wi=getProgWeekIndex();
@@ -599,8 +596,7 @@ function saveSession(){
   document.getElementById('k-saetze').textContent=ts;
   document.getElementById('konfetti-overlay').classList.remove('hidden');
 }
-function closeKonfetti(){document.getElementById('konfetti-overlay').classList.add('hidden');sessionStartTime=new Date();renderExercises();checkTodayBanner();}
-function checkTodayBanner(){var wrap=document.getElementById('today-banner-wrap');try{var td=localStorage.getItem('mkraft_trainedDate');if(td&&td===new Date().toDateString()){wrap.innerHTML='<div class="today-banner"><span style="font-size:20px">✓</span><span class="today-banner-text">Heute bereits trainiert · gut gemacht!</span><button class="today-banner-close" onclick="document.getElementById(\'today-banner-wrap\').innerHTML=\'\'">✕</button></div>';return;}}catch(e){}wrap.innerHTML='';}
+function closeKonfetti(){document.getElementById('konfetti-overlay').classList.add('hidden');sessionStartTime=new Date();renderExercises();}
 function changeWeek(d){weekOffset+=d;renderWoche();}
 function renderWoche(){var now=new Date(),ws=new Date(now);ws.setDate(now.getDate()-((now.getDay()||7)-1)+weekOffset*7);var we=new Date(ws);we.setDate(ws.getDate()+6);var mn=['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];document.getElementById('wtitle').textContent=ws.getDate()+'. '+mn[ws.getMonth()]+' – '+we.getDate()+'. '+mn[we.getMonth()];var dn=['Mo','Di','Mi','Do','Fr','Sa','So'],html='',wt=0,ws2=0;for(var d=0;d<7;d++){var day=new Date(ws);day.setDate(ws.getDate()+d);var ds=day.toDateString(),ts2=new Date().toDateString(),sess=null;for(var si=0;si<state.sessions.length;si++){if(new Date(state.sessions[si].date).toDateString()===ds){sess=state.sessions[si];break;}}if(sess){wt++;ws2+=sess.totalSets;}html+='<div class="dc'+(ds===ts2?' today':'')+(sess?' trained':'')+'"><div class="dc-name">'+dn[d]+'</div><div class="dc-num">'+day.getDate()+'</div><div class="dc-dot"></div></div>';}document.getElementById('wgrid').innerHTML=html;document.getElementById('w-tr').textContent=wt;document.getElementById('w-sets').textContent=ws2;var streak=0,td=new Date();for(var i=0;i<30;i++){var dd=new Date(td);dd.setDate(td.getDate()-i);var found=false;for(var si=0;si<state.sessions.length;si++){if(new Date(state.sessions[si].date).toDateString()===dd.toDateString()){found=true;break;}}if(found)streak++;else if(i>0)break;}document.getElementById('w-streak').textContent=streak;}
 function renderBarChart(){var recent=state.sessions.slice(0,8).reverse(),mx=1;for(var i=0;i<recent.length;i++){if(recent[i].totalSets>mx)mx=recent[i].totalSets;}var dn=['So','Mo','Di','Mi','Do','Fr','Sa'],html='';for(var i=0;i<recent.length;i++){var s=recent[i],h=Math.max(8,Math.round(s.totalSets/mx*76)),d=new Date(s.date);html+='<div class="bc"><div class="bf data" style="height:'+h+'px"></div><div class="bdl">'+dn[d.getDay()]+'</div></div>';}for(var i=recent.length;i<8;i++)html+='<div class="bc"><div class="bf" style="height:8px"></div><div class="bdl">–</div></div>';document.getElementById('barchart').innerHTML=html;}
@@ -631,7 +627,7 @@ function exportD(){try{var b=new Blob([JSON.stringify({sessions:state.sessions,k
 function importD(){document.getElementById('import-file').click();}
 function handleImport(inp){var file=inp.files[0];if(!file)return;var r=new FileReader();r.onload=function(e){try{var d=JSON.parse(e.target.result);if(!d.sessions&&!d.kwData){alert('Ungültige Datei.');return;}if(!confirm('Alle aktuellen Daten werden ersetzt. Fortfahren?'))return;if(d.sessions)state.sessions=d.sessions;if(d.kwData)state.kwData=d.kwData;saveAll();updateProgBadge();renderExercises();alert('Import erfolgreich! '+state.sessions.length+' Einheiten geladen.');}catch(ex){alert('Fehler beim Lesen der Datei.');}inp.value='';};r.readAsText(file);}
 function resetAll(){if(!confirm('Alle Daten löschen?'))return;state.sessions=[];state.kwData=[];state.progWeekStart=new Date().toISOString();state.setData={};state.doneSets={};state.doneEx={};saveAll();updateProgBadge();renderExercises();alert('Daten gelöscht.');}
-function init(){loadAll();applyTheme(loadTheme());loadFontSize();if(!state.progWeekStart){state.progWeekStart=new Date().toISOString();saveAll();}sessionStartTime=new Date();updateProgBadge();setStatus('a',true);checkTodayBanner();}
+function init(){loadAll();applyTheme(loadTheme());loadFontSize();if(!state.progWeekStart){state.progWeekStart=new Date().toISOString();saveAll();}sessionStartTime=new Date();updateProgBadge();setStatus('a',true);}
 init();
 </script>
 </body>
