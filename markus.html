@@ -619,7 +619,7 @@ function renderVerlauf(){
   var totalSets=0,totalDur=0;
   state.sessions.forEach(function(s){totalSets+=s.totalSets||0;totalDur+=s.durationMin||0;});
   var firstDate=new Date(state.sessions[state.sessions.length-1].date);
-  var weeks=Math.max(1,Math.round((new Date()-firstDate)/(7*864e5)));
+  var weeks=Math.max(1,Math.round((new Date()-firstDate)/(7*86400000)));
   if(sv)sv.innerHTML='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px">'
     +'<div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 6px;text-align:center"><div style="font-size:22px;font-weight:800;color:var(--accent)">'+totalSessions+'</div><div style="font-size:9px;font-weight:700;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-top:4px">Einheiten</div></div>'
     +'<div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 6px;text-align:center"><div style="font-size:22px;font-weight:800;color:var(--accent)">'+totalSets+'</div><div style="font-size:9px;font-weight:700;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-top:4px">Sätze</div></div>'
