@@ -367,6 +367,7 @@ body.fs-large .ec-name{font-size:19px}body.fs-large .ec-muscle{font-size:15px}bo
       <div class="prog-bar-bg"><div class="prog-bar-fill" id="progress-fill" style="width:0%"></div></div>
     </div>
     <div id="ex-container"></div>
+    <div id="train-start-info" style="font-size:12px;color:var(--text3);text-align:right;margin:-8px 0 10px;padding-right:2px"></div>
     <div class="save-card">
       <div class="notiz-label">Notiz zum Training</div>
       <textarea class="notiz-input" id="session-notiz" rows="2" placeholder="z.B. Goblet Squat 16 kg gut, Nacken entspannt…"></textarea>
@@ -390,7 +391,9 @@ body.fs-large .ec-name{font-size:19px}body.fs-large .ec-muscle{font-size:15px}bo
     <div id="prog-con"></div>
   </div>
   <div class="page" id="pg-verlauf">
-    <div class="sl">Trainingsprotokoll</div><div id="log-con"></div>
+    <div class="sl">Trainingsprotokoll</div>
+    <div id="verlauf-summary"></div>
+    <div id="log-con"></div>
     <div class="sl">Gewicht je Übung</div><div id="ex-prog-con"></div>
   </div>
   <div class="page" id="pg-koerper">
@@ -473,7 +476,7 @@ function saveTheme(t){try{localStorage.setItem('mkraft_theme',t);}catch(e){}}
 function loadTheme(){try{return localStorage.getItem('mkraft_theme')||'dark';}catch(e){return 'dark';}}
 function toggleTheme(){var cur=document.documentElement.getAttribute('data-theme');applyTheme(cur==='dark'?'light':'dark');}
 function applyTheme(t){document.documentElement.setAttribute('data-theme',t);document.getElementById('theme-btn').textContent=t==='dark'?'🌙':'☀️';document.getElementById('meta-theme').content=t==='dark'?'#0d0d0d':'#fafaf8';saveTheme(t);}
-function goPage(id,btn){document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});document.querySelectorAll('.bn').forEach(function(b){b.classList.remove('active');});document.getElementById('pg-'+id).classList.add('active');btn.classList.add('active');if(id==='woche'){renderWoche();renderBarChart();renderProg();}if(id==='verlauf'){renderVerlauf();renderExProg();}if(id==='koerper'){renderKW();}if(id==='system'){renderPrinzipien();renderAlternativen();}}
+function goPage(id,btn){document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});document.querySelectorAll('.bn').forEach(function(b){b.classList.remove('active');});document.getElementById('pg-'+id).classList.add('active');btn.classList.add('active');window.scrollTo({top:0,behavior:'instant'});if(id==='woche'){renderWoche();renderBarChart();renderProg();}if(id==='verlauf'){renderVerlauf();renderExProg();}if(id==='koerper'){renderKW();}if(id==='system'){renderPrinzipien();renderAlternativen();}}
 function getProgWeekIndex(){if(!state.progWeekStart)return 0;return Math.floor(Math.floor((new Date()-new Date(state.progWeekStart))/(864e5))/7)%4;}
 function getCurrentProg(){return PROG_DATA[getProgWeekIndex()];}
 function getSetsForStatus(s){return s==='r'?2:getCurrentProg().sets;}
@@ -537,7 +540,7 @@ function makeEx(e,ns){
   var tc=e.type==='basis'?'tag-basis':e.type==='stab'?'tag-stab':'tag-bonus';
   var tl=e.type==='basis'?'BASIS':e.type==='stab'?'STAB':'BONUS';
   var pk=getPrevKgsForEx(e.id,3);
-  var ph=pk.length?'<div class="prev-kgs">'+pk.map(function(p,i){return'<div class="pk">'+(i===0?'Zuletzt':'vor '+(i+1))+': '+p+'</div>';}).join('')+'</div>':'';
+  var ph=pk.length?'<div class="prev-kgs">'+pk.map(function(p,i){var kg=p.replace(' kg','');return'<div class="pk" onclick="fillLastKg(\''+e.id+'\',\''+kg+'\')" style="cursor:pointer">'+(i===0?'Zuletzt':'vor '+(i+1))+': '+p+' ↑</div>';}).join('')+'</div>':'';
   var sh='<div class="set-labels"><div class="setlbl">#</div><div class="setlbl">Wdh.</div><div class="setlbl">kg</div><div></div></div>';
   for(var i=0;i<ns;i++){
     var k=e.id+'_'+i,rv=state.setData[e.id+'_r_'+i]||'',kv=state.setData[e.id+'_k_'+i]||'',ck=state.doneSets[k];
@@ -564,7 +567,7 @@ function makeEx(e,ns){
 }
 function toggleEx(id,evt){if(evt&&evt.target&&(evt.target.tagName==='BUTTON'||evt.target.tagName==='INPUT'))return;var card=document.getElementById('ec-'+id);if(!card)return;var isOpen=card.classList.contains('open');document.querySelectorAll('.ec').forEach(function(c){c.classList.remove('open');});if(!isOpen)card.classList.add('open');}
 function sd(k,v){state.setData[k]=v;}
-function toggleSet(btn,k){state.doneSets[k]=!state.doneSets[k];btn.className='ck'+(state.doneSets[k]?' on':'');if(state.doneSets[k]){btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:26px;height:26px"><polyline points="20 6 9 17 4 12"/></svg>';}else{btn.textContent='OK';}}
+function toggleSet(btn,k){state.doneSets[k]=!state.doneSets[k];btn.className='ck'+(state.doneSets[k]?' on':'');if(state.doneSets[k]){btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:26px;height:26px"><polyline points="20 6 9 17 4 12"/></svg>';if('vibrate' in navigator)navigator.vibrate(40);}else{btn.textContent='OK';}}
 function markDone(id){
   state.doneEx[id]=true;
   var card=document.getElementById('ec-'+id);
@@ -576,6 +579,7 @@ function markDone(id){
 }
 function undoDone(id){state.doneEx[id]=false;var card=document.getElementById('ec-'+id);if(card){card.classList.remove('done');card.classList.add('open');}var actDiv=card?card.querySelector('.ex-actions'):null;if(actDiv)actDiv.innerHTML='<button class="done-btn primary" id="donebn-'+id+'" onclick="markDone(\''+id+'\')">Übung abschließen</button>';updateProgress();}
 function scrollToNext(doneId){var exs=getVisible(),idx=-1;for(var i=0;i<exs.length;i++){if(exs[i].id===doneId){idx=i;break;}}if(idx<0||idx>=exs.length-1)return;var nextId=exs[idx+1].id;var nextCard=document.getElementById('ec-'+nextId);if(!nextCard)return;document.querySelectorAll('.ec').forEach(function(c){c.classList.remove('open');});nextCard.classList.add('open');setTimeout(function(){nextCard.scrollIntoView({behavior:'smooth',block:'start'});},120);}
+function fillLastKg(exId,kg){var ns=getSetsForStatus(state.status);for(var i=0;i<ns;i++){var k=exId+'_k_'+i;state.setData[k]=kg;var inp=document.querySelector('input[oninput*="'+k+'"]');if(inp)inp.value=kg;}if('vibrate' in navigator)navigator.vibrate(30);}
 function chooseBizeps(id){state.bizepsChoice=id;renderExercises();}
 function playTimerSound(){try{var ctx=new(window.AudioContext||window.webkitAudioContext)();function beep(freq,start,dur,vol){var o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.type='sine';o.frequency.value=freq;g.gain.setValueAtTime(vol||0.4,ctx.currentTime+start);g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+start+dur);o.start(ctx.currentTime+start);o.stop(ctx.currentTime+start+dur+0.05);}beep(880,0,0.12,0.5);beep(1100,0.15,0.12,0.5);beep(1320,0.3,0.3,0.6);}catch(e){}}
 function startTimer(exId,secs){stopTimer();timerExId=exId;timerSeconds=secs;timerRunning=true;var d=document.getElementById('timer-'+exId),s=document.getElementById('timer-stop-'+exId),l=document.getElementById('timer-label-'+exId);if(s)s.style.display='';if(l)l.textContent='Pause läuft…';if(d)d.classList.add('active');updateTimerDisplay();timerInterval=setInterval(function(){timerSeconds--;updateTimerDisplay();if(timerSeconds<=0){var eid=timerExId;stopTimer();playTimerSound();if('vibrate' in navigator)navigator.vibrate([200,100,200,100,300]);var l2=document.getElementById('timer-label-'+eid);if(l2)l2.textContent='Pause beendet ✓';}},1000);}
@@ -596,13 +600,32 @@ function saveSession(){
   document.getElementById('k-saetze').textContent=ts;
   document.getElementById('konfetti-overlay').classList.remove('hidden');
 }
-function closeKonfetti(){document.getElementById('konfetti-overlay').classList.add('hidden');sessionStartTime=new Date();renderExercises();}
+function setTrainStartInfo(){var el=document.getElementById('train-start-info');if(!el||!sessionStartTime)return;var h=sessionStartTime.getHours(),m=sessionStartTime.getMinutes();el.textContent='Gestartet '+h+':'+String(m).padStart(2,'0')+' Uhr';}
+function closeKonfetti(){document.getElementById('konfetti-overlay').classList.add('hidden');sessionStartTime=new Date();setTrainStartInfo();renderExercises();}
 function changeWeek(d){weekOffset+=d;renderWoche();}
 function renderWoche(){var now=new Date(),ws=new Date(now);ws.setDate(now.getDate()-((now.getDay()||7)-1)+weekOffset*7);var we=new Date(ws);we.setDate(ws.getDate()+6);var mn=['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];document.getElementById('wtitle').textContent=ws.getDate()+'. '+mn[ws.getMonth()]+' – '+we.getDate()+'. '+mn[we.getMonth()];var dn=['Mo','Di','Mi','Do','Fr','Sa','So'],html='',wt=0,ws2=0;for(var d=0;d<7;d++){var day=new Date(ws);day.setDate(ws.getDate()+d);var ds=day.toDateString(),ts2=new Date().toDateString(),sess=null;for(var si=0;si<state.sessions.length;si++){if(new Date(state.sessions[si].date).toDateString()===ds){sess=state.sessions[si];break;}}if(sess){wt++;ws2+=sess.totalSets;}html+='<div class="dc'+(ds===ts2?' today':'')+(sess?' trained':'')+'"><div class="dc-name">'+dn[d]+'</div><div class="dc-num">'+day.getDate()+'</div><div class="dc-dot"></div></div>';}document.getElementById('wgrid').innerHTML=html;document.getElementById('w-tr').textContent=wt;document.getElementById('w-sets').textContent=ws2;var streak=0,td=new Date();for(var i=0;i<30;i++){var dd=new Date(td);dd.setDate(td.getDate()-i);var found=false;for(var si=0;si<state.sessions.length;si++){if(new Date(state.sessions[si].date).toDateString()===dd.toDateString()){found=true;break;}}if(found)streak++;else if(i>0)break;}document.getElementById('w-streak').textContent=streak;}
 function renderBarChart(){var recent=state.sessions.slice(0,8).reverse(),mx=1;for(var i=0;i<recent.length;i++){if(recent[i].totalSets>mx)mx=recent[i].totalSets;}var dn=['So','Mo','Di','Mi','Do','Fr','Sa'],html='';for(var i=0;i<recent.length;i++){var s=recent[i],h=Math.max(8,Math.round(s.totalSets/mx*76)),d=new Date(s.date);html+='<div class="bc"><div class="bf data" style="height:'+h+'px"></div><div class="bdl">'+dn[d.getDay()]+'</div></div>';}for(var i=recent.length;i<8;i++)html+='<div class="bc"><div class="bf" style="height:8px"></div><div class="bdl">–</div></div>';document.getElementById('barchart').innerHTML=html;}
 function renderProg(){var wi=getProgWeekIndex();document.getElementById('prog-con').innerHTML=PROG_DATA.map(function(w,i){var c=i===wi;return'<div class="progw'+(c?' curr':'')+'"><div class="progwn'+(c?' curr':'')+'">'+( i+1)+'</div><div class="progwi"><div class="progwt">'+w.t+'</div><div class="progwd">'+w.d+'</div></div>'+(c?'<span class="ptag">Aktuell</span>':'')+'</div>';}).join('');}
 function resetProgression(){if(!confirm('Progression zurücksetzen? Einheiten bleiben erhalten.'))return;state.progWeekStart=new Date().toISOString();saveAll();updateProgBadge();renderExercises();renderProg();alert('Woche 1 startet neu.');}
-function renderVerlauf(){var c=document.getElementById('log-con');if(!state.sessions.length){c.innerHTML='<div class="empty"><div class="empty-i">📋</div><div class="empty-t">Noch keine Einheiten gespeichert.</div></div>';return;}var mn=['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'],dn=['So','Mo','Di','Mi','Do','Fr','Sa'];var sl={r:'Eingeschränkt',a:'Normal',b:'Gut drauf'},st={r:'ltr',a:'lta',b:'ltb'};c.innerHTML=state.sessions.map(function(s,idx){var d=new Date(s.date),dh='';if(s.notiz)dh+='<div class="le-notiz"><span>💬 '+escHtml(s.notiz)+'</span><button class="le-notiz-edit" onclick="event.stopPropagation();editNotiz('+idx+')">Bearbeiten</button></div>';else dh+='<div style="margin-bottom:10px"><button class="le-notiz-edit" onclick="event.stopPropagation();editNotiz('+idx+')" style="font-size:13px;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface2);color:var(--text2);cursor:pointer;min-height:36px;font-family:inherit">+ Notiz</button></div>';if(s.details)s.details.forEach(function(det){if(!det.done)return;var kgs=det.sets?det.sets.filter(function(x){return x.kg&&x.kg!=='';}).map(function(x){return x.kg+' kg'}).join(', '):'';dh+='<div class="le-exrow"><span>'+det.emoji+' '+det.name+'</span>'+(kgs?'<span>'+kgs+'</span>':'')+'</div>';});var durStr=s.durationMin?s.durationMin+' Min · ':'';return'<div class="le" onclick="toggleLog('+idx+')"><div class="le-top"><div class="ldb"><div class="ldm">'+mn[d.getMonth()]+'</div><div class="ldn">'+d.getDate()+'</div><div class="ldm">'+dn[d.getDay()]+'</div></div><div class="li"><div class="lt">'+s.done+'/'+s.total+' Übungen · '+s.totalSets+' Sätze'+(s.progWeek?' · W'+s.progWeek:'')+'</div><div class="ls">'+durStr+d.getHours()+':'+String(d.getMinutes()).padStart(2,'0')+' Uhr</div></div><span class="ltag '+st[s.status]+'">'+sl[s.status]+'</span></div><div class="le-detail" id="ld-'+idx+'">'+dh+'</div></div>';}).join('');}
+function renderVerlauf(){
+  var c=document.getElementById('log-con');
+  var sv=document.getElementById('verlauf-summary');
+  if(!state.sessions.length){
+    if(sv)sv.innerHTML='';
+    c.innerHTML='<div class="empty"><div class="empty-i">📋</div><div class="empty-t">Noch keine Einheiten gespeichert.</div></div>';
+    return;
+  }
+  var totalSessions=state.sessions.length;
+  var totalSets=0,totalDur=0;
+  state.sessions.forEach(function(s){totalSets+=s.totalSets||0;totalDur+=s.durationMin||0;});
+  var firstDate=new Date(state.sessions[state.sessions.length-1].date);
+  var weeks=Math.max(1,Math.round((new Date()-firstDate)/(7*864e5)));
+  if(sv)sv.innerHTML='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px">'
+    +'<div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 6px;text-align:center"><div style="font-size:22px;font-weight:800;color:var(--accent)">'+totalSessions+'</div><div style="font-size:9px;font-weight:700;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-top:4px">Einheiten</div></div>'
+    +'<div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 6px;text-align:center"><div style="font-size:22px;font-weight:800;color:var(--accent)">'+totalSets+'</div><div style="font-size:9px;font-weight:700;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-top:4px">Sätze</div></div>'
+    +'<div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 6px;text-align:center"><div style="font-size:22px;font-weight:800;color:var(--accent)">'+Math.round(totalDur/totalSessions)+'</div><div style="font-size:9px;font-weight:700;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-top:4px">Ø Min</div></div>'
+    +'<div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 6px;text-align:center"><div style="font-size:22px;font-weight:800;color:var(--accent)">'+weeks+'</div><div style="font-size:9px;font-weight:700;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-top:4px">Wochen</div></div>'
+    +'</div>';var sl={r:'Eingeschränkt',a:'Normal',b:'Gut drauf'},st={r:'ltr',a:'lta',b:'ltb'};c.innerHTML=state.sessions.map(function(s,idx){var d=new Date(s.date),dh='';if(s.notiz)dh+='<div class="le-notiz"><span>💬 '+escHtml(s.notiz)+'</span><button class="le-notiz-edit" onclick="event.stopPropagation();editNotiz('+idx+')">Bearbeiten</button></div>';else dh+='<div style="margin-bottom:10px"><button class="le-notiz-edit" onclick="event.stopPropagation();editNotiz('+idx+')" style="font-size:13px;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface2);color:var(--text2);cursor:pointer;min-height:36px;font-family:inherit">+ Notiz</button></div>';if(s.details)s.details.forEach(function(det){if(!det.done)return;var kgs=det.sets?det.sets.filter(function(x){return x.kg&&x.kg!=='';}).map(function(x){return x.kg+' kg'}).join(', '):'';dh+='<div class="le-exrow"><span>'+det.emoji+' '+det.name+'</span>'+(kgs?'<span>'+kgs+'</span>':'')+'</div>';});var durStr=s.durationMin?s.durationMin+' Min · ':'';return'<div class="le" onclick="toggleLog('+idx+')"><div class="le-top"><div class="ldb"><div class="ldm">'+mn[d.getMonth()]+'</div><div class="ldn">'+d.getDate()+'</div><div class="ldm">'+dn[d.getDay()]+'</div></div><div class="li"><div class="lt">'+s.done+'/'+s.total+' Übungen · '+s.totalSets+' Sätze'+(s.progWeek?' · W'+s.progWeek:'')+'</div><div class="ls">'+durStr+d.getHours()+':'+String(d.getMinutes()).padStart(2,'0')+' Uhr</div></div><span class="ltag '+st[s.status]+'">'+sl[s.status]+'</span></div><div class="le-detail" id="ld-'+idx+'">'+dh+'</div></div>';}).join('');}
 function toggleLog(idx){var el=document.getElementById('ld-'+idx);if(el)el.classList.toggle('open');}
 function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function editNotiz(idx){openModal('Notiz bearbeiten',new Date(state.sessions[idx].date).toLocaleDateString('de-DE'),state.sessions[idx].notiz||'','text',function(v){state.sessions[idx].notiz=v;saveAll();renderVerlauf();});}
@@ -627,7 +650,7 @@ function exportD(){try{var b=new Blob([JSON.stringify({sessions:state.sessions,k
 function importD(){document.getElementById('import-file').click();}
 function handleImport(inp){var file=inp.files[0];if(!file)return;var r=new FileReader();r.onload=function(e){try{var d=JSON.parse(e.target.result);if(!d.sessions&&!d.kwData){alert('Ungültige Datei.');return;}if(!confirm('Alle aktuellen Daten werden ersetzt. Fortfahren?'))return;if(d.sessions)state.sessions=d.sessions;if(d.kwData)state.kwData=d.kwData;saveAll();updateProgBadge();renderExercises();alert('Import erfolgreich! '+state.sessions.length+' Einheiten geladen.');}catch(ex){alert('Fehler beim Lesen der Datei.');}inp.value='';};r.readAsText(file);}
 function resetAll(){if(!confirm('Alle Daten löschen?'))return;state.sessions=[];state.kwData=[];state.progWeekStart=new Date().toISOString();state.setData={};state.doneSets={};state.doneEx={};saveAll();updateProgBadge();renderExercises();alert('Daten gelöscht.');}
-function init(){loadAll();applyTheme(loadTheme());loadFontSize();if(!state.progWeekStart){state.progWeekStart=new Date().toISOString();saveAll();}sessionStartTime=new Date();updateProgBadge();setStatus('a',true);}
+function init(){loadAll();applyTheme(loadTheme());loadFontSize();if(!state.progWeekStart){state.progWeekStart=new Date().toISOString();saveAll();}sessionStartTime=new Date();setTrainStartInfo();updateProgBadge();setStatus('a',true);}
 init();
 </script>
 </body>
