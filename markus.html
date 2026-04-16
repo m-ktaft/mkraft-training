@@ -75,6 +75,11 @@ body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;t
 .status-info{border-radius:14px;padding:14px 16px;margin-bottom:14px;font-size:14px;line-height:1.6;border-left:3px solid}
 .si-r{background:var(--red-bg);border-color:var(--red);color:var(--red)}
 .si-b{background:var(--blue-bg);border-color:var(--blue);color:var(--blue)}
+.week-banner{border-radius:12px;padding:14px;margin-bottom:14px}
+.week-banner-label{font-size:11px;font-weight:800;color:#1a0e00;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center}
+.week-banner-close{background:none;border:none;cursor:pointer;font-size:13px;color:#1a0e00;padding:0;line-height:1;font-family:inherit}
+.week-banner-title{font-size:16px;font-weight:800;color:#1a0e00;margin-bottom:3px}
+.week-banner-sub{font-size:12px;color:#4a2800}
 .ec{background:var(--surface);border:1px solid var(--border);border-radius:18px;margin-bottom:12px;overflow:hidden;transition:border-color .2s,background .2s}
 .ec.done{border-color:var(--accent);background:var(--done-bg)}
 .ec.open{border-color:var(--border2)}
@@ -361,6 +366,7 @@ body.fs-large .ec-name{font-size:19px}body.fs-large .ec-muscle{font-size:15px}bo
       </div>
     </div>
     <div id="info-chips"></div>
+    <div id="week-banner-wrap"></div>
     <div class="prog-badge"><div class="pb-num" id="pb-num">1</div><div class="pb-info"><div class="pb-title" id="pb-title"></div><div class="pb-desc" id="pb-desc"></div></div></div>
     <div class="prog-track">
       <div class="prog-row"><span class="prog-lbl">Fortschritt</span><span class="prog-num" id="progress-text">0 / 8</span></div>
@@ -392,7 +398,6 @@ body.fs-large .ec-name{font-size:19px}body.fs-large .ec-muscle{font-size:15px}bo
   </div>
   <div class="page" id="pg-verlauf">
     <div class="sl">Trainingsprotokoll</div>
-    <div id="verlauf-summary"></div>
     <div id="log-con"></div>
     <div class="sl">Gewicht je Übung</div><div id="ex-prog-con"></div>
   </div>
@@ -477,7 +482,7 @@ function loadTheme(){try{return localStorage.getItem('mkraft_theme')||'dark';}ca
 function toggleTheme(){var cur=document.documentElement.getAttribute('data-theme');applyTheme(cur==='dark'?'light':'dark');}
 function applyTheme(t){document.documentElement.setAttribute('data-theme',t);document.getElementById('theme-btn').textContent=t==='dark'?'🌙':'☀️';document.getElementById('meta-theme').content=t==='dark'?'#0d0d0d':'#fafaf8';saveTheme(t);}
 function goPage(id,btn){document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});document.querySelectorAll('.bn').forEach(function(b){b.classList.remove('active');});document.getElementById('pg-'+id).classList.add('active');btn.classList.add('active');window.scrollTo({top:0,behavior:'instant'});if(id==='woche'){renderWoche();renderBarChart();renderProg();}if(id==='verlauf'){renderVerlauf();renderExProg();}if(id==='koerper'){renderKW();}if(id==='system'){renderPrinzipien();renderAlternativen();}}
-function getProgWeekIndex(){if(!state.progWeekStart)return 0;return Math.floor(Math.floor((new Date()-new Date(state.progWeekStart))/(864e5))/7)%4;}
+function getProgWeekIndex(){if(!state.progWeekStart)return 0;return Math.floor(Math.floor((new Date()-new Date(state.progWeekStart))/86400000)/7)%4;}
 function getCurrentProg(){return PROG_DATA[getProgWeekIndex()];}
 function getSetsForStatus(s){return s==='r'?2:getCurrentProg().sets;}
 function getBonusAllowed(s){return s==='b';}
@@ -493,7 +498,7 @@ function getVisible(){
     return true;
   });
 }
-function setStatus(s,silent){state.status=s;if(!silent){state.setData={};state.doneSets={};state.doneEx={};state.bizepsChoice=null;state.manualSchulterSlot=null;stopTimer();}['r','a','b'].forEach(function(x){document.getElementById('sb-'+x).className='sb'+(x===s?(x==='r'?' sr':x==='a'?' sa':' sb2'):'');});renderExercises();updateProgress();}
+function setStatus(s,silent){state.status=s;if(!silent){state.setData={};state.doneSets={};state.doneEx={};state.bizepsChoice=null;state.manualSchulterSlot=null;stopTimer();}['r','a','b'].forEach(function(x){document.getElementById('sb-'+x).className='sb'+(x===s?(x==='r'?' sr':x==='a'?' sa':' sb2'):'');});renderExercises();updateProgress();if(!silent)checkWeekBanner();}
 function updateProgBadge(){var wi=getProgWeekIndex(),p=PROG_DATA[wi];document.getElementById('pb-num').textContent=wi+1;document.getElementById('pb-title').textContent=p.t;document.getElementById('pb-desc').textContent=p.d;document.getElementById('week-badge').textContent='W'+(wi+1)+' von 4';}
 function updateProgress(){var exs=getVisible(),done=0;exs.forEach(function(e){if(state.doneEx[e.id])done++;});document.getElementById('progress-fill').style.width=Math.round(done/8*100)+'%';document.getElementById('progress-text').textContent=done+' / 8';}
 function updateInfoChips(){var exs=getVisible(),ns=getSetsForStatus(state.status),ts=0;exs.forEach(function(){ts+=ns;});var ml=state.status==='r'?'Eingeschränkt':state.status==='a'?'Normal':'Gut drauf';var min=state.status==='r'?15:state.status==='a'?30:40;document.getElementById('info-chips').innerHTML='<div class="info-strip"><div class="info-tile"><div class="info-val sm">'+ml+'</div><div class="info-lbl">Modus</div></div><div class="info-tile"><div class="info-val">'+exs.length+'</div><div class="info-lbl">Übungen</div></div><div class="info-tile"><div class="info-val">'+ts+'</div><div class="info-lbl">Sätze</div></div><div class="info-tile"><div class="info-val" style="font-size:18px;letter-spacing:0">~'+min+'<span style="font-size:10px;color:var(--text3);font-weight:700"> Min</span></div><div class="info-lbl">Dauer</div></div></div>';}
@@ -600,6 +605,29 @@ function saveSession(){
   document.getElementById('k-saetze').textContent=ts;
   document.getElementById('konfetti-overlay').classList.remove('hidden');
 }
+var WEEK_COLORS=['#e8a000','#d4920a','#c47800','#b86a00'];
+var WEEK_LABELS=['Neue Woche · Technik','Neue Woche · Stabilität','Neue Woche · Reiz','Neue Woche · Deload'];
+function checkWeekBanner(){
+  var wi=getProgWeekIndex();
+  var wrap=document.getElementById('week-banner-wrap');
+  if(!wrap)return;
+  try{
+    var seen=localStorage.getItem('mkraft_weekseen');
+    if(seen==wi+''){wrap.innerHTML='';return;}
+  }catch(e){}
+  var p=PROG_DATA[wi];
+  var col=WEEK_COLORS[wi];
+  wrap.innerHTML='<div class="week-banner" style="background:'+col+'">'
+    +'<div class="week-banner-label">'+WEEK_LABELS[wi]+'<button class="week-banner-close" onclick="closeWeekBanner('+wi+')">✕</button></div>'
+    +'<div class="week-banner-title">Woche '+(wi+1)+' · '+p.t.split('–')[1].trim()+'</div>'
+    +'<div class="week-banner-sub">'+p.d+'</div>'
+    +'</div>';
+}
+function closeWeekBanner(wi){
+  try{localStorage.setItem('mkraft_weekseen',wi+'');}catch(e){}
+  var wrap=document.getElementById('week-banner-wrap');
+  if(wrap)wrap.innerHTML='';
+}
 function setTrainStartInfo(){var el=document.getElementById('train-start-info');if(!el||!sessionStartTime)return;var h=sessionStartTime.getHours(),m=sessionStartTime.getMinutes();el.textContent='Gestartet '+h+':'+String(m).padStart(2,'0')+' Uhr';}
 function closeKonfetti(){document.getElementById('konfetti-overlay').classList.add('hidden');sessionStartTime=new Date();setTrainStartInfo();renderExercises();}
 function changeWeek(d){weekOffset+=d;renderWoche();}
@@ -609,30 +637,16 @@ function renderProg(){var wi=getProgWeekIndex();document.getElementById('prog-co
 function resetProgression(){if(!confirm('Progression zurücksetzen? Einheiten bleiben erhalten.'))return;state.progWeekStart=new Date().toISOString();saveAll();updateProgBadge();renderExercises();renderProg();alert('Woche 1 startet neu.');}
 function renderVerlauf(){
   var c=document.getElementById('log-con');
-  var sv=document.getElementById('verlauf-summary');
-  if(!state.sessions.length){
-    if(sv)sv.innerHTML='';
-    c.innerHTML='<div class="empty"><div class="empty-i">📋</div><div class="empty-t">Noch keine Einheiten gespeichert.</div></div>';
-    return;
-  }
-  var totalSessions=state.sessions.length;
-  var totalSets=0,totalDur=0;
-  state.sessions.forEach(function(s){totalSets+=s.totalSets||0;totalDur+=s.durationMin||0;});
-  var firstDate=new Date(state.sessions[state.sessions.length-1].date);
-  var weeks=Math.max(1,Math.round((new Date()-firstDate)/(7*86400000)));
-  if(sv)sv.innerHTML='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px">'
-    +'<div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 6px;text-align:center"><div style="font-size:22px;font-weight:800;color:var(--accent)">'+totalSessions+'</div><div style="font-size:9px;font-weight:700;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-top:4px">Einheiten</div></div>'
-    +'<div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 6px;text-align:center"><div style="font-size:22px;font-weight:800;color:var(--accent)">'+totalSets+'</div><div style="font-size:9px;font-weight:700;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-top:4px">Sätze</div></div>'
-    +'<div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 6px;text-align:center"><div style="font-size:22px;font-weight:800;color:var(--accent)">'+Math.round(totalDur/totalSessions)+'</div><div style="font-size:9px;font-weight:700;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-top:4px">Ø Min</div></div>'
-    +'<div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 6px;text-align:center"><div style="font-size:22px;font-weight:800;color:var(--accent)">'+weeks+'</div><div style="font-size:9px;font-weight:700;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-top:4px">Wochen</div></div>'
-    +'</div>';var mn=['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'],dn=['So','Mo','Di','Mi','Do','Fr','Sa'];var sl={r:'Eingeschränkt',a:'Normal',b:'Gut drauf'},st={r:'ltr',a:'lta',b:'ltb'};c.innerHTML=state.sessions.map(function(s,idx){var d=new Date(s.date),dh='';if(s.notiz)dh+='<div class="le-notiz"><span>💬 '+escHtml(s.notiz)+'</span><button class="le-notiz-edit" onclick="event.stopPropagation();editNotiz('+idx+')">Bearbeiten</button></div>';else dh+='<div style="margin-bottom:10px"><button class="le-notiz-edit" onclick="event.stopPropagation();editNotiz('+idx+')" style="font-size:13px;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface2);color:var(--text2);cursor:pointer;min-height:36px;font-family:inherit">+ Notiz</button></div>';if(s.details)s.details.forEach(function(det){if(!det.done)return;var kgs=det.sets?det.sets.filter(function(x){return x.kg&&x.kg!=='';}).map(function(x){return x.kg+' kg'}).join(', '):'';dh+='<div class="le-exrow"><span>'+det.emoji+' '+det.name+'</span>'+(kgs?'<span>'+kgs+'</span>':'')+'</div>';});var durStr=s.durationMin?s.durationMin+' Min · ':'';return'<div class="le" onclick="toggleLog('+idx+')"><div class="le-top"><div class="ldb"><div class="ldm">'+mn[d.getMonth()]+'</div><div class="ldn">'+d.getDate()+'</div><div class="ldm">'+dn[d.getDay()]+'</div></div><div class="li"><div class="lt">'+s.done+'/'+s.total+' Übungen · '+s.totalSets+' Sätze'+(s.progWeek?' · W'+s.progWeek:'')+'</div><div class="ls">'+durStr+d.getHours()+':'+String(d.getMinutes()).padStart(2,'0')+' Uhr</div></div><span class="ltag '+st[s.status]+'">'+sl[s.status]+'</span></div><div class="le-detail" id="ld-'+idx+'">'+dh+'</div></div>';}).join('');}
+  if(!state.sessions.length){c.innerHTML='<div class="empty"><div class="empty-i">📋</div><div class="empty-t">Noch keine Einheiten gespeichert.</div></div>';return;}
+  var mn=['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'],dn=['So','Mo','Di','Mi','Do','Fr','Sa'];var sl={r:'Eingeschränkt',a:'Normal',b:'Gut drauf'},st={r:'ltr',a:'lta',b:'ltb'};c.innerHTML=state.sessions.map(function(s,idx){var d=new Date(s.date),dh='';if(s.notiz)dh+='<div class="le-notiz"><span>💬 '+escHtml(s.notiz)+'</span><button class="le-notiz-edit" onclick="event.stopPropagation();editNotiz('+idx+')">Bearbeiten</button></div>';else dh+='<div style="margin-bottom:10px"><button class="le-notiz-edit" onclick="event.stopPropagation();editNotiz('+idx+')" style="font-size:13px;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface2);color:var(--text2);cursor:pointer;min-height:36px;font-family:inherit">+ Notiz</button></div>';if(s.details)s.details.forEach(function(det){if(!det.done)return;var kgs=det.sets?det.sets.filter(function(x){return x.kg&&x.kg!=='';}).map(function(x){return x.kg+' kg'}).join(', '):'';dh+='<div class="le-exrow"><span>'+det.emoji+' '+det.name+'</span>'+(kgs?'<span>'+kgs+'</span>':'')+'</div>';});var durStr=s.durationMin?s.durationMin+' Min · ':'';return'<div class="le" onclick="toggleLog('+idx+')"><div class="le-top"><div class="ldb"><div class="ldm">'+mn[d.getMonth()]+'</div><div class="ldn">'+d.getDate()+'</div><div class="ldm">'+dn[d.getDay()]+'</div></div><div class="li"><div class="lt">'+s.done+'/'+s.total+' Übungen · '+s.totalSets+' Sätze'+(s.progWeek?' · W'+s.progWeek:'')+'</div><div class="ls">'+durStr+d.getHours()+':'+String(d.getMinutes()).padStart(2,'0')+' Uhr</div></div><span class="ltag '+st[s.status]+'">'+sl[s.status]+'</span></div><div class="le-detail" id="ld-'+idx+'">'+dh+'</div></div>';}).join('');
+}
 function toggleLog(idx){var el=document.getElementById('ld-'+idx);if(el)el.classList.toggle('open');}
 function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function editNotiz(idx){openModal('Notiz bearbeiten',new Date(state.sessions[idx].date).toLocaleDateString('de-DE'),state.sessions[idx].notiz||'','text',function(v){state.sessions[idx].notiz=v;saveAll();renderVerlauf();});}
 function renderExProg(){var ex={};state.sessions.forEach(function(sess){if(!sess.details)return;sess.details.forEach(function(det){if(!ex[det.id])ex[det.id]={name:det.name,emoji:det.emoji||'💪',entries:[]};var kgs=det.sets?det.sets.filter(function(s){return s.kg&&s.kg!=='';}).map(function(s){return parseFloat(s.kg);}):[];var reps=det.sets?det.sets.filter(function(s){return s.reps&&s.reps!=='';}).map(function(s){return s.reps;}).join(', '):'';if(kgs.length>0)ex[det.id].entries.push({date:sess.date,kg:Math.max.apply(null,kgs),reps:reps});});});var html='',keys=Object.keys(ex),mn=['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];if(!keys.length)html='<div class="empty"><div class="empty-i">📊</div><div class="empty-t">Nach dem ersten Training erscheinen hier die Gewichtsverläufe.</div></div>';else keys.forEach(function(id){var e=ex[id];if(!e.entries.length)return;var rows=e.entries.slice(0,8).map(function(en){var d=new Date(en.date);return'<div class="ex-prog-row"><span class="ex-prog-date">'+d.getDate()+'. '+mn[d.getMonth()]+'</span><div style="display:flex;gap:14px"><span class="ex-prog-kg">'+en.kg+' kg</span><span class="ex-prog-reps">'+en.reps+'</span></div></div>';}).join('');html+='<div class="ex-prog-card"><div class="ex-prog-h" onclick="this.nextElementSibling.classList.toggle(\'open\')"><span class="ex-prog-icon">'+e.emoji+'</span><span class="ex-prog-name">'+e.name+'</span><span class="ex-prog-last">'+e.entries[0].kg+' kg</span><span style="font-size:11px;color:var(--text3);margin-left:8px">▾</span></div><div class="ex-prog-body">'+rows+'</div></div>';});document.getElementById('ex-prog-con').innerHTML=html;}
 function saveKW(){var inp=document.getElementById('kw-input'),val=parseFloat(inp.value);if(isNaN(val)||val<30||val>250){alert('Bitte ein gültiges Gewicht eingeben.');return;}state.kwData.unshift({date:new Date().toISOString(),kg:val});saveAll();inp.value='';renderKW();}
 function setKWRange(days,btn){kwRange=days;document.querySelectorAll('.rt').forEach(function(b){b.classList.remove('on');});btn.classList.add('on');renderKW();}
-function renderKW(){var now=new Date(),cut=new Date(now.getTime()-kwRange*864e5);var fil=state.kwData.filter(function(d){return kwRange>=9000||new Date(d.date)>=cut;});renderKWChart(fil);renderKWStats(fil);renderKWList();}
+function renderKW(){var now=new Date(),cut=new Date(now.getTime()-kwRange*86400000);var fil=state.kwData.filter(function(d){return kwRange>=9000||new Date(d.date)>=cut;});renderKWChart(fil);renderKWStats(fil);renderKWList();}
 function renderKWChart(data){var wrap=document.getElementById('kw-chart-wrap');if(!data||data.length<2){wrap.innerHTML='<div class="chart-no-data">'+(data&&data.length===1?'Mindestens 2 Einträge nötig.':'Noch keine Einträge.')+'</div>';return;}var pts=data.slice().reverse(),kgs=pts.map(function(p){return p.kg;}),minK=Math.min.apply(null,kgs),maxK=Math.max.apply(null,kgs),range=maxK-minK||1;var pad=6,W=600,H=160,n=pts.length;var points=pts.map(function(p,i){return{x:pad+(i/(n-1))*(W-pad*2),y:H-pad-((p.kg-minK)/range)*(H-pad*2),kg:p.kg,date:p.date};});var pathD='M'+points.map(function(p){return p.x.toFixed(1)+','+p.y.toFixed(1);}).join(' L');var areaD=pathD+' L'+points[n-1].x.toFixed(1)+','+(H-pad)+' L'+points[0].x.toFixed(1)+','+(H-pad)+' Z';var dots=points.map(function(p){return'<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="4.5" fill="var(--accent)" stroke="var(--bg)" stroke-width="2.5"><title>'+p.kg+' kg</title></circle>';}).join('');var labels='',step=Math.ceil(n/5),mn=['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];points.forEach(function(p,i){if(i%step===0||i===n-1){var d=new Date(p.date);labels+='<text x="'+p.x.toFixed(1)+'" y="'+(H+15)+'" text-anchor="middle" font-size="11" fill="var(--text3)">'+d.getDate()+'. '+mn[d.getMonth()]+'</text>';}});var yL='';[0,0.5,1].forEach(function(f){var val=(minK+f*range).toFixed(1),y=(H-pad-f*(H-pad*2)).toFixed(1);yL+='<text x="0" y="'+y+'" font-size="11" fill="var(--text3)" dominant-baseline="middle">'+val+'</text><line x1="'+pad+'" y1="'+y+'" x2="'+W+'" y2="'+y+'" stroke="var(--border)" stroke-width="0.5" stroke-dasharray="4,4"/>';});wrap.innerHTML='<div class="chart-wrap"><svg class="chart-svg" viewBox="-30 0 '+(W+30)+' '+(H+22)+'" preserveAspectRatio="none"><defs><linearGradient id="ag" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--accent)" stop-opacity="0.35"/><stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/></linearGradient></defs>'+yL+'<path d="'+areaD+'" fill="url(#ag)"/><path d="'+pathD+'" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>'+dots+labels+'</svg></div>';}
 function renderKWStats(data){var el=document.getElementById('kw-stats');if(!data||!data.length){el.innerHTML='';return;}var kgs=data.map(function(d){return d.kg;}),lat=kgs[0],old=kgs[kgs.length-1],diff=(lat-old).toFixed(1),dc=parseFloat(diff)<0?'pos':parseFloat(diff)>0?'neg':'';el.innerHTML='<div class="kw-stat"><div class="kw-stat-val">'+lat.toFixed(1)+'</div><div class="kw-stat-label">Aktuell kg</div></div><div class="kw-stat"><div class="kw-stat-val '+dc+'">'+(parseFloat(diff)>0?'+':'')+diff+'</div><div class="kw-stat-label">Veränderung</div></div><div class="kw-stat"><div class="kw-stat-val" style="font-size:16px;padding-top:4px">'+Math.min.apply(null,kgs).toFixed(1)+'–'+Math.max.apply(null,kgs).toFixed(1)+'</div><div class="kw-stat-label">Spannweite</div></div>';}
 function renderKWList(){var el=document.getElementById('kw-list');if(!state.kwData.length){el.innerHTML='<div class="empty"><div class="empty-i">⚖️</div><div class="empty-t">Noch keine Einträge.</div></div>';return;}var mn=['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'],dn=['So','Mo','Di','Mi','Do','Fr','Sa'];el.innerHTML=state.kwData.slice(0,30).map(function(e,i){var d=new Date(e.date),prev=state.kwData[i+1],diff=prev?(e.kg-prev.kg).toFixed(1):null;var dh=diff!==null?'<span style="font-size:14px;font-weight:700;color:'+(parseFloat(diff)>0?'var(--red)':parseFloat(diff)<0?'var(--accent)':'var(--text3)')+'">'+(parseFloat(diff)>0?'+':'')+diff+'</span>':'';return'<div class="kw-entry"><div><div style="font-size:14px;font-weight:700">'+d.getDate()+'. '+mn[d.getMonth()]+' · '+dn[d.getDay()]+'</div><div style="font-size:12px;color:var(--text2)">'+d.getHours()+':'+String(d.getMinutes()).padStart(2,'0')+' Uhr</div></div><div style="display:flex;align-items:center;gap:14px">'+dh+'<div style="font-size:22px;font-weight:800;color:var(--accent)">'+e.kg.toFixed(1)+'</div><button class="kw-edit-btn" onclick="editKW('+i+')">Bearb.</button></div></div>';}).join('');}
