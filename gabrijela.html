@@ -481,13 +481,13 @@ var PROG_DATA=[
 
 var EXERCISES=[
   // ── BASIS: Haltung & Rücken ──
-  {id:'rowing', name:'Einarmiges Rudern', type:'basis', emoji:'🔙',
+  {id:'rowing', name:'Einarmiges Rudern', type:'basis', emoji:'🚣',
    muscle:'Lat · oberer Rücken · Schulterblattretraktoren',
    reps:'12–15 / Seite',
    note:'Stütze dich mit der freien Hand auf der Bank ab. Ellbogen eng am Körper führen — nicht ausstellen. Am Ende der Bewegung das Schulterblatt bewusst einziehen und 1 Sek. halten. Rücken immer gerade, Blick zur Bank. 3 Sek. ablassen.',
    showFor:['r','a','b']},
 
-  {id:'reflyes', name:'Reverse Flyes', type:'basis', emoji:'🦋',
+  {id:'reflyes', name:'Reverse Flyes', type:'basis', emoji:'🦅',
    muscle:'Hintere Schulter · mittlerer Trapez · Nackenentlastung',
    reps:'12–15',
    note:'Oberkörper ca. 45° nach vorne beugen, Rücken neutral. Arme leicht gebeugt seitlich öffnen bis Schulterblatt-Höhe — nicht höher. Nacken bleibt lang, kein Kopfheben. Sehr leichtes Gewicht! Qualität vor Intensität. Ziel: Nacken & HWS entlasten.',
@@ -508,20 +508,20 @@ var EXERCISES=[
    showFor:['a','b']},
 
   // ── BASIS: Unterkörper ──
-  {id:'glute', name:'Glute Bridge', type:'basis', emoji:'🍑',
+  {id:'glute', name:'Glute Bridge', type:'basis', emoji:'⛩️',
    muscle:'Gesäß · Hüftstabilisatoren · Core-Integration',
    reps:'15–20',
    note:'Rücken flach, Füße hüftbreit, Knie zeigen nach außen. Becken bis zur vollständigen Hüftstreckung anheben — 1–2 Sek. oben halten und Gesäß maximal anspannen. Langsam (3 Sek.) ablassen. Hervorragend für Gewebequalität und Rückengesundheit. Kein Schmerz im Knie — wenn ja, Fußstellung anpassen.',
    showFor:['r','a','b']},
 
-  {id:'hipthrust', name:'Hip Thrust (Bank)', type:'basis', emoji:'🧱',
+  {id:'hipthrust', name:'Hip Thrust (Bank)', type:'basis', emoji:'⛩️',
    muscle:'Gesäß · hintere Oberschenkel · Hüftstreckung',
    reps:'12–15',
    note:'Schulterblätter auf der Bankkante, Gewicht (KH oder Körpergewicht) auf den Hüften. Knie zeigen nach außen — nicht einwärts fallen lassen. Hüfte voll strecken und Gesäß maximal kontrahieren. Intensiver als Glute Bridge, mehr Hüftstreckung. Nur wenn kein Knieschmerz vorhanden.',
    showFor:['a','b']},
 
   // ── SCHULTER-ROTATION A/B ──
-  {id:'seitheben', name:'Seitheben (leicht)', type:'stab', emoji:'🧩',
+  {id:'seitheben', name:'Seitheben (leicht)', type:'stab', emoji:'🕊️',
    muscle:'Seitliche Schulter (Deltoideus medius) · Gelenkschutz',
    reps:'12–15',
    note:'⚠️ Pflicht-Modul zur Schulter- & Nackenprävention! Sehr leichtes Gewicht wählen (lieber zu wenig als zu viel). Arme leicht gebeugt seitlich bis Schulterhöhe heben — nicht höher. Schultern unten lassen, Nacken entspannt. Langsam und kontrolliert.',
@@ -530,7 +530,7 @@ var EXERCISES=[
   // Reverse Flyes als Schulter-B: showFor nur wenn Slot B aktiv (per getVisible)
   // Achtung: Die Basis-Reverse Flyes (id:'reflyes') sind immer sichtbar.
   // Die Schulter-Rotation B nutzt eine eigene ID.
-  {id:'reflyes_b', name:'Reverse Flyes (Schulter B)', type:'stab', emoji:'🦋',
+  {id:'reflyes_b', name:'Reverse Flyes (Schulter B)', type:'stab', emoji:'🦅',
    muscle:'Hintere Schulter · mittlerer Trapez · Nackenentlastung',
    reps:'12–15',
    note:'Oberkörper ca. 45° nach vorne beugen, Rücken neutral. Arme leicht gebeugt seitlich öffnen bis Schulterblatt-Höhe — nicht höher. Nacken bleibt lang, kein Kopfheben. Sehr leichtes Gewicht! Qualität vor Intensität. Ziel: Nacken & HWS entlasten.',
@@ -543,27 +543,27 @@ var EXERCISES=[
    note:'Neutraler Griff (Daumen zeigt oben) — schont Handgelenke und Ellbogen. Ellbogen bleibt fixiert am Körper, nur der Unterarm bewegt sich. 3 Sek. ablassen für maximale Spannung. Trainiert auch den Brachialis (tieferer Muskel unter Bizeps) — wirkt armformend.',
    showFor:['a','b'], altGroup:'bizeps'},
 
-  {id:'szcurls', name:'SZ-Curls', type:'arm', emoji:'💫',
+  {id:'szcurls', name:'SZ-Curls', type:'arm', emoji:'〰️',
    muscle:'Bizeps (Länge & Peak) · Brachioradialis',
    reps:'12–15',
    note:'Die SZ-Stange erlaubt einen halbsupinierten Griff — weniger Handgelenksstress als gerade Stange. Volle Bewegungsamplitude: Arme unten fast gestreckt, oben vollständig gecurlt. Ellbogen fixiert. 3 Sek. ablassen. Alternative zu Hammer Curls — nicht beides am selben Tag.',
    showFor:['a','b'], altGroup:'bizeps'},
 
   // ── BONUS: Trizeps (nur "Gut drauf") ──
-  {id:'tricep', name:'Liegende Trizeps-Extension', type:'bonus', emoji:'🏋️',
+  {id:'tricep', name:'Liegende Trizeps-Extension', type:'bonus', emoji:'⚡',
    muscle:'Trizeps · Rückseite Oberarm (2/3 des Armumfangs!)',
    reps:'12–15',
    note:'Ellbogen senkrecht nach oben, fixiert — das ist der kritische Punkt! SZ-Stange langsam zur Stirn senken (3 Sek.). Leichtes Gewicht wählen. Nacken aktiv entspannen. Trizeps macht 2/3 des Oberarms aus — extrem wichtig für straffe, definierte Arme. Bei Ellbogenschmerzen sofort stoppen.',
    showFor:['b'], altGroup:'trizeps'},
 
-  {id:'kickback', name:'KH Trizeps-Kickback', type:'bonus', emoji:'💥',
+  {id:'kickback', name:'KH Trizeps-Kickback', type:'bonus', emoji:'➡️',
    muscle:'Trizeps · Rückseite Oberarm · präzise Isolation',
    reps:'12–15 / Seite',
    note:'Oberkörper ca. 45° vorgebeugt, freie Hand auf Knie oder Bank stützen. Oberarm parallel zum Boden fixieren — Ellbogen bleibt oben! Unterarm nach hinten strecken bis Arm ganz gestreckt ist, 1 Sek. halten. 3 Sek. langsam zurück. Sehr leichtes Gewicht (2–5 kg) — die Isolation ist intensiv genug.',
    showFor:['b'], altGroup:'trizeps'},
 
   // ── BONUS: Innerer Oberschenkel (nur "Gut drauf") ──
-  {id:'innerthigh', name:'Inner Thigh Lift (liegend)', type:'legbonus', emoji:'✨',
+  {id:'innerthigh', name:'Inner Thigh Lift (liegend)', type:'legbonus', emoji:'💎',
    muscle:'Innerer Oberschenkel (Adduktoren) · Hüftstabilisatoren',
    reps:'15–20 / Seite',
    note:'Auf die Seite legen, unteres Bein gestreckt. Oberes Bein angewinkelt vor dem Körper abstützen. Unteres Bein langsam heben (so hoch wie möglich) und kontrolliert ablassen (3 Sek.). Kein Schwingen — pure Kontrolle. Hervorragend für innere Oberschenkel & Gewebequalität ohne Knie-/Fußbelastung.',
