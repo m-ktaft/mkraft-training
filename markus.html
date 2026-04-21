@@ -498,7 +498,18 @@ function getVisible(){
     return true;
   });
 }
-function setStatus(s,silent){state.status=s;if(!silent){state.setData={};state.doneSets={};state.doneEx={};state.bizepsChoice=null;state.manualSchulterSlot=null;stopTimer();}['r','a','b'].forEach(function(x){document.getElementById('sb-'+x).className='sb'+(x===s?(x==='r'?' sr':x==='a'?' sa':' sb2'):'');});renderExercises();updateProgress();if(!silent)checkWeekBanner();}
+function setStatus(s,silent){
+  if(!silent){
+    var hasData=Object.keys(state.setData).length>0||Object.keys(state.doneEx).length>0;
+    if(hasData&&state.status!==s){
+      if(!confirm('Status wechseln? Alle eingegebenen Werte dieses Trainings gehen verloren.'))return;
+    }
+    state.setData={};state.doneSets={};state.doneEx={};state.bizepsChoice=null;state.manualSchulterSlot=null;stopTimer();
+  }
+  state.status=s;
+  ['r','a','b'].forEach(function(x){document.getElementById('sb-'+x).className='sb'+(x===s?(x==='r'?' sr':x==='a'?' sa':' sb2'):'');});
+  renderExercises();updateProgress();if(!silent)checkWeekBanner();
+}
 function updateProgBadge(){var wi=getProgWeekIndex(),p=PROG_DATA[wi];document.getElementById('pb-num').textContent=wi+1;document.getElementById('pb-title').textContent=p.t;document.getElementById('pb-desc').textContent=p.d;document.getElementById('week-badge').textContent='W'+(wi+1)+' von 4';}
 function updateProgress(){var exs=getVisible(),done=0;exs.forEach(function(e){if(state.doneEx[e.id])done++;});document.getElementById('progress-fill').style.width=Math.round(done/8*100)+'%';document.getElementById('progress-text').textContent=done+' / 8';}
 function updateInfoChips(){var exs=getVisible(),ns=getSetsForStatus(state.status),ts=0;exs.forEach(function(){ts+=ns;});var ml=state.status==='r'?'Eingeschränkt':state.status==='a'?'Normal':'Gut drauf';var min=state.status==='r'?15:state.status==='a'?30:40;document.getElementById('info-chips').innerHTML='<div class="info-strip"><div class="info-tile"><div class="info-val sm">'+ml+'</div><div class="info-lbl">Modus</div></div><div class="info-tile"><div class="info-val">'+exs.length+'</div><div class="info-lbl">Übungen</div></div><div class="info-tile"><div class="info-val">'+ts+'</div><div class="info-lbl">Sätze</div></div><div class="info-tile"><div class="info-val" style="font-size:18px;letter-spacing:0">~'+min+'<span style="font-size:10px;color:var(--text3);font-weight:700"> Min</span></div><div class="info-lbl">Dauer</div></div></div>';}
